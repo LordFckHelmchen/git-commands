@@ -1,2 +1,3 @@
 # git-commands
-Contains .bashrc, .bash_aliases, .profile, git-prompt and other useful bash modifications
+
+Contains bash configurations and other useful bash modifications (e.g. git-prompts, git aliases, ...)
