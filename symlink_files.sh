@@ -1,7 +1,10 @@
 #!/usr/bin/env bash
 
-ln -s "$HOME"/Git/git-commands/.bash_aliases "$HOME"/.
-ln -s "$HOME"/Git/git-commands/.bash_profile "$HOME"/.
-ln -s "$HOME"/Git/git-commands/.bashrc "$HOME"/.
-ln -s "$HOME"/Git/git-commands/.bash_completion "$HOME"/.
-
+# Creates (or updates) symlinks to the files.
+REPO_DIR="$HOME"/Git/git-commands
+ln -sf "$REPO_DIR"/.bashrc "$HOME"/.
+ln -sf "$REPO_DIR"/.bash_aliases "$HOME"/.
+ln -sf "$REPO_DIR"/.bash_profile "$HOME"/.
+ln -sf "$REPO_DIR"/.bash_completion "$HOME"/.
+ln -sf "$REPO_DIR"/git-prompt.sh "$HOME"/.
+unset REPO_DIR
