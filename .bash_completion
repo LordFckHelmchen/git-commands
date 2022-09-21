@@ -281,8 +281,10 @@ __ltrim_colon_completions()
 ###################################################################################
 
 for file in $HOME/bash_completion.d/*; do
-    echo "INFO:.bash_completion: Sourcing '$file'"
-    source_if_exists "$file"
+    if [ -f "$file" ]; then
+        echo "INFO:.bash_completion: Sourcing '$file'"
+        source_if_exists "$file"
+    fi
 done
 unset COMPLETION_PATH
 
