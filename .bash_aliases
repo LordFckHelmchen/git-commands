@@ -24,7 +24,7 @@ alias l='ls -CF'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9    ]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-# Show folder tree (directories only); taken from
+# Show tree of current directory (folders only)
 alias dirtree='ls -R . | grep ":$" | sed -e "s/:$//" -e "s/[^\/]*\//|  /g" -e "s/|  \([^|]\)/|–– \1/g"'
 
 ###############################################################################
