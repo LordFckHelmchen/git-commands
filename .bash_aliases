@@ -60,7 +60,7 @@ function is_on_path () {
 # Second input: Name of the path variable to be modified (default: PATH)
 # Return: true if the entity existed on the path variable & has been removed
 function remove_from_path () {
-    if is_on_path $1 ; then
+    if is_on_path "$1" ; then
         local IFS=':'
         local NEWPATH
         local DIR
@@ -86,7 +86,7 @@ function prepend_to_path () {
     local PATHVARIABLE=${2:-PATH}
     if [[ -d "$1" ]] || [[ -f "$1" ]];  # Directory or file
     then
-        remove_from_path "$1" "$2"
+        remove_from_path "$1" "$PATHVARIABLE"
         export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
         true
     else
