@@ -79,8 +79,8 @@ export GTEST_COLOR='yes'
 # Second input: Flag if issue a warning if the file was not found (default: true)
 # Return: true if the file existed and it was sourced.
 function source_if_exists () {
-    if [ -f $1 ]; then
-        source $1
+    if [ -f "$1" ]; then
+        source "$1"
         true
     else
         local ISSUE_WARNING=${2:-true}
