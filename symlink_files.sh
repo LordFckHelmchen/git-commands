@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Creates (or updates) symlinks to the files.
-REPO_DIR="$HOME"/Git/git-commands
+REPO_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 ln -sf "$REPO_DIR"/.bashrc "$HOME"/.
 ln -sf "$REPO_DIR"/.bash_aliases "$HOME"/.
 ln -sf "$REPO_DIR"/.bash_profile "$HOME"/.
