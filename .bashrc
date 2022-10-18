@@ -96,9 +96,9 @@ source_if_exists $HOME/git-prompt.sh
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
     echo "INFO:.bashrc: Sourcing user completions"
-    source_if_exists $HOME/.bash_completion false ||
     source_if_exists /usr/share/bash-completion/bash_completion false ||
-    source_if_exists /etc/bash_completion false
+    source_if_exists /etc/bash_completion false ||
+    source_if_exists $HOME/.bash_completion false
 fi
 
 echo "INFO:.bashrc: Done!"
