@@ -22,7 +22,7 @@ alias l='ls -CF'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9    ]\+\s*//;s/[;&|]\s*alert$//'\'')"'
+alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Show tree of current directory (folders only)
 alias dirtree='ls -R . | grep ":$" | sed -e "s/:$//" -e "s/[^\/]*\//|  /g" -e "s/|  \([^|]\)/|–– \1/g"'
@@ -84,8 +84,7 @@ function remove_from_path () {
 # Example: prepend_to_path "newpath" MANPATH
 function prepend_to_path () {
     local PATHVARIABLE=${2:-PATH}
-    if [[ -d "$1" ]] || [[ -f "$1" ]];  # Directory or file
-    then
+    if [[ -d "$1" ]] || [[ -f "$1" ]]; then  # Directory or file
         remove_from_path "$1" "$PATHVARIABLE"
         export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
         true
@@ -95,7 +94,36 @@ function prepend_to_path () {
     fi
 }
 
-# Poetry
-prepend_to_path "$HOME/.poetry/bin"
+
+
+###############################################################################
+# Local bin paths
+###############################################################################
+
+# Pyenv
+if [[ prepend_to_path "$HOME/.pyenv/bin" ]]; then
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
+
+# JetBrains Toolbox
+prepend_to_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
+
+# User-specific bin path
+prepend_to_path "$HOME/.local/bin"
+
+
+###############################################################################
+# Other functions & aliases
+###############################################################################
+
+# Do all the update stuff (except for dist-upgrade).
+function updateAll {
+    echo '[UPDATE]'; sudo apt update -y;
+    echo '[UPGRADE]'; sudo apt upgrade -y;
+    echo '[CLEAN]'; sudo apt autoclean -y;
+    echo '[REMOVE]'; sudo apt autoremove -y;
+}
+
 
 echo "INFO:.bash_aliases: Done!"
