@@ -9,31 +9,32 @@ COLOR_YELLOW="\033[01;33m"
 COLOR_GREEN="\033[01;32m"
 COLOR_GREEN_LIGHT="\033[0;32m"
 COLOR_OCHRE="\033[38;5;95m"
-COLOR_BLUE_LIGHT="\033[0;34m"
-COLOR_WHITE="\033[0;37m"
+COLOR_BLUE_LIGHT="\033[01;34m"
 COLOR_RESET="\033[00m"
 
 
 # Function for the color formatting:
 function git_color {
-  local git_status="$(git status 2> /dev/null)"
+  local git_status
+  git_status="$(git status 2> /dev/null)"
 
   # For previous git versions, also check for "directory".
-  if [[ ! ( $git_status =~ "working tree clean" || git_status =~ "working directory clean" ) ]]; then
-    echo -e $COLOR_RED
+  if [[ ! ( $git_status =~ "working tree clean" ) ]]; then
+    echo -e "$COLOR_RED"
   elif [[ $git_status =~ "Your branch is ahead of" ]]; then
-    echo -e $COLOR_YELLOW
+    echo -e "$COLOR_YELLOW"
   elif [[ $git_status =~ "nothing to commit" ]]; then
-    echo -e $COLOR_GREEN
+    echo -e "$COLOR_GREEN"
   else
-    echo -e $COLOR_OCHRE
+    echo -e "$COLOR_OCHRE"
   fi
 }
 
 
 # Function for the git branch:
 function git_branch {
-  local git_status="$(git status 2> /dev/null)"
+  local git_status
+  git_status="$(git status 2> /dev/null)"
   local on_branch="On branch ([^${IFS}]*)"
   local on_commit="HEAD detached at ([^${IFS}]*)"
 
