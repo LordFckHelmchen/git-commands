@@ -101,7 +101,7 @@ function prepend_to_path () {
 ###############################################################################
 
 # Pyenv
-if [[ prepend_to_path "$HOME/.pyenv/bin" ]]; then
+if prepend_to_path "$HOME/.pyenv/bin"; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
