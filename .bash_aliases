@@ -41,7 +41,8 @@ alias gitd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-sp
 alias gitlist='git for-each-ref --sort=committerdate refs/remotes --format="%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)" | column -t -s"|" | cut -c 1-180'
 # Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
 alias gittree='git ls-tree --full-name --name-only -tr HEAD | sed -e "s/[^-][^\/]*\//   |/g" -e "s/|\([^ ]\)/|-- \1/"'
-
+# List last commits as oneliners
+alias gitl='git log --oneline --max-count 10'
 
 ###############################################################################
 # Functions to help us manage paths
@@ -105,6 +106,10 @@ if prepend_to_path "$HOME/.pyenv/bin"; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
 fi
+
+# Poetry
+export POETRY_HOME="$HOME/.poetry"
+prepend_to_path "$POETRY_HOME/bin"
 
 # JetBrains Toolbox
 prepend_to_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
