@@ -8,7 +8,7 @@
 # Bash completion scripts from https://gist.github.com/trolzen/68b1c5037414a71f5decbf557bc5168d
 ###############################################################################################
 if [[ ! -f /usr/share/bash-completion/bash_completion ]]; then
-    echo "INFO:.bash_completion: No completion scripts found. Using trolzen completion."
+    echo "INFO:.bash_completion: Using trolzen completion instead of bash-completion."
     # Get the word to complete and optional previous words.
     # This is nicer than ${COMP_WORDS[$COMP_CWORD]}, since it handles cases
     # where the user is completing in the middle of a word.
