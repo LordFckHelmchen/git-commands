@@ -281,7 +281,7 @@ fi
 # Sourcing the actual completions
 ###################################################################################
 
-for file in $HOME/bash_completion.d/*; do
+for file in $HOME/.bash_completion.d/*; do
     if [ -f "$file" ]; then
         echo "INFO:.bash_completion: Sourcing '$file'"
         source_if_exists "$file"

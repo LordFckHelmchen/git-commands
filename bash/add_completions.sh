@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASH_COMPLETION_FOLDER="$HOME/bash_completion.d"
+BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
 if [[ ! -d "$BASH_COMPLETION_FOLDER" ]]; then
     mkdir "$BASH_COMPLETION_FOLDER"
 fi
