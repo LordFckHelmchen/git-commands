@@ -89,7 +89,11 @@ function source_if_exists () {
 source_if_exists $HOME/.bash_aliases
 
 # Highlight git branches
-source_if_exists $HOME/git-prompt.sh
+# STARSHIP
+export PYTHONIOENCODING=utf8
+eval "$(starship init bash)"
+# OLDSHOOL SHELL SCRIPTP
+# source_if_exists $HOME/git-prompt.sh
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile

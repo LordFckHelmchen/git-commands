@@ -102,6 +102,13 @@ function prepend_to_path () {
 ###############################################################################
 
 # Pyenv
+# WIN: pyenv-win
+export PYENV="$HOME/.pyenv/pyenv-win"
+export PYENV_ROOT="$HOME/.pyenv/pyenv-win"
+export PYENV_HOME="$HOME/.pyenv/pyenv-win"
+prepend_to_path "$PYENV_HOME/bin"
+prepend_to_path "$PYENV_HOME/shims"
+# LINUX: pyenv
 if prepend_to_path "$HOME/.pyenv/bin"; then
     eval "$(pyenv init -)"
     eval "$(pyenv virtualenv-init -)"
@@ -111,18 +118,22 @@ fi
 export POETRY_HOME="$HOME/.poetry"
 prepend_to_path "$POETRY_HOME/bin"
 
+# Starship
+prepend_to_path "$HOME/AppData/Local/starship"
+
 # JetBrains Toolbox
 prepend_to_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
 
-# User-specific bin path
+# LINUX: User-specific bin path
 prepend_to_path "$HOME/.local/bin"
+
 
 
 ###############################################################################
 # Other functions & aliases
 ###############################################################################
 
-# Do all the update stuff (except for dist-upgrade).
+# LINUX: Do all the update stuff (except for dist-upgrade).
 function updateAll {
     echo '[UPDATE]'; sudo apt update -y;
     echo '[UPGRADE]'; sudo apt upgrade -y;
