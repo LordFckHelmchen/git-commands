@@ -51,17 +51,20 @@ GIT_PROMPT_FILE = RepoFileMap(
     home_sub_dir=f"{CONFIG_SUBDIR}/bash",
 )
 STARSHIP_CONFIG_FILE = RepoFileMap(
-    file_names={"starship.toml"}, repo_sub_dir="themes", home_sub_dir=CONFIG_SUBDIR
+    file_names={"starship.toml"},
+    repo_sub_dir="themes",
+    home_sub_dir=CONFIG_SUBDIR,
 )
 XONSH_CONFIG_FILE = RepoFileMap(
-    file_names={"rc.xsh"}, repo_sub_dir="xonsh", home_sub_dir=f"{CONFIG_SUBDIR}/xonsh"
+    file_names={"rc.xsh"},
+    repo_sub_dir="xonsh",
+    home_sub_dir=os.environ.get("XONSH_CONFIG_DIR", f"{CONFIG_SUBDIR}/xonsh"),
 )
 
 
 def symlink_files(
     link_git_prompt: bool, link_starship_config: bool, link_xonsh_config: bool
 ) -> None:
-
     files = [BASH_FILES]
     if link_git_prompt:
         files.append(GIT_PROMPT_FILE)
