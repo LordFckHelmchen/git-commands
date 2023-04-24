@@ -20,12 +20,15 @@ class RepoFileMap:
 
     @property
     def max_source_file_name_chars(self) -> int:
-        return max(len(str(source_file)) for source_file, _ in self.get_relative_file_names())
+        return max(
+            len(str(source_file)) for source_file, _ in self.get_relative_file_names()
+        )
 
     @property
     def max_target_file_name_chars(self) -> int:
-        return max(len(str(target_file)) for _, target_file in self.get_relative_file_names())
-
+        return max(
+            len(str(target_file)) for _, target_file in self.get_relative_file_names()
+        )
 
 
 BASH_FILES = [
@@ -57,8 +60,12 @@ def symlink_files(
     if link_xonsh_config:
         files.append(XONSH_CONFIG_FILE)
 
-    repo_file_name_width_in_chars = max(file_map.max_source_file_name_chars for file_map in files)
-    home_file_name_width_in_chars = max(file_map.max_target_file_name_chars for file_map in files)
+    repo_file_name_width_in_chars = max(
+        file_map.max_source_file_name_chars for file_map in files
+    )
+    home_file_name_width_in_chars = max(
+        file_map.max_target_file_name_chars for file_map in files
+    )
 
     repo = Path(__file__).parent
     home = Path.home()
@@ -69,12 +76,15 @@ def symlink_files(
                 link_target = repo / repo_file
                 link = home / home_file
                 print(
-                    f"   {str(home_file):{repo_file_name_width_in_chars}} --> {str(repo_file):{home_file_name_width_in_chars}}   ",
+                    f"   {str(home_file):{repo_file_name_width_in_chars}} --> "
+                    f"{str(repo_file):{home_file_name_width_in_chars}}   ",
                     end="",
                 )
                 if not link.exists():
                     if not link.parent.is_dir():
-                        print("INFO: Creating parent directory and linking file. ", end="")
+                        print(
+                            "INFO: Creating parent directory and linking file. ", end=""
+                        )
                         link.parent.mkdir()
                     link.symlink_to(link_target)
                     print("SUCCESS.")
