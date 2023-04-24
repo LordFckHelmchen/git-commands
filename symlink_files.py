@@ -2,49 +2,59 @@
 
 """Creates (or updates) symlinks to the files."""
 import argparse
+import os
 import warnings
 from collections.abc import Iterable
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 
 @dataclass(frozen=True)
 class RepoFileMap:
     file_names: Iterable
-    source_sub_dir: str
-    target_sub_dir: str = ""  # Omit, if copying to HOME directly
+    repo_sub_dir: str
+    home_sub_dir: str = ""  # Omit, if copying to HOME directly
+    _max_repo_file_chars: int = field(init=False)
+    _max_home_file_chars: int = field(init=False)
+
+    def __post_init__(self):
+        max_repo_chars, max_home_chars = max(
+            (len(str(repo_file)), len(str(home_file)))
+            for repo_file, home_file in self.get_relative_file_names()
+        )
+        super().__setattr__("_max_repo_file_chars", max_repo_chars)
+        super().__setattr__("_max_home_file_chars", max_home_chars)
 
     def get_relative_file_names(self):
         for file in self.file_names:
-            yield Path(self.source_sub_dir) / file, Path(self.target_sub_dir) / file
+            yield Path(self.repo_sub_dir) / file, Path(self.home_sub_dir) / file
 
     @property
-    def max_source_file_name_chars(self) -> int:
-        return max(
-            len(str(source_file)) for source_file, _ in self.get_relative_file_names()
-        )
+    def max_repo_file_name_chars(self) -> int:
+        return self._max_repo_file_chars
 
     @property
-    def max_target_file_name_chars(self) -> int:
-        return max(
-            len(str(target_file)) for _, target_file in self.get_relative_file_names()
-        )
+    def max_home_file_name_chars(self) -> int:
+        return self._max_home_file_chars
 
 
-BASH_FILES = [
-    RepoFileMap(
-        file_names={".bashrc", ".bash_aliases", ".bash_profile", ".bash_completion"},
-        source_sub_dir="bash",
-    )
-]
+HOME = Path(os.environ["HOME"])
+CONFIG_SUBDIR = os.environ.get("XDG_CONFIG_HOME", ".config")
+
+BASH_FILES = RepoFileMap(
+    file_names={".bashrc", ".bash_aliases", ".bash_profile", ".bash_completion"},
+    repo_sub_dir="bash",
+)
 GIT_PROMPT_FILE = RepoFileMap(
-    file_names={"git-prompt.sh"}, source_sub_dir="bash", target_sub_dir=".config/bash"
+    file_names={"git-prompt.sh"},
+    repo_sub_dir="bash",
+    home_sub_dir=f"{CONFIG_SUBDIR}/bash",
 )
 STARSHIP_CONFIG_FILE = RepoFileMap(
-    file_names={"starship.toml"}, source_sub_dir="themes", target_sub_dir=".config"
+    file_names={"starship.toml"}, repo_sub_dir="themes", home_sub_dir=CONFIG_SUBDIR
 )
 XONSH_CONFIG_FILE = RepoFileMap(
-    file_names={"rc.xsh"}, source_sub_dir="xonsh", target_sub_dir=".config/xonsh"
+    file_names={"rc.xsh"}, repo_sub_dir="xonsh", home_sub_dir=f"{CONFIG_SUBDIR}/xonsh"
 )
 
 
@@ -52,7 +62,7 @@ def symlink_files(
     link_git_prompt: bool, link_starship_config: bool, link_xonsh_config: bool
 ) -> None:
 
-    files = BASH_FILES
+    files = [BASH_FILES]
     if link_git_prompt:
         files.append(GIT_PROMPT_FILE)
     if link_starship_config:
@@ -61,20 +71,19 @@ def symlink_files(
         files.append(XONSH_CONFIG_FILE)
 
     repo_file_name_width_in_chars = max(
-        file_map.max_source_file_name_chars for file_map in files
+        file_map.max_repo_file_name_chars for file_map in files
     )
     home_file_name_width_in_chars = max(
-        file_map.max_target_file_name_chars for file_map in files
+        file_map.max_home_file_name_chars for file_map in files
     )
 
     repo = Path(__file__).parent
-    home = Path.home()
-    print(f"Creating links from HOME='{home}' to files in '{repo}'")
+    print(f"Creating links from HOME='{HOME}' to files in '{repo}'")
     try:
         for file_map in files:
             for repo_file, home_file in file_map.get_relative_file_names():
                 link_target = repo / repo_file
-                link = home / home_file
+                link = HOME / home_file
                 print(
                     f"   {str(home_file):{repo_file_name_width_in_chars}} --> "
                     f"{str(repo_file):{home_file_name_width_in_chars}}   ",
