@@ -93,7 +93,7 @@ source_if_exists $HOME/.bash_aliases
 export PYTHONIOENCODING=utf8
 eval "$(starship init bash)"
 # OLDSHOOL SHELL SCRIPTP
-# source_if_exists $HOME/git-prompt.sh
+# source_if_exists $HOME/.config/bash/git-prompt.sh
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
