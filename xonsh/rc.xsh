@@ -97,6 +97,7 @@ prepend_to_path(home_path / "AppData" / "Local" / "starship")
 
 prepend_to_path(home_path / "bash_completion.d")
 
+del home_path
 
 
 ###############################################################################
@@ -106,6 +107,7 @@ prepend_to_path(home_path / "bash_completion.d")
 xontrib load \
     bashisms \
     coreutils \
+    gitinfo \
     pipeliner \
     prompt_starship \
     whole_word_jumping \
@@ -144,8 +146,6 @@ aliases.update({
 ###############################################################################
 # Cleanup
 ###############################################################################
-
-del home_path
 
 logger.info(f"Done initializing. Running on Python: {sys.version}")
 del logger
