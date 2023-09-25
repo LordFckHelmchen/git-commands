@@ -19,6 +19,7 @@ fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias envsrt='env | sort'
 
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
@@ -26,6 +27,12 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 
 # Show tree of current directory (folders only)
 alias dirtree='ls -R . | grep ":$" | sed -e "s/:$//" -e "s/[^\/]*\//|  /g" -e "s/|  \([^|]\)/|–– \1/g"'
+
+# Show path, one directory per line
+alias lspath='echo $PATH | tr ":" "\n"'
+
+# Search for all occurences of string in all files
+alias findstr='grep -irl'
 
 ###############################################################################
 # Alias for git
@@ -43,6 +50,8 @@ alias gitlist='git for-each-ref --sort=committerdate refs/remotes --format="%(co
 alias gittree='git ls-tree --full-name --name-only -tr HEAD | sed -e "s/[^-][^\/]*\//   |/g" -e "s/|\([^ ]\)/|-- \1/"'
 # List last commits as oneliners
 alias gitl='git log --oneline --max-count 10'
+# Show branches where the remote has been deleted
+alias gitsdb='git branch -v | grep gone'
 
 ###############################################################################
 # Functions to help us manage paths
@@ -115,14 +124,15 @@ if prepend_to_path "$HOME/.pyenv/bin"; then
 fi
 
 # Poetry
-export POETRY_HOME="$HOME/.poetry"
-prepend_to_path "$POETRY_HOME/bin"
+# export POETRY_HOME="$HOME/.poetry"
+# prepend_to_path "$POETRY_HOME/bin"
+# prepend_to_path "$HOME/.conda/envs/py3_8_16-poet1_6_1-poetdynver1_0_1/Scripts"
 
 # Starship
 prepend_to_path "$HOME/AppData/Local/starship"
 
-# JetBrains Toolbox
-prepend_to_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
+# # JetBrains Toolbox
+# prepend_to_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
 
 # LINUX: User-specific bin path
 prepend_to_path "$HOME/.local/bin"
