@@ -63,9 +63,10 @@ prepend_to_path(Path($ProgramFiles) / "Git" / "usr" / "bin")
 $PYENV_HOME = str(home_path / ".pyenv" / "pyenv-win")
 $PYENV_ROOT = $PYENV_HOME
 $PYENV      = $PYENV_HOME
-for sub_dir in ["bin", "shims"]:
-    prepend_to_path(Path($PYENV_HOME) / sub_dir)
-del sub_dir
+# Already on path
+# for sub_dir in ["bin", "shims"]:
+#     prepend_to_path(Path($PYENV_HOME) / sub_dir)
+# del sub_dir
 
 # Poetry
 $POETRY_HOME = str(home_path / ".poetry")
@@ -139,6 +140,8 @@ aliases.update({
     "gittree": 'git ls-tree --full-name --name-only -tr HEAD | sed -e "s/[^-][^\/]*\//   |/g" -e "s/|\([^ ]\)/|-- \1/"',
     # List last commits as oneliners
     "gitl": "git log --oneline --max-count 10",
+    # Show branches where the remote has been deleted
+    "gitsdb": 'git branch -v | grep gone'
     })
 
 
@@ -147,6 +150,6 @@ aliases.update({
 # Cleanup
 ###############################################################################
 
-logger.info(f"Done initializing. Running on Python: {sys.version}")
+logger.info(f"Done initializing. Running on Python:\n{sys.version}")
 del logger
 del sys
