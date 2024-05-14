@@ -34,6 +34,9 @@ alias lspath='echo $PATH | tr ":" "\n"'
 # Search for all occurences of string in all files
 alias findstr='grep -irl'
 
+# Snytax-highlighted (and therefore cooler) cat
+alias dog='pygmentize -g'
+
 ###############################################################################
 # Alias for git
 ###############################################################################
@@ -99,57 +102,99 @@ function prepend_to_path () {
         export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
         true
     else
-        echo "WARNING:.bash_aliases:prepend_to_path: Can't add '$1' to \$$PATHVARIABLE: Not a path or directory."
+        if [[ -n $DEBUG_BASH_SCRIPTS && $DEBUG_BASH_SCRIPTS -eq 1 ]]; then
+            echo "WARNING:.bash_aliases:prepend_to_path: Can't add '$1' to \$$PATHVARIABLE: Not a path or directory."
+        fi
         false
     fi
 }
 
 
+###############################################################################
+# OS checks
+###############################################################################
+
+# Checks we are running on linux
+# Return: true if on linux, false otherwise
+is_linux() {
+    [[ "$(uname)" == "Linux" ]]
+}
+
+# Checks we are running on windows
+# Return: true if on windows, false otherwise
+is_windows() {
+    [[ "$(uname)" == MINGW* ]]
+}
+
+if ! is_linux && ! is_windows; then
+    echo "ERROR:.bash_aliases: Running on an unknown operating system"
+fi
 
 ###############################################################################
 # Local bin paths
 ###############################################################################
 
 # Pyenv
-# WIN: pyenv-win
-export PYENV="$HOME/.pyenv/pyenv-win"
-export PYENV_ROOT="$HOME/.pyenv/pyenv-win"
-export PYENV_HOME="$HOME/.pyenv/pyenv-win"
-prepend_to_path "$PYENV_HOME/bin"
-prepend_to_path "$PYENV_HOME/shims"
-# LINUX: pyenv
-if prepend_to_path "$HOME/.pyenv/bin"; then
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+if is_windows; then
+    # WINDOWS: Use pyenv-win
+    export PYENV_HOME="$HOME/.pyenv/pyenv-win"
+    if [ -d "$PYENV_HOME" ]; then
+        export PYENV_ROOT=$PYENV_HOME
+        export PYENV=$PYENV_HOME
+        prepend_to_path "$PYENV_HOME/bin"
+        prepend_to_path "$PYENV_HOME/shims"
+    else
+        unset PYENV_HOME
+    fi
+elif is_linux; then
+    # LINUX: Use native pyenv
+    export PYENV_HOME="$HOME/.pyenv"
+    if [ -d "$PYENV_HOME" ]; then
+        prepend_to_path "$PYENV_HOME/bin"
+        eval "$(pyenv init -)"
+        eval "$(pyenv virtualenv-init -)"
+    else
+        unset PYENV_HOME
+    fi
 fi
 
 # Poetry
-# export POETRY_HOME="$HOME/.poetry"
-# prepend_to_path "$POETRY_HOME/bin"
-# prepend_to_path "$HOME/.conda/envs/py3_8_16-poet1_6_1-poetdynver1_0_1/Scripts"
+if is_linux; then
+    export POETRY_HOME="$HOME/.poetry"
+    prepend_to_path "$POETRY_HOME/bin"
+fi
 
 # Starship
-prepend_to_path "$HOME/AppData/Local/starship"
-
-# # JetBrains Toolbox
-# prepend_to_path "$HOME/.local/share/JetBrains/Toolbox/scripts"
+if is_windows; then
+    prepend_to_path "$HOME/AppData/Local/starship"
+fi
 
 # LINUX: User-specific bin path
-prepend_to_path "$HOME/.local/bin"
+if is_linux; then
+    prepend_to_path "$HOME/.local/bin"
+fi
 
-
+# ADR-tools
+prepend_to_path "$HOME/.adr-tools/src"
 
 ###############################################################################
-# Other functions & aliases
+# Update functions
 ###############################################################################
 
-# LINUX: Do all the update stuff (except for dist-upgrade).
-function updateAll {
-    echo '[UPDATE]'; sudo apt update -y;
-    echo '[UPGRADE]'; sudo apt upgrade -y;
-    echo '[CLEAN]'; sudo apt autoclean -y;
-    echo '[REMOVE]'; sudo apt autoremove -y;
-}
+if is_windows; then
+    # WINDOWS: Upgrade all winget-installed packages
+    function updateAll {
+        winget upgrade --all
+    }
+elif is_linux; then
+    # LINUX: Do all the update stuff (except for dist-upgrade).
+    function updateAll {
+        echo '[UPDATE]'; sudo apt update -y;
+        echo '[UPGRADE]'; sudo apt upgrade -y;
+        echo '[CLEAN]'; sudo apt autoclean -y;
+        echo '[REMOVE]'; sudo apt autoremove -y;
+    }
+fi
 
 
 echo "INFO:.bash_aliases: Done!"

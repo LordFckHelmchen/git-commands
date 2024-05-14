@@ -6,10 +6,10 @@ if [[ ! -d "$BASH_COMPLETION_FOLDER" ]]; then
 fi
 
 if [ -x "$(command -v poetry)" ]; then
-  poetry completions bash > "$BASH_COMPLETION_FOLDER/poetry.completion"
+  poetry completions bash > "$BASH_COMPLETION_FOLDER/poetry.bash-completion"
 fi
 if [ -x "$(command -v pip)" ]; then
-  pip completion --bash > "$BASH_COMPLETION_FOLDER/pip.completion"
+  pip completion --bash > "$BASH_COMPLETION_FOLDER/pip.bash-completion"
 fi
 
 unset BASH_COMPLETION_FOLDER
