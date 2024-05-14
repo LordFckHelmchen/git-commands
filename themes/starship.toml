@@ -160,11 +160,14 @@ format = '\[[$symbol($version)]($style)\]'
 [scala]
 format = '\[[$symbol($version)]($style)\]'
 
+[solidity]
+format = '\[[$symbol($version)]($style)\]'
+
 [spack]
 format = '\[[$symbol$environment]($style)\]'
 
 [sudo]
-format = '\[[as $symbol]\]'
+format = '\[[as $symbol]($style)\]'
 
 [swift]
 format = '\[[$symbol($version)]($style)\]'
