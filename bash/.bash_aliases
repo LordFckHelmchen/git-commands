@@ -181,9 +181,18 @@ if is_linux; then
     fi
 fi
 
-# Starship
-if is_windows; then
-    prepend_to_path "$HOME/AppData/Local/starship"
+# Highlight git branches based on Starship config
+if [[ -f $XDG_CONFIG_HOME/starship.toml ]] || [[ -f .config/starship.toml ]]; then
+    if is_windows; then
+        prepend_to_path "$HOME/AppData/Local/starship"
+    elif is_linux; then
+        export PYTHONIOENCODING=utf8
+        eval "$(starship init bash)"
+    fi
+elif [ -f $XDG_CONFIG_HOME/bash/git-prompt.sh ]; then
+    source $XDG_CONFIG_HOME/bash/git-prompt.sh
+elif [ -f $HOME/.config/bash/git-prompt.sh ]; then
+    source $HOME/.config/bash/git-prompt.sh
 fi
 
 # LINUX: User-specific bin path
