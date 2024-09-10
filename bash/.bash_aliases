@@ -7,7 +7,11 @@
 
 # Enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    if [ -r ~/.dircolors ]; then
+        eval "$(dircolors -b ~/.dircolors)"
+    else
+        eval "$(dircolors -b)"
+    fi
     alias ls='ls --color=auto'
     alias grep='grep --color=auto'
     alias fgrep='fgrep --color=auto'
@@ -51,7 +55,7 @@ alias gits='git status'
 # Git fetch, update, prune
 alias gitup='git fetch --all --prune && git pull'
 
-# -diff ignoring all sorts of whitespaces.
+# -diff ignoring all sorts of whitespace.
 alias gitd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal'
 
 # -branch listing author and date on remotes.
@@ -88,11 +92,11 @@ function remove_from_path() {
         local DIR
         local PATHVARIABLE=${2:-PATH}
         for DIR in ${!PATHVARIABLE}; do
-            if [[ "$DIR" != "$1" ]]; then
+            if [[ $DIR != "$1" ]]; then
                 NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
             fi
         done
-        export $PATHVARIABLE="$NEWPATH"
+        export "$PATHVARIABLE"="$NEWPATH"
         true
     else
         false
@@ -106,7 +110,7 @@ function remove_from_path() {
 # Example: prepend_to_path "newpath" MANPATH
 function prepend_to_path() {
     local PATHVARIABLE=${2:-PATH}
-    if [[ -d "$1" ]] || [[ -f "$1" ]]; then # Directory or file
+    if [[ -d $1 ]] || [[ -f $1 ]]; then # Directory or file
         remove_from_path "$1" "$PATHVARIABLE"
         export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
         true
@@ -145,7 +149,7 @@ fi
 if is_windows; then
     # WINDOWS: Use pyenv-win
     export PYENV_HOME="$HOME/.pyenv/pyenv-win"
-    if [[ -d "$PYENV_HOME" ]]; then
+    if [[ -d $PYENV_HOME ]]; then
         export PYENV_ROOT=$PYENV_HOME
         export PYENV=$PYENV_HOME
         prepend_to_path "$PYENV_HOME/bin"
@@ -156,7 +160,7 @@ if is_windows; then
 elif is_linux; then
     # LINUX: Use native pyenv
     export PYENV_HOME="$HOME/.pyenv"
-    if [[ -d "$PYENV_HOME" ]]; then
+    if [[ -d $PYENV_HOME ]]; then
         prepend_to_path "$PYENV_HOME/bin"
         eval "$(pyenv init -)"
         eval "$(pyenv virtualenv-init -)"
@@ -168,7 +172,11 @@ fi
 # Poetry
 if is_linux; then
     export POETRY_HOME="$HOME/.poetry"
-    prepend_to_path "$POETRY_HOME/bin"
+    if [[ -d $POETRY_HOME ]]; then 
+        prepend_to_path "$POETRY_HOME/bin"
+    else
+        unset POETRY_HOME
+    fi
 fi
 
 # Starship
@@ -189,9 +197,7 @@ prepend_to_path "$HOME/.adr-tools/src"
 ###############################################################################
 if is_windows; then
     # WINDOWS: Upgrade all winget-installed packages
-    function updateAll {
-        winget upgrade --all
-    }
+    alias updateAll='winget upgrade --all'
 elif is_linux; then
     # LINUX: Do all the update stuff (except for dist-upgrade).
     function updateAll {
