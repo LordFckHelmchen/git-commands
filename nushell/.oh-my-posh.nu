@@ -3,7 +3,7 @@ export-env {
     
     # gruvbox, multiverse-neon, night-owl, patriksvensson, wholespace
     let-env POSH_THEME = '~/AppData/Local/Programs/oh-my-posh/themes/gruvbox.omp.json'
-    
+
     let-env PROMPT_INDICATOR = ""
     let-env POSH_PID = (random uuid)
     # By default displays the right prompt on the first line

@@ -1,77 +1,95 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": [
+    "actions":
+    [
         {
-            "command": "find",
-            "keys": "ctrl+shift+f"
-        },
-        {
-            "command": "paste",
-            "keys": "ctrl+v"
-        },
-        {
-            "command": {
+            "command":
+            {
                 "action": "copy",
                 "singleLine": false
             },
             "keys": "ctrl+c"
         },
         {
-            "command": {
+            "command": "paste",
+            "keys": "ctrl+v"
+        },
+        {
+            "command":
+            {
                 "action": "splitPane",
                 "split": "auto",
                 "splitMode": "duplicate"
             },
             "keys": "alt+shift+d"
+        },
+        {
+            "command": "find",
+            "keys": "ctrl+shift+f"
+        },
+        {
+            "command":
+            {
+                "action": "openSettings",
+                "target": "settingsUI"
+            },
+            "keys": "ctrl+alt+s"
         }
     ],
+    "alwaysShowTabs": true,
     "copyFormatting": "none",
-    "copyOnSelect": false,
-    "defaultProfile": "{aab79973-318f-43b6-a9bc-b4096493753f}",
-    "profiles": {
-        "defaults": {
+    "copyOnSelect": true,
+    "defaultProfile": "{63d361da-fc85-42c5-8ffb-a38af0e9527a}",
+    "profiles":
+    {
+        "defaults":
+        {
             "colorScheme": "Gruvbox for windows terminal",
-            "font": {
+            "font":
+            {
                 "face": "FiraCode Nerd Font Mono Retina",
                 "size": 11
             },
             "startingDirectory": "%USERPROFILE%/Git"
         },
-        "list": [
+        "list":
+        [
             {
                 "name": "Nushell",
                 "guid": "{aab79973-318f-43b6-a9bc-b4096493753f}",
-                "hidden": false,
+                "hidden": true,
                 "source": "nu"
             },
             {
-                "commandline": "%PROGRAMFILES%/Git/usr/bin/bash.exe --login -i ptpython",
-                "guid": "{41d0feef-1f67-479c-9b63-0b32e30a012b}",
-                "hidden": true,
-                "icon": "%USERPROFILE%/AppData/Local/prompt_toolkit/ptpython/logo_python_icon.png",
-                "name": "ptpython@Git Bash"
+                "commandline": "%PYENV_HOME%\\versions\\3.10.7\\Scripts\\xonsh.exe",
+                "guid": "{63d361da-fc85-42c5-8ffb-a38af0e9527a}",
+                "hidden": false,
+                "icon": "https://xon.sh/_static/ascii_conch_part_transparent_tight.png",
+                "name": "xonsh"
             },
             {
-                "commandline": "%SystemRoot%/System32/cmd.exe /k ptpython",
+                "commandline": "%PYENV_HOME%\\versions\\3.10.7\\Scripts\\ptpython.exe",
                 "guid": "{f91d49a3-741b-409c-8a15-c4360649121f}",
                 "hidden": false,
                 "icon": "https://upload.wikimedia.org/wikipedia/commons/e/e6/Python_Windows_interpreter_icon_2006%E2%80%932016_Tiny.png",
-                "name": "ptpython@cmd"
+                "name": "ptpython"
             },
             {
-                "commandline": "%PROGRAMFILES%/Git/usr/bin/bash.exe --login -i",
+                "commandline": "%PROGRAMFILES%\\Git\\usr\\bin\\bash.exe --login -i",
                 "guid": "{9b024f03-51fb-4068-a86e-4b164ddf8b2c}",
                 "hidden": false,
-                "icon": "%PROGRAMFILES%/Git/mingw64/share/git/git-for-windows.ico",
+                "icon": "%PROGRAMFILES%\\Git\\mingw64\\share\\git\\git-for-windows.ico",
                 "name": "Git Bash"
             },
             {
+                "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "hidden": false,
                 "name": "Windows PowerShell"
             },
             {
+                "commandline": "%SystemRoot%\\System32\\cmd.exe",
                 "guid": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
                 "hidden": false,
                 "name": "Command Prompt"
@@ -84,7 +102,8 @@
             }
         ]
     },
-    "schemes": [
+    "schemes":
+    [
         {
             "background": "#0C0C0C",
             "black": "#0C0C0C",
@@ -130,6 +149,29 @@
             "selectionBackground": "#FFFFFF",
             "white": "#CCCCCC",
             "yellow": "#C19C00"
+        },
+        {
+            "background": "#282828",
+            "black": "#282828",
+            "blue": "#458588",
+            "brightBlack": "#928374",
+            "brightBlue": "#83A598",
+            "brightCyan": "#8EC07C",
+            "brightGreen": "#B8BB26",
+            "brightPurple": "#D3869B",
+            "brightRed": "#FB4934",
+            "brightWhite": "#EBDBB2",
+            "brightYellow": "#FABD2F",
+            "cursorColor": "#FFFFFF",
+            "cyan": "#689D6A",
+            "foreground": "#EBDBB2",
+            "green": "#98971A",
+            "name": "Gruvbox Dark",
+            "purple": "#B16286",
+            "red": "#CC241D",
+            "selectionBackground": "#FFFFFF",
+            "white": "#A89984",
+            "yellow": "#D79921"
         },
         {
             "background": "#1D2021",
@@ -316,5 +358,6 @@
             "yellow": "#808000"
         }
     ],
+    "showTabsInTitlebar": true,
     "startOnUserLogin": true
 }

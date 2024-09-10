@@ -1,0 +1,57 @@
+{
+  "workbench.colorTheme": "Gruvbox Dark Hard",
+  "telemetry.telemetryLevel": "error",
+  "breadcrumbs.enabled": true,
+  "http.proxyStrictSSL": false,
+  "http.proxy": "http://@rb-proxy-de.bosch.com:8080",
+  "chat.proxyUrl": "http://@rb-proxy-de.bosch.com:8080",
+  "git.enableSmartCommit": true,
+  "liveshare.diagnosticLogging": true,
+  "http.proxyAuthorization": null,
+  "extensions.showRecommendationsOnlyOnDemand": true,
+  "extensions.ignoreRecommendations": true,
+  "workbench.editor.highlightModifiedTabs": true,
+  "window.enableExperimentalProxyLoginDialog": true,
+  "liveshare.diagnosticMode": true,
+  "redhat.telemetry.enabled": false,
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.minimap.enabled": false,
+  "cSpell.userWords": [
+    "coloboma",
+    "Conda",
+    "Fovecus",
+    "Mechatronics",
+    "Psychopy",
+    "rasterizer",
+    "Reutlingen",
+    "Simulink",
+    "Sondelfingen",
+    "Tuebingen"
+  ],
+  "markdown.extension.toc.levels": "2..4",
+  "git.autofetch": true,
+  "cSpell.language": "en,de",
+  "cSpell.languageSettings": [],
+  "editor.fontFamily": "Consolas, 'Courier New', monospace, 'Fira Code'",
+  "files.autoSave": "onFocusChange",
+  "diffEditor.maxComputationTime": 0,
+  "jenkins.pipeline.linter.connector.url": "https://rb-jmaas.de.bosch.com/EOS-BML/pipeline-model-converter/validate",
+  "jenkins.pipeline.linter.connector.user": "mdc1rt",
+  "jenkins.pipeline.linter.connector.token": "4PPmxg26GTbz",
+  "groovyLint.format.useDocumentIndentSize": false,
+  "cmake.configureOnOpen": true,
+  "terminal.integrated.defaultProfile.windows": "Nushell",
+  "terminal.external.windowsExec": "C:/Program Files/nu/bin/nu.exe",
+  "editor.renderWhitespace": "all",
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  }
+}

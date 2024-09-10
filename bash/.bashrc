@@ -4,8 +4,8 @@
 
 # If not running interactively, don't do anything
 case $- in
-    *i*) ;;
-      *) return;;
+*i*) ;;
+*) return ;;
 esac
 
 # don't put duplicate lines or lines starting with space in the history and erase any
@@ -16,19 +16,22 @@ HISTCONTROL=ignoreboth:erasedups
 # append to the history file, don't overwrite it
 shopt -s histappend
 
+# Flag to indicate if should print error messages for the bash init scripts
+DEBUG_BASH_SCRIPTS=1
+
 # Make history shared across terminals (taken from https://unix.stackexchange.com/a/48116)
-HISTSIZE=3000             # long history
+HISTSIZE=3000 # long history
 HISTFILESIZE=$HISTSIZE
-function bashrc_historySync () {
-  builtin history -a      # Append the just entered line to the $HISTFILE
-  HISTFILESIZE=$HISTSIZE  # Truncate $HISTFILE to $HISTFILESIZE lines by removing oldest entries
-  builtin history -c      # Clear the history of the running session
-  builtin history -r      # Insert content of $HISTFILE into history of running session
+function bashrc_historySync() {
+    builtin history -a     # Append the just entered line to the $HISTFILE
+    HISTFILESIZE=$HISTSIZE # Truncate $HISTFILE to $HISTFILESIZE lines by removing oldest entries
+    builtin history -c     # Clear the history of the running session
+    builtin history -r     # Insert content of $HISTFILE into history of running session
 }
 # override builtin history() to assure that history is sync'd before it is displayed
-function history () {
-  bashrc_historySync
-  builtin history "$@"
+function history() {
+    bashrc_historySync
+    builtin history "$@"
 }
 PROMPT_COMMAND=bashrc_historySync
 
@@ -54,17 +57,16 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
+xterm-color | *-256color) color_prompt=yes ;;
 esac
 unset color_prompt force_color_prompt
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
-xterm*|rxvt*)
+xterm* | rxvt*)
     PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
     ;;
-*)
-    ;;
+*) ;;
 esac
 
 # colored GCC warnings and errors
@@ -72,15 +74,13 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 
 # Alias & other function definitions.
 # First input: File to source
-# Second input: Flag if issue a warning if the file was not found (default: true)
 # Return: true if the file existed and it was sourced.
-function source_if_exists () {
+function source_if_exists() {
     if [ -f "$1" ]; then
         source "$1"
         true
     else
-        local ISSUE_WARNING=${2:-true}
-        if $ISSUE_WARNING; then
+        if [[ -n $DEBUG_BASH_SCRIPTS && $DEBUG_BASH_SCRIPTS -eq 1 ]]; then
             echo "WARNING:.bashrc:source_if_exists: Cannot source '$1': No such file exists"
         fi
         false
@@ -89,16 +89,28 @@ function source_if_exists () {
 source_if_exists $HOME/.bash_aliases
 
 # Highlight git branches
-source_if_exists $HOME/git-prompt.sh
+# STARSHIP
+# export PYTHONIOENCODING=utf8
+# eval "$(starship init bash)"
+# OLDSHOOL SHELL SCRIPTP
+source_if_exists $HOME/.config/bash/git-prompt.sh
+
+# Disable visual flicker when pressing tab on an empty line in Git-Bash for Windows
+# As given here: https://github.com/microsoft/terminal/issues/7200
+echo "INFO:.bashrc: Disabling visual bell"
+set bell-style none
+
+# Don't do debug outputs for the following statements
+unset DEBUG_BASH_SCRIPTS
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
     echo "INFO:.bashrc: Sourcing user completions"
-    source_if_exists /usr/share/bash-completion/bash_completion false ||
-    source_if_exists /etc/bash_completion false ||
-    source_if_exists $HOME/.bash_completion false
+    source_if_exists /usr/share/bash-completion/bash_completion ||
+        source_if_exists /etc/bash_completion ||
+        source_if_exists $HOME/.bash_completion
 fi
 
 echo "INFO:.bashrc: Done!"
