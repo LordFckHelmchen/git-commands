@@ -16,9 +16,9 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-alias l='ls --almost-all --classify --group-directories-first -1'
-alias ll='ls --almost-all --classify --group-directories-first -l'
 alias la='ls --almost-all --group-directories-first'
+alias l='la --classify -1'
+alias ll='l -l'
 
 alias envsrt='env | sort'
 
