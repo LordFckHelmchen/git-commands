@@ -540,7 +540,7 @@ alias gits = git status
 alias gitup = ( git fetch --all --prune; git pull )
 
 # -diff ignoring all sorts of whitespaces.
-alias gitd = git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal
+alias gitd = ( git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal )
 
 # -branch listing author and date on remotes.
 # alias gitlist = git for-each-ref --sort=committerdate refs/remotes --format="%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)" | column -t -s"|" | cut -c 1-180
