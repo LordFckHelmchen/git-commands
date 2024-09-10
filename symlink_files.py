@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 """Creates (or updates) symlinks to the files."""
+
 import argparse
 import os
 import warnings
@@ -102,7 +103,7 @@ def symlink_files(
                     print("SUCCESS.")
                 else:
                     print(
-                        f"ERROR: File already exists! Remove it before calling this script."
+                        "ERROR: File already exists! Remove it before calling this script."
                     )
     except OSError as err:
         if str(err).startswith("[WinError 1314]"):
