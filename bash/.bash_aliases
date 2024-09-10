@@ -174,7 +174,7 @@ fi
 # Poetry
 if is_linux; then
     export POETRY_HOME="$HOME/.poetry"
-    if [[ -d $POETRY_HOME ]]; then 
+    if [[ -d $POETRY_HOME ]]; then
         prepend_to_path "$POETRY_HOME/bin"
     else
         unset POETRY_HOME
