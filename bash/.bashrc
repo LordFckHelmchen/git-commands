@@ -88,13 +88,6 @@ function source_if_exists() {
 }
 source_if_exists $HOME/.bash_aliases
 
-# Highlight git branches
-# STARSHIP
-# export PYTHONIOENCODING=utf8
-# eval "$(starship init bash)"
-# OLDSHOOL SHELL SCRIPTP
-source_if_exists $HOME/.config/bash/git-prompt.sh
-
 # Disable visual flicker when pressing tab on an empty line in Git-Bash for Windows
 # As given here: https://github.com/microsoft/terminal/issues/7200
 echo "INFO:.bashrc: Disabling visual bell"
