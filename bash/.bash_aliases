@@ -20,7 +20,9 @@ else
     echo "WARNING:.bash_aliases: 'dircolors' not found - can't define colored aliases for 'ls' & the 'grep'-family."
 fi
 
-alias la='ls --almost-all --group-directories-first'
+# Add humand readable file sizes & sort by byte-order (LC_ALL=C; e.g. hidden things first)
+# See https://stackoverflow.com/a/30027660/5202331
+alias la='LC_ALL=C ls --almost-all --group-directories-first --human-readable'
 alias l='la --classify -1'
 alias ll='l -l'
 
@@ -55,10 +57,10 @@ alias gits='git status'
 # Git fetch, update, prune
 alias gitup='git fetch --all --prune && git pull'
 
-# -diff ignoring all sorts of whitespace.
+# Git diff ignoring all sorts of whitespace.
 alias gitd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal'
 
-# -branch listing author and date on remotes.
+# Git branch listing author and date on remotes.
 alias gitlist='git for-each-ref --sort=committerdate refs/remotes --format="%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)" | column --table --separator="|" | cut --characters=1-180'
 
 # Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
