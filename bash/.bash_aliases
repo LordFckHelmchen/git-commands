@@ -16,9 +16,9 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-alias ll='ls --all --classify -l'
+alias ll='ls --almost-all --classify -l'
 alias la='ls --almost-all'
-alias l='ls --classify -C'
+alias l='ls --almost-all --classify -C'
 alias envsrt='env | sort'
 
 # Add an "alert" alias for long running commands.  Use like so:
