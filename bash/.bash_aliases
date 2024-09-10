@@ -16,9 +16,9 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
 fi
 
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
+alias ll='ls --all --classify -l'
+alias la='ls --almost-all'
+alias l='ls --classify -C'
 alias envsrt='env | sort'
 
 # Add an "alert" alias for long running commands.  Use like so:
@@ -26,13 +26,13 @@ alias envsrt='env | sort'
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
 # Show tree of current directory (folders only)
-alias dirtree='ls -R . | grep ":$" | sed -e "s/:$//" -e "s/[^\/]*\//|  /g" -e "s/|  \([^|]\)/|–– \1/g"'
+alias dirtree='ls --recursive . | grep ":$" | sed -e "s/:$//" -e "s/[^\/]*\//|  /g" -e "s/|  \([^|]\)/|–– \1/g"'
 
 # Show path, one directory per line
 alias lspath='echo $PATH | tr ":" "\n"'
 
 # Search for all occurences of string in all files
-alias findstr='grep -irl'
+alias findstr='grep --ignore-case --recursive --files-with-matches'
 
 # Snytax-highlighted (and therefore cooler) cat
 alias dog='pygmentize -g'
@@ -48,13 +48,13 @@ alias gitup='git fetch --all --prune && git pull'
 # -diff ignoring all sorts of whitespaces.
 alias gitd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal'
 # -branch listing author and date on remotes.
-alias gitlist='git for-each-ref --sort=committerdate refs/remotes --format="%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)" | column -t -s"|" | cut -c 1-180'
+alias gitlist='git for-each-ref --sort=committerdate refs/remotes --format="%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)" | column --table --separator="|" | cut --characters=1-180'
 # Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
-alias gittree='git ls-tree --full-name --name-only -tr HEAD | sed -e "s/[^-][^\/]*\//   |/g" -e "s/|\([^ ]\)/|-- \1/"'
+alias gittree='git ls-tree --full-name --name-only -tr HEAD | sed --expression="s/[^-][^\/]*\//   |/g" --expression="s/|\([^ ]\)/|-- \1/"'
 # List last commits as oneliners
 alias gitl='git log --oneline --max-count 10'
 # Show branches where the remote has been deleted
-alias gitsdb='git branch -v | grep gone'
+alias gitsdb='git branch --verbose | grep gone'
 
 ###############################################################################
 # Functions to help us manage paths
