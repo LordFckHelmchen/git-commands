@@ -20,7 +20,7 @@ else
     echo "WARNING:.bash_aliases: 'dircolors' not found - can't define colored aliases for 'ls' & the 'grep'-family."
 fi
 
-# Add humand readable file sizes & sort by byte-order (LC_ALL=C; e.g. hidden things first)
+# Add human readable file sizes & sort by byte-order (LC_ALL=C; e.g. hidden things first)
 # See https://stackoverflow.com/a/30027660/5202331
 alias la='LC_ALL=C ls --almost-all --group-directories-first --human-readable'
 alias l='la --classify -1'
@@ -208,7 +208,14 @@ prepend_to_path "$HOME/.adr-tools/src"
 ###############################################################################
 if is_windows; then
     # WINDOWS: Upgrade all winget-installed packages
-    alias updateAll='winget upgrade --all'
+    function updateAll {
+        echo '[WINGET upgrade --all]'
+        winget upgrade --all
+        if command -v pipx &> /dev/null; then
+            echo '[PIPX upgrade-all]'
+            pipx upgrade-all
+        fi
+    }
 elif is_linux; then
     # LINUX: Do all the update stuff (except for dist-upgrade).
     function updateAll {
