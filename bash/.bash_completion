@@ -2,16 +2,34 @@
 
 BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
 
+# Function to check if a file is modified today
+# First input: name to check
+# Returns: 0 if the name is a file and has been modified today, 1 otherwise
+function is_file_modified_today() {
+    local file=$1
+
+    if [[ -f $file && $(date -r "$file" +%Y-%m-%d) == $(date +%Y-%m-%d) ]]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 # Add completions for a command
 # First input: name of the command
 # Second input: command to add the completions
 function add_completion() {
     local cmd=$1
     local completion_cmd=$2
-    
-    if [ -x "$(command -v $cmd)" ]; then
-        echo "INFO:.bash_completion: Add completions for '$cmd'"
-        eval "$completion_cmd" > "$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
+    local completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
+
+    if [ -x "$(command -v "$cmd")" ]; then
+        if is_file_modified_today "$completion_file"; then
+            echo "INFO:.bash_completion: Completions already created today for '$cmd'"
+        else
+            echo "INFO:.bash_completion: Create completions for '$cmd'"
+            eval "$completion_cmd" > "$completion_file"
+        fi
     fi
 }
 
@@ -22,7 +40,7 @@ add_completion "pipx" "register-python-argcomplete pipx"
 add_completion "uv" "uv generate-shell-completion bash"
 
 # Source bash completions
-for file in $BASH_COMPLETION_FOLDER/*; do
+for file in "$BASH_COMPLETION_FOLDER"/*; do
     if [ -f "$file" ]; then
         echo "INFO:.bash_completion: Sourcing '$file'"
         source_if_exists "$file"
