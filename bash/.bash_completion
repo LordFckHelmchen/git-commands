@@ -16,6 +16,10 @@ if [ -x "$(command -v pip)" ]; then
   pip completion --bash > "$BASH_COMPLETION_FOLDER/pip.bash-completion"
 fi
 unset BASH_COMPLETION_FOLDER
+if [ -x "$(command -v pipx)" ]; then
+  echo "INFO:.bash_completion: Add completions for pipx (requires argcomplete to work!)"
+  eval "$(register-python-argcomplete pipx)"
+fi
 if [ -x "$(command -v uv)" ]; then
   echo "INFO:.bash_completion: Add completions for uv"
   eval "$(uv generate-shell-completion bash)"
