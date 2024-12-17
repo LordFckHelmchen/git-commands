@@ -1,13 +1,35 @@
 #!/bin/bash
 
-# Enable bash completions for custom scripts
+# Add bash completions for known binaries
+BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
+echo "INFO:.bash_completion: Adding completions to '$BASH_COMPLETION_FOLDER'!"
+if [[ ! -d $BASH_COMPLETION_FOLDER ]]; then
+  echo "INFO:.bash_completion: Completion folder doesn't exist - creating it!"
+  mkdir "$BASH_COMPLETION_FOLDER"
+fi
+if [ -x "$(command -v poetry)" ]; then
+  echo "INFO:.bash_completion: Add completions for poetry"
+  poetry completions bash > "$BASH_COMPLETION_FOLDER/poetry.bash-completion"
+fi
+if [ -x "$(command -v pip)" ]; then
+  echo "INFO:.bash_completion: Add completions for pip"
+  pip completion --bash > "$BASH_COMPLETION_FOLDER/pip.bash-completion"
+fi
+unset BASH_COMPLETION_FOLDER
+if [ -x "$(command -v uv)" ]; then
+  echo "INFO:.bash_completion: Add completions for uv"
+  eval "$(uv generate-shell-completion bash)"
+fi
 
-for file in $HOME/.bash_completion.d/*; do
+# Source bash completions
+for file in $BASH_COMPLETION_FOLDER/*; do
     if [ -f "$file" ]; then
         echo "INFO:.bash_completion: Sourcing '$file'"
         source_if_exists "$file"
     fi
 done
 unset file
+
+unset BASH_COMPLETION_FOLDER
 
 echo "INFO:.bash_completion: Done!"
