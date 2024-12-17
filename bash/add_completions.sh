@@ -11,5 +11,7 @@ fi
 if [ -x "$(command -v pip)" ]; then
   pip completion --bash > "$BASH_COMPLETION_FOLDER/pip.bash-completion"
 fi
-
+if [ -x "$(command -v uv)" ]; then
+  eval "$(uv generate-shell-completion bash)"
+fi
 unset BASH_COMPLETION_FOLDER
