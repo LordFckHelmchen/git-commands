@@ -1,29 +1,25 @@
 #!/bin/bash
 
-# Add bash completions for known binaries
 BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
-echo "INFO:.bash_completion: Adding completions to '$BASH_COMPLETION_FOLDER'!"
-if [[ ! -d $BASH_COMPLETION_FOLDER ]]; then
-  echo "INFO:.bash_completion: Completion folder doesn't exist - creating it!"
-  mkdir "$BASH_COMPLETION_FOLDER"
-fi
-if [ -x "$(command -v poetry)" ]; then
-  echo "INFO:.bash_completion: Add completions for poetry"
-  poetry completions bash > "$BASH_COMPLETION_FOLDER/poetry.bash-completion"
-fi
-if [ -x "$(command -v pip)" ]; then
-  echo "INFO:.bash_completion: Add completions for pip"
-  pip completion --bash > "$BASH_COMPLETION_FOLDER/pip.bash-completion"
-fi
-unset BASH_COMPLETION_FOLDER
-if [ -x "$(command -v pipx)" ]; then
-  echo "INFO:.bash_completion: Add completions for pipx (requires argcomplete to work!)"
-  eval "$(register-python-argcomplete pipx)"
-fi
-if [ -x "$(command -v uv)" ]; then
-  echo "INFO:.bash_completion: Add completions for uv"
-  eval "$(uv generate-shell-completion bash)"
-fi
+
+# Add completions for a command
+# First input: name of the command
+# Second input: command to add the completions
+function add_completion() {
+    local cmd=$1
+    local completion_cmd=$2
+    
+    if [ -x "$(command -v $cmd)" ]; then
+        echo "INFO:.bash_completion: Add completions for '$cmd'"
+        eval "$completion_cmd" > "$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
+    fi
+}
+
+# Add bash completions for known binaries
+add_completion "poetry" "poetry completions bash"
+add_completion "pip" "pip completion --bash"
+add_completion "pipx" "register-python-argcomplete pipx"
+add_completion "uv" "uv generate-shell-completion bash"
 
 # Source bash completions
 for file in $BASH_COMPLETION_FOLDER/*; do
