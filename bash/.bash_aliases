@@ -211,28 +211,27 @@ fi
 ###############################################################################
 # Update functions
 ###############################################################################
-if is_windows; then
-    # WINDOWS: Upgrade all winget-installed packages
-    function updateAll {
-        echo '[WINGET upgrade --all]'
+function updateAll {
+    if is_windows; then
+        # winget-based upgrade on Windows
+        echo '[WINGET UPGRADE --ALL]'
         winget upgrade --all
-        if command -v pipx &> /dev/null; then
-            echo '[PIPX upgrade-all]'
-            pipx upgrade-all
-        fi
-    }
-elif is_linux; then
-    # LINUX: Do all the update stuff (except for dist-upgrade).
-    function updateAll {
-        echo '[UPDATE]'
+    elif is_linux; then
+        # apt-based upgrade on Linux
+        echo '[APT UPDATE]'
         sudo apt update -y
-        echo '[UPGRADE]'
+        echo '[APT UPGRADE]'
         sudo apt upgrade -y
-        echo '[CLEAN]'
+        echo '[APT AUTOCLEAN]'
         sudo apt autoclean -y
-        echo '[REMOVE]'
+        echo '[APT AUTOREMOVE]'
         sudo apt autoremove -y
-    }
-fi
+    fi
+
+    if command -v pipx &> /dev/null; then
+        echo '[PIPX UPGRADE-ALL]'
+        pipx upgrade-all
+    fi
+}
 
 echo "INFO:.bash_aliases: Done!"
