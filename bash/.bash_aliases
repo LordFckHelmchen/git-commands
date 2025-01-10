@@ -232,6 +232,15 @@ function updateAll {
         echo '[PIPX UPGRADE-ALL]'
         pipx upgrade-all
     fi
+
+    if [[ -d $ADR_HOME ]]; then
+        echo '[GITUP ADR]'
+        local current_dir
+        current_dir=$(pwd)
+        cd "$ADR_HOME" || return
+        git fetch --all --prune && git pull
+        cd "$current_dir" || return
+    fi
 }
 
 echo "INFO:.bash_aliases: Done!"
