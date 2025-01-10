@@ -201,7 +201,12 @@ if is_linux; then
 fi
 
 # ADR-tools
-prepend_to_path "$HOME/.adr-tools/src"
+export ADR_HOME="$HOME/.adr-tools"
+if [[ -d $ADR_HOME ]]; then
+    prepend_to_path "$ADR_HOME/src"
+else
+    unset ADR_HOME
+fi
 
 ###############################################################################
 # Update functions
