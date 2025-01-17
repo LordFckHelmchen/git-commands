@@ -17,7 +17,7 @@ if [ -x /usr/bin/dircolors ]; then
     alias fgrep='fgrep --color=auto'
     alias egrep='egrep --color=auto'
 else
-    echo "WARNING:.bash_aliases: 'dircolors' not found - can't define colored aliases for 'ls' & the 'grep'-family."
+    log_warn "'dircolors' not found - can't define colored aliases for 'ls' & the 'grep'-family."
 fi
 
 # Add human readable file sizes & sort by byte-order (LC_ALL=C; e.g. hidden things first)
@@ -45,7 +45,7 @@ alias findstr='grep --ignore-case --recursive --files-with-matches'
 if [[ $(type -t pygmentize) ]]; then
     alias dog='pygmentize -g'
 else
-    echo "WARNING:.bash_aliases: 'pygmentize' not found - can't define alias 'dog'."
+    log_warn "'pygmentize' not found - can't define alias 'dog'."
 fi
 
 ###############################################################################
@@ -118,7 +118,7 @@ function prepend_to_path() {
         true
     else
         if [[ -n $DEBUG_BASH_SCRIPTS && $DEBUG_BASH_SCRIPTS -eq 1 ]]; then
-            echo "WARNING:.bash_aliases:prepend_to_path: Can't add '$1' to \$$PATHVARIABLE: Not a path or directory."
+            log_warn "prepend_to_path can't add '$1' to \$$PATHVARIABLE: Not a path or directory."
         fi
         false
     fi
@@ -141,7 +141,7 @@ function is_windows() {
 }
 
 if ! is_linux && ! is_windows; then
-    echo "ERROR:.bash_aliases: Running on an unknown operating system."
+    log_error "Running on an unknown operating system."
 fi
 
 ###############################################################################
@@ -243,4 +243,4 @@ function updateAll {
     fi
 }
 
-echo "INFO:.bash_aliases: Done!"
+log_done
