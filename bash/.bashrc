@@ -72,6 +72,40 @@ esac
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+# Logging function
+function log_message() {
+    local LOG_LEVEL="$1"
+    local MESSAGE="$2"
+
+    # Pad LOG_LEVEL to at least 5 characters
+    LOG_LEVEL=$(printf "%-5s" "$LOG_LEVEL")
+
+    # Determine the script name based on whether the script is sourced
+    local SCRIPT_NAME
+    if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+        SCRIPT_NAME=$(basename "$0")
+    else
+        SCRIPT_NAME=$(basename "${BASH_SOURCE[1]}")
+    fi
+
+    echo "${LOG_LEVEL}:${SCRIPT_NAME}: ${MESSAGE}"
+}
+function log_debug() {
+    log_message DEBUG "$1"
+}
+function log_info() {
+    log_message INFO "$1"
+}
+function log_warn() {
+    log_message WARN "$1"
+}
+function log_error() {
+    log_message ERROR "$1"
+}
+function log_done() {
+    log_debug "Done!"
+}
+
 # Alias & other function definitions.
 # First input: File to source
 # Return: true if the file existed and it was sourced.
@@ -80,9 +114,7 @@ function source_if_exists() {
         source "$1"
         true
     else
-        if [[ -n $DEBUG_BASH_SCRIPTS && $DEBUG_BASH_SCRIPTS -eq 1 ]]; then
-            echo "WARNING:.bashrc:source_if_exists: Cannot source '$1': No such file exists"
-        fi
+        log_warn "Cannot source '$1': No such file exists"
         false
     fi
 }
@@ -90,7 +122,7 @@ source_if_exists $HOME/.bash_aliases
 
 # Disable visual flicker when pressing tab on an empty line in Git-Bash for Windows
 # As given here: https://github.com/microsoft/terminal/issues/7200
-echo "INFO:.bashrc: Disabling visual bell"
+log_info "Disabling visual bell"
 set bell-style none
 
 # Don't do debug outputs for the following statements
@@ -100,10 +132,10 @@ unset DEBUG_BASH_SCRIPTS
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
 if ! shopt -oq posix; then
-    echo "INFO:.bashrc: Sourcing user completions"
+    log_debug "Sourcing user completions"
     source_if_exists /usr/share/bash-completion/bash_completion ||
         source_if_exists /etc/bash_completion ||
         source_if_exists $HOME/.bash_completion
 fi
 
-echo "INFO:.bashrc: Done!"
+log_done

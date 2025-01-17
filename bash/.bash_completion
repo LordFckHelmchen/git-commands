@@ -28,9 +28,9 @@ function add_completion() {
 
     if [ -x "$(command -v "$cmd")" ]; then
         if is_file_modified_today "$completion_file"; then
-            echo "INFO:.bash_completion: Completions already created today for '$cmd'"
+            log_debug "Completions already created today for '$cmd'"
         else
-            echo "INFO:.bash_completion: Create completions for '$cmd'"
+            log_info "Create completions for '$cmd'"
             eval "$completion_cmd" > "$completion_file"
         fi
     fi
@@ -46,7 +46,7 @@ add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
 # Source bash completions
 for file in "$BASH_COMPLETION_FOLDER"/*; do
     if [ -f "$file" ]; then
-        echo "INFO:.bash_completion: Sourcing '$file'"
+        log_debug "Sourcing '$file'"
         source_if_exists "$file"
     fi
 done
@@ -54,4 +54,4 @@ unset file
 
 unset BASH_COMPLETION_FOLDER
 
-echo "INFO:.bash_completion: Done!"
+log_done
