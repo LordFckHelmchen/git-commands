@@ -26,7 +26,7 @@ function add_completion() {
     local completion_cmd=$2
     local completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
 
-    if [ -x "$(command -v "$cmd")" ]; then
+    if [[ $(type -t "$cmd") ]]; then
         if is_file_modified_today "$completion_file"; then
             log_debug "Completions already created today for '$cmd'"
         else
@@ -42,6 +42,7 @@ add_completion "pip" "pip completion --bash"
 add_completion "pipx" "register-python-argcomplete pipx"
 add_completion "uv" "uv generate-shell-completion bash"
 add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
+add_completion "gh" "$(gh completion -s bash)"
 
 # Source bash completions
 for file in "$BASH_COMPLETION_FOLDER"/*; do
