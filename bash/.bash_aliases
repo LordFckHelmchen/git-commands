@@ -72,6 +72,15 @@ alias gitl='git log --oneline --max-count 10'
 # Show branches where the remote has been deleted
 alias gitsdb='git branch --verbose | grep gone'
 
+# GH Copilot
+if [[ $(type -t gh) ]]; then
+    alias ghc='gh copilot'
+    alias ghcs='ghc suggest'
+    alias ghce='ghc explain'
+else
+    log_warn "'gh' not found - can't define aliases using 'ghc'."
+fi
+
 ###############################################################################
 # Functions to help us manage paths
 ###############################################################################
@@ -228,9 +237,14 @@ function updateAll {
         sudo apt autoremove -y
     fi
 
-    if command -v pipx &> /dev/null; then
+    if [[ $(type -t pipx) ]]; then
         echo '[PIPX UPGRADE-ALL]'
         pipx upgrade-all
+    fi
+
+    if [[ $(type -t gh) ]]; then
+        echo '[GITHUB CLI EXTENSION UPGRADE-ALL]'
+        gh extension upgrade --all
     fi
 
     if [[ -d $ADR_HOME ]]; then
