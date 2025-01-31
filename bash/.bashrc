@@ -121,14 +121,20 @@ function log_done() {
 
 # Alias & other function definitions.
 # First input: File to source
+# Second input: Suppress error message if true (default is false)
 # Return: true if the file existed and it was sourced.
 function source_if_exists() {
-    if [ -f "$1" ]; then
-        source "$1"
-        true
+    local FILE="$1"
+    local SUPPRESS_ERROR="${2:-false}"
+
+    if [ -f "$FILE" ]; then
+        source "$FILE"
+        return 0
     else
-        log_warn "Cannot source '$1': No such file exists"
-        false
+        if [ "$SUPPRESS_ERROR" != "true" ]; then
+            log_warn "Cannot source '$FILE': No such file exists"
+        fi
+        return 1
     fi
 }
 
@@ -143,8 +149,8 @@ set bell-style none
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile)
 if ! shopt -oq posix; then
     log_debug "Sourcing user completions"
-    source_if_exists /usr/share/bash-completion/bash_completion ||
-        source_if_exists /etc/bash_completion ||
+    source_if_exists /usr/share/bash-completion/bash_completion true ||
+        source_if_exists /etc/bash_completion true ||
         source_if_exists "$HOME/.bash_completion"
 fi
 
