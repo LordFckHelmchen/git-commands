@@ -74,7 +74,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 #              (DEBUG, INFO, WARN, ERROR; default: DEBUG)
 # Second input: Message to log
 # Note: Uses Env. Var $CURRENT_LOG_LEVEL to determine the log level to log at 
-#       (default: DEBUG)
+#       (default: INFO)
 function log_message() {
     # Define log levels
     declare -A LOG_LEVELS
@@ -96,7 +96,7 @@ function log_message() {
     SCRIPT_NAME=$(basename "${BASH_SOURCE[2]}")
 
     # Get the current log level from the environment variable, if set
-    local CURRENT_LOG_LEVEL="${CURRENT_LOG_LEVEL:-DEBUG}"
+    local CURRENT_LOG_LEVEL="${CURRENT_LOG_LEVEL:-INFO}"
 
     # Only log the message if the log level is the same or higher
     if [ "${LOG_LEVELS[$LOG_LEVEL]}" -ge "${LOG_LEVELS[$CURRENT_LOG_LEVEL]}" ]; then
