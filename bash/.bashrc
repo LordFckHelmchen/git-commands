@@ -116,7 +116,7 @@ function log_error() {
     log_message ERROR "$1"
 }
 function log_done() {
-    log_debug "Done!"
+    log_message DEBUG "Done!"
 }
 
 # Alias & other function definitions.
