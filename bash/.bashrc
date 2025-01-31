@@ -16,9 +16,6 @@ HISTCONTROL=ignoreboth:erasedups
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-# Flag to indicate if should print error messages for the bash init scripts
-DEBUG_BASH_SCRIPTS=1
-
 # Make history shared across terminals (taken from https://unix.stackexchange.com/a/48116)
 HISTSIZE=3000 # long history
 HISTFILESIZE=$HISTSIZE
@@ -69,26 +66,42 @@ case "$TERM" in
     *) ;;
 esac
 
-# colored GCC warnings and errors
+# Colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # Logging function
+# First input: Log-level name at which to log 
+#              (DEBUG, INFO, WARN, ERROR; default: DEBUG)
+# Second input: Message to log
+# Note: Uses Env. Var $CURRENT_LOG_LEVEL to determine the log level to log at 
+#       (default: DEBUG)
 function log_message() {
-    local LOG_LEVEL="$1"
+    # Define log levels
+    declare -A LOG_LEVELS
+    LOG_LEVELS=(["DEBUG"]=0 ["INFO"]=1 ["WARN"]=2 ["ERROR"]=3)
+
+    # Determine the maximum length of log level names
+    local MAX_LOG_LEVEL_LENGTH=0
+    for level in "${!LOG_LEVELS[@]}"; do
+        if [ ${#level} -gt $MAX_LOG_LEVEL_LENGTH ]; then
+            MAX_LOG_LEVEL_LENGTH=${#level}
+        fi
+    done
+
+    local LOG_LEVEL="${1:-DEBUG}"
     local MESSAGE="$2"
 
-    # Pad LOG_LEVEL to at least 5 characters
-    LOG_LEVEL=$(printf "%-5s" "$LOG_LEVEL")
-
-    # Determine the script name based on whether the script is sourced
+    # Determine the script name based on the call stack
     local SCRIPT_NAME
-    if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-        SCRIPT_NAME=$(basename "$0")
-    else
-        SCRIPT_NAME=$(basename "${BASH_SOURCE[1]}")
-    fi
+    SCRIPT_NAME=$(basename "${BASH_SOURCE[2]}")
 
-    echo "${LOG_LEVEL}:${SCRIPT_NAME}: ${MESSAGE}"
+    # Get the current log level from the environment variable, if set
+    local CURRENT_LOG_LEVEL="${CURRENT_LOG_LEVEL:-DEBUG}"
+
+    # Only log the message if the log level is the same or higher
+    if [ "${LOG_LEVELS[$LOG_LEVEL]}" -ge "${LOG_LEVELS[$CURRENT_LOG_LEVEL]}" ]; then
+        echo "$(printf "%-${MAX_LOG_LEVEL_LENGTH}s" "$LOG_LEVEL"):${SCRIPT_NAME}: ${MESSAGE}"
+    fi
 }
 function log_debug() {
     log_message DEBUG "$1"
@@ -118,24 +131,21 @@ function source_if_exists() {
         false
     fi
 }
-source_if_exists $HOME/.bash_aliases
+
+source_if_exists "$HOME/.bash_aliases"
 
 # Disable visual flicker when pressing tab on an empty line in Git-Bash for Windows
 # As given here: https://github.com/microsoft/terminal/issues/7200
 log_info "Disabling visual bell"
 set bell-style none
 
-# Don't do debug outputs for the following statements
-unset DEBUG_BASH_SCRIPTS
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
+# Enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile)
 if ! shopt -oq posix; then
     log_debug "Sourcing user completions"
     source_if_exists /usr/share/bash-completion/bash_completion ||
         source_if_exists /etc/bash_completion ||
-        source_if_exists $HOME/.bash_completion
+        source_if_exists "$HOME/.bash_completion"
 fi
 
 log_done
