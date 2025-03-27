@@ -37,12 +37,13 @@ function add_completion() {
 }
 
 # Add bash completions for known binaries
-add_completion "poetry" "poetry completions bash"
-add_completion "pip" "pip completion --bash"
-add_completion "pipx" "register-python-argcomplete pipx"
-add_completion "uv" "uv generate-shell-completion bash"
 add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
 add_completion "gh" "$(gh completion -s bash)"
+add_completion "pip" "pip completion --bash"
+add_completion "pipx" "register-python-argcomplete pipx"
+add_completion "poetry" "poetry completions bash"
+add_completion "starship" "starship completions bash"
+add_completion "uv" "uv generate-shell-completion bash"
 
 # Source bash completions
 for file in "$BASH_COMPLETION_FOLDER"/*; do
