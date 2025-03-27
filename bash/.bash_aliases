@@ -221,14 +221,31 @@ fi
 ###############################################################################
 # Update functions
 ###############################################################################
+
+# Update a git repo
+# First input: Directory of the git repo to update
+function updateGitRepo {
+    local repo_dir=$1
+    if [[ -d $repo_dir ]]; then
+        printf "\n[GIT-PULL LATEST CHANGES FOR $(basename "$repo_dir")]"
+        local current_dir
+        current_dir=$(pwd)
+        cd "$repo_dir" || return
+        git fetch --all --prune && git pull
+        cd "$current_dir" || return
+    else
+        log_warn "Directory '$repo_dir' not found - can't update."
+    fi
+}
+
 function updateAll {
     if is_windows; then
         # winget-based upgrade on Windows
-        echo '[WINGET UPGRADE --ALL]'
+        printf "\n[WINGET UPGRADE --ALL]"
         winget upgrade --all
     elif is_linux; then
         # apt-based upgrade on Linux
-        echo '[APT UPDATE]'
+        printf "\n[APT UPDATE]"
         sudo apt update -y
         echo '[APT UPGRADE]'
         sudo apt upgrade -y
@@ -239,23 +256,25 @@ function updateAll {
     fi
 
     if [[ $(type -t pipx) ]]; then
-        echo '[PIPX UPGRADE-ALL]'
+        printf "\n[PIPX UPGRADE-ALL]"
         pipx upgrade-all
     fi
 
+    if [[ $(type -t uv) ]]; then
+        printf "\n[UVX UPGRADE-ALL]"
+        uv tool upgrade --all
+    fi
+
     if [[ $(type -t gh) ]]; then
-        echo '[GITHUB CLI EXTENSION UPGRADE-ALL]'
+        printf "\n[GITHUB CLI EXTENSION UPGRADE-ALL]"
         gh extension upgrade --all
     fi
 
-    if [[ -d $ADR_HOME ]]; then
-        echo '[GITUP ADR]'
-        local current_dir
-        current_dir=$(pwd)
-        cd "$ADR_HOME" || return
-        git fetch --all --prune && git pull
-        cd "$current_dir" || return
-    fi
+    # Loop through repo directories and update them
+    local repos=("$PYENV_HOME" "$ADR_HOME")
+    for repo in "${repos[@]}"; do
+        updateGitRepo "$repo"
+    done
 }
 
 log_done
