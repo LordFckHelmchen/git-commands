@@ -122,7 +122,7 @@ function log_done() {
 # Alias & other function definitions.
 # First input: File to source
 # Second input: Suppress error message if true (default is false)
-# Return: true if the file existed and it was sourced.
+# Return: 1 if the file existed and it was sourced.
 function source_if_exists() {
     local FILE="$1"
     local SUPPRESS_ERROR="${2:-false}"
