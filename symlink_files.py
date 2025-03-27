@@ -94,11 +94,7 @@ def symlink_files(
                     end="",
                 )
                 if not link.exists():
-                    if not link.parent.is_dir():
-                        print(
-                            "INFO: Creating parent directory and linking file. ", end=""
-                        )
-                        link.parent.mkdir()
+                    link.parent.mkdir(parents=True, exist_ok=True)
                     link.symlink_to(link_target)
                     print("SUCCESS.")
                 else:
@@ -108,8 +104,8 @@ def symlink_files(
     except OSError as err:
         if str(err).startswith("[WinError 1314]"):
             msg = (
-                "A WinError occurred - this is most likely since you're on Windows 10. And Windows 10 requires "
-                "admin rights for symlinks. Not kidding! So start the console as admin and execute this file_map"
+                "A WinError occurred - this is most likely since you're on Windows. And Windows requires "
+                "admin rights for symlinks. Not kidding! So start the console as admin and execute this script again"
             )
             raise OSError(msg) from err
         else:
