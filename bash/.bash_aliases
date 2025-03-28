@@ -79,7 +79,7 @@ if [[ $(type -t gh) ]]; then
     alias ghcs='ghc suggest'
     alias ghce='ghc explain'
 else
-    log_warn "'gh' not found - can't define aliases using 'ghc'."
+    log_debug "'gh' not found - can't define aliases using 'ghc'."
 fi
 
 ###############################################################################
