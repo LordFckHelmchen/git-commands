@@ -224,7 +224,7 @@ fi
 function updateGitRepo {
     local repo_dir=$1
     if [[ -d $repo_dir ]]; then
-        printf "\n[GIT-PULL LATEST CHANGES FOR $(basename "$repo_dir")]"
+        printf "\n[GIT-PULL LATEST CHANGES FOR $(basename "$repo_dir")]\n"
         local current_dir
         current_dir=$(pwd)
         cd "$repo_dir" || return
@@ -238,11 +238,11 @@ function updateGitRepo {
 function updateAll {
     if is_windows; then
         # winget-based upgrade on Windows
-        printf "\n[WINGET UPGRADE --ALL]"
+        printf "\n[WINGET UPGRADE --ALL]\n"
         winget upgrade --all
     elif is_linux; then
         # apt-based upgrade on Linux
-        printf "\n[APT UPDATE]"
+        printf "\n[APT UPDATE]\n"
         sudo apt update -y
         echo '[APT UPGRADE]'
         sudo apt upgrade -y
@@ -253,17 +253,17 @@ function updateAll {
     fi
 
     if [[ $(type -t pipx) ]]; then
-        printf "\n[PIPX UPGRADE-ALL]"
+        printf "\n[PIPX UPGRADE-ALL]\n"
         pipx upgrade-all
     fi
 
     if [[ $(type -t uv) ]]; then
-        printf "\n[UVX UPGRADE-ALL]"
+        printf "\n[UVX UPGRADE-ALL]\n"
         uv tool upgrade --all
     fi
 
     if [[ $(type -t gh) ]]; then
-        printf "\n[GITHUB CLI EXTENSION UPGRADE-ALL]"
+        printf "\n[GITHUB CLI EXTENSION UPGRADE-ALL]\n"
         gh extension upgrade --all
     fi
 
