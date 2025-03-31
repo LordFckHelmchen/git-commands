@@ -11,6 +11,7 @@ $username\
 $directory\
 [](fg:color_yellow bg:color_aqua)\
 $git_branch\
+$git_state\
 $git_status\
 [](fg:color_aqua bg:color_blue)\
 $c\
@@ -81,8 +82,10 @@ format = '[ $user ]($style)'
 [directory]
 style = "fg:color_fg1 bg:color_yellow"
 format = "[ $path ]($style)"
-truncation_length = 3
+truncation_length = 5
 truncation_symbol = "…/"
+truncate_to_repo = true
+use_os_path_sep	= false
 
 [directory.substitutions]
 "Documents" = "󰈙 "
@@ -96,9 +99,14 @@ symbol = ""
 style = "bg:color_aqua"
 format = '[[ $symbol $branch ](fg:color_fg0 bg:color_aqua)]($style)'
 
+[git_state]
+style = "bg:color_aqua"
+format = '[\($state( $progress_current/$progress_total)\) ]($style)'
+
 [git_status]
 style = "bg:color_aqua"
 format = '[[($all_status$ahead_behind )](fg:color_fg0 bg:color_aqua)]($style)'
+windows_starship = "/c/Program Files/starship/bin/starship.exe"  # More speed on Windows
 
 [nodejs]
 symbol = ""
