@@ -61,17 +61,32 @@ alias gitup='git fetch --all --prune && git pull'
 # Git diff ignoring all sorts of whitespace.
 alias gitd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal'
 
-# Git branch listing author and date on remotes.
-alias gitlist='git for-each-ref --sort=committerdate refs/remotes --format="%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)" | column --table --separator="|" | cut --characters=1-180'
-
-# Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
-alias gittree='git ls-tree --full-name --name-only -tr HEAD | sed --expression="s/[^-][^\/]*\// |/g" --expression="s/|\([^ ]\)/|-- \1/"'
-
 # List last commits as oneliners
 alias gitl='git log --oneline --max-count 10'
 
+# Git branch listing author and date on remotes.
+alias gitlist='git for-each-ref --sort=committerdate refs/remotes --format="%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)" | column --table --separator="|" | cut --characters=1-180'
+
 # Show branches where the remote has been deleted
 alias gitsdb='git branch --verbose | grep gone'
+
+# git-switch shortcut
+alias gs='git switch'
+
+# git-delete-branch shortcut
+alias gD='git branch -D'
+
+# git-branch-vv shortcut
+alias gb='git branch -vv'
+
+# git-push shortcut
+alias gp='git push'
+
+# git-push-force shortcut
+alias gpf='git push --force'
+
+# Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
+alias gittree='git ls-tree --full-name --name-only -tr HEAD | sed --expression="s/[^-][^\/]*\// |/g" --expression="s/|\([^ ]\)/|-- \1/"'
 
 # GH Copilot
 if [[ $(type -t gh) ]]; then
