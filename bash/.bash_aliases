@@ -67,7 +67,7 @@ alias now='date -u +"%Y-%m-%dT%H:%M:%S.%7N%:z"'
 alias gits='git status'
 
 # Git fetch, update, prune
-alias gitup='git fetch --all --prune && git pull'
+alias gu='git fetch --all --prune && git pull'
 
 # Git diff ignoring all sorts of whitespace.
 alias gitd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal'
