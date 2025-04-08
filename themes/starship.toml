@@ -1,4 +1,4 @@
-command_timeout = 5000
+command_timeout = 10000
 
 # Gruvbox Rainbow: https://starship.rs/presets/#gruvbox-rainbow
 "$schema" = 'https://starship.rs/config-schema.json'
