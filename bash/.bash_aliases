@@ -284,12 +284,12 @@ function updateAll {
     fi
 
     if [[ $(type -t uv) ]]; then
-        printf "\n[UVX UPGRADE-ALL]\n"
+        printf "\n[UV TOOL UPGRADE --ALL]\n"
         uv tool upgrade --all
     fi
 
     if [[ $(type -t gh) ]]; then
-        printf "\n[GITHUB CLI EXTENSION UPGRADE-ALL]\n"
+        printf "\n[GH EXTENSION UPGRADE --ALL]\n"
         gh extension upgrade --all
     fi
 
