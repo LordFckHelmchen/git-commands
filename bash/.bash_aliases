@@ -284,6 +284,8 @@ function updateAll {
     fi
 
     if [[ $(type -t uv) ]]; then
+        printf "\n[UV SELF UPDATE]\n"
+        uv self update
         printf "\n[UV TOOL UPGRADE --ALL]\n"
         uv tool upgrade --all
     fi
@@ -291,6 +293,11 @@ function updateAll {
     if [[ $(type -t gh) ]]; then
         printf "\n[GH EXTENSION UPGRADE --ALL]\n"
         gh extension upgrade --all
+    fi
+
+    if [[ $(type -t rustup) ]]; then
+        printf "\n[RUSTUP UPDATE]\n"
+        rustup update
     fi
 
     # Loop through repo directories and update them
