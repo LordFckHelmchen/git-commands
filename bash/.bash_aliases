@@ -59,46 +59,6 @@ fi
 alias now='date -u +"%Y-%m-%dT%H:%M:%S.%7N%:z"'
 
 
-########################################################################################################################
-# Git alias
-########################################################################################################################
-
-# Git status
-alias gits='git status'
-
-# Git fetch, update, prune
-alias gu='git fetch --all --prune && git pull'
-
-# Git diff ignoring all sorts of whitespace.
-alias gitd='git diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal'
-
-# List last commits as oneliners
-alias gitl='git log --oneline --max-count 10'
-
-# Git branch listing author and date on remotes.
-alias gitlist='git for-each-ref --sort=committerdate refs/remotes --format="%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)" | column --table --separator="|" | cut --characters=1-180'
-
-# Show branches where the remote has been deleted
-alias gitsdb='git branch --verbose | grep gone'
-
-# git-switch shortcut
-alias gs='git switch'
-
-# git-delete-branch shortcut
-alias gD='git branch -D'
-
-# git-branch-vv shortcut
-alias gb='git branch -vv'
-
-# git-push shortcut
-alias gp='git push'
-
-# git-push-force shortcut
-alias gpf='git push --force'
-
-# Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
-alias gittree='git ls-tree --full-name --name-only -tr HEAD | sed --expression="s/[^-][^\/]*\// |/g" --expression="s/|\([^ ]\)/|-- \1/"'
-
 # GH Copilot
 if [[ $(type -t gh) ]]; then
     alias ghc='gh copilot'
@@ -150,6 +110,7 @@ function remove_from_path() {
 function prepend_to_path() {
     local PATHVARIABLE=${2:-PATH}
     if [[ -d $1 ]] || [[ -f $1 ]]; then # Directory or file
+        log_debug "prepend_to_path: Adding '$1' to \$$PATHVARIABLE."
         remove_from_path "$1" "$PATHVARIABLE"
         export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
         true
@@ -225,6 +186,7 @@ if [[ $(type -t starship) ]]; then
     log_debug "Using Starship."
     eval "$(starship init bash)"  # Assume git bash for windows
     if is_linux; then
+        log_debug "Setting PYTHONIOENCODING to utf8."
         export PYTHONIOENCODING=utf8
     fi
 elif source_if_exists $XDG_CONFIG_HOME/bash/git-prompt.sh true || source_if_exists $HOME/.config/bash/git-prompt.sh true; then
@@ -248,6 +210,17 @@ fi
 ########################################################################################################################
 # Update functions
 ########################################################################################################################
+
+# Add completions for a command
+# First input: name of the command
+# Second input: command to add the completions
+function add_completion() {
+    local cmd=$1
+    local completion_cmd=$2
+    log_info "Create completions for '$cmd'"
+    local completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
+    eval "$completion_cmd" > "$completion_file"
+}
 
 # Update a git repo
 # First input: Directory of the git repo to update
@@ -281,18 +254,25 @@ function updateAll {
     if [[ $(type -t pipx) ]]; then
         printf "\n[PIPX UPGRADE-ALL]\n"
         pipx upgrade-all
+        add_completion "pipx" "register-python-argcomplete pipx"
     fi
 
     if [[ $(type -t uv) ]]; then
-        printf "\n[UV SELF UPDATE]\n"
-        uv self update
+        if is_linux; then
+            # Assume installation on windows was done via winget
+            printf "\n[UV SELF UPDATE]\n"
+            uv self update
+        fi
+
         printf "\n[UV TOOL UPGRADE --ALL]\n"
         uv tool upgrade --all
+        add_completion "uv" "uv generate-shell-completion bash"
     fi
 
     if [[ $(type -t gh) ]]; then
         printf "\n[GH EXTENSION UPGRADE --ALL]\n"
         gh extension upgrade --all
+        add_completion "gh" "gh completion -s bash"
     fi
 
     if [[ $(type -t rustup) ]]; then
@@ -301,14 +281,28 @@ function updateAll {
     fi
 
     # Loop through repo directories and update them
-    local repos=("$PYENV_HOME" "$ADR_HOME")
-    for repo in "${repos[@]}"; do
+    local repo_dirs=("$PYENV_HOME" "$ADR_HOME")
+    for repo_dir in "${repo_dirs[@]}"; do
         if [[ -d $repo_dir ]]; then
-            updateGitRepo "$repo"
+            updateGitRepo "$repo_dir"
         else
             log_debug "Directory '$repo_dir' not found - can't update."
         fi
     done
+
+    # Update bash completions for additional binaries
+    if [[ $(type -t adr) ]]; then
+        add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
+    fi
+    if [[ $(type -t pip) ]]; then
+        add_completion "pip" "pip completion --bash"
+    fi
+    if [[ $(type -t poetry) ]]; then
+        add_completion "poetry" "poetry completions bash"
+    fi
+    if [[ $(type -t starship) ]]; then
+        add_completion "starship" "starship completions bash"
+    fi
 }
 
 log_done

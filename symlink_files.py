@@ -46,6 +46,10 @@ BASH_FILES = RepoFileMap(
     file_names={".bashrc", ".bash_aliases", ".bash_profile", ".bash_completion"},
     repo_sub_dir="bash",
 )
+GIT_CONFIG_FILE = RepoFileMap(
+    file_names={".gitconfig"},
+    repo_sub_dir="git",
+)
 GIT_PROMPT_FILE = RepoFileMap(
     file_names={"git-prompt.sh"},
     repo_sub_dir="bash",
@@ -66,7 +70,7 @@ XONSH_CONFIG_FILE = RepoFileMap(
 def symlink_files(
     link_git_prompt: bool, link_starship_config: bool, link_xonsh_config: bool
 ) -> None:
-    files = [BASH_FILES]
+    files = [BASH_FILES, GIT_CONFIG_FILE]
     if link_git_prompt:
         files.append(GIT_PROMPT_FILE)
     if link_starship_config:
