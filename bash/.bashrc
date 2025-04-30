@@ -8,6 +8,8 @@ case $- in
     *) return ;;
 esac
 
+CURRENT_LOG_LEVEL=INFO
+
 # don't put duplicate lines or lines starting with space in the history and erase any
 # present duplicates
 # See bash(1) for more options
