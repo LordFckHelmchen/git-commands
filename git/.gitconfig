@@ -9,8 +9,9 @@ autosetupremote = true
 	can = commit --amend --no-edit
 	# Diff ignoring all sorts of whitespace.
 	d = diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal
+	graph = log --abbrev-commit --all --decorate --oneline --graph --max-count=30 --pretty=\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\"
 	# List last commits as oneliners
-	l = log --oneline --max-count 10
+	l = log --oneline --max-count=10
 	# List Branches
 	lb = branch -vv
 	# List author and date on remotes.
