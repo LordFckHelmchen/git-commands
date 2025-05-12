@@ -211,6 +211,12 @@ fi
 # Update functions
 ########################################################################################################################
 
+export BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
+if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
+    log_debug "Creating new bash-completion folder at '$BASH_COMPLETION_FOLDER'"
+    mkdir --parents --verbose "$BASH_COMPLETION_FOLDER"
+fi
+
 # Add completions for a command
 # First input: name of the command
 # Second input: command to add the completions
@@ -219,6 +225,7 @@ function add_completion() {
     local completion_cmd=$2
     log_info "Create completions for '$cmd'"
     local completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
+    log_debug "'$cmd' will be created via '$completion_cmd > $completion_file'"
     eval "$completion_cmd" > "$completion_file"
 }
 

@@ -1,11 +1,10 @@
 #!/bin/bash
 
-BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
-if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
-    mkdir --parents --verbose "$BASH_COMPLETION_FOLDER"
-fi
 
 # Source bash completions
+if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
+    log_warn "No bash-completion folder found at '$BASH_COMPLETION_FOLDER' - skipping custom completions"
+fi
 for file in "$BASH_COMPLETION_FOLDER"/*; do
     if [ -f "$file" ]; then
         log_debug "Sourcing '$file'"
@@ -13,7 +12,5 @@ for file in "$BASH_COMPLETION_FOLDER"/*; do
     fi
 done
 unset file
-
-unset BASH_COMPLETION_FOLDER
 
 log_done
