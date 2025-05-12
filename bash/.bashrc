@@ -8,8 +8,6 @@ case $- in
     *) return ;;
 esac
 
-CURRENT_LOG_LEVEL=INFO
-
 # don't put duplicate lines or lines starting with space in the history and erase any
 # present duplicates
 # See bash(1) for more options
@@ -71,38 +69,42 @@ esac
 # Colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
+export BASH_LOG_LEVEL=INFO
+
 # Logging function
-# First input: Log-level name at which to log 
-#              (DEBUG, INFO, WARN, ERROR; default: DEBUG)
+# First input: Log-level name at which to log (DEBUG, INFO, WARN, ERROR)
 # Second input: Message to log
-# Note: Uses Env. Var $CURRENT_LOG_LEVEL to determine the log level to log at 
+# Note: Uses Env. Var $BASH_LOG_LEVEL to determine the log level to log at 
 #       (default: INFO)
 function log_message() {
+    local msg_log_level_name="$1"
+    local msg="$2"
+
     # Define log levels
-    declare -A LOG_LEVELS
-    LOG_LEVELS=(["DEBUG"]=0 ["INFO"]=1 ["WARN"]=2 ["ERROR"]=3)
+    declare -A log_level_name_to_level_map
+    log_level_name_to_level_map=(["DEBUG"]=0 ["INFO"]=1 ["WARN"]=2 ["ERROR"]=3)
 
     # Determine the maximum length of log level names
-    local MAX_LOG_LEVEL_LENGTH=0
-    for level in "${!LOG_LEVELS[@]}"; do
-        if [ ${#level} -gt $MAX_LOG_LEVEL_LENGTH ]; then
-            MAX_LOG_LEVEL_LENGTH=${#level}
+    local log_level_name_length_max=0
+    for level_name in "${!log_level_name_to_level_map[@]}"; do
+        local level_name_length=${#level_name}
+        if [ $level_name_length -gt $log_level_name_length_max ]; then
+            log_level_name_length_max=$level_name_length
         fi
     done
 
-    local LOG_LEVEL="${1:-DEBUG}"
-    local MESSAGE="$2"
-
     # Determine the script name based on the call stack
-    local SCRIPT_NAME
-    SCRIPT_NAME=$(basename "${BASH_SOURCE[2]}")
+    local script_name
+    script_name=$(basename "${BASH_SOURCE[2]}")
 
     # Get the current log level from the environment variable, if set
-    local CURRENT_LOG_LEVEL="${CURRENT_LOG_LEVEL:-INFO}"
+    local current_log_level_name="${BASH_LOG_LEVEL:-INFO}"
 
     # Only log the message if the log level is the same or higher
-    if [ "${LOG_LEVELS[$LOG_LEVEL]}" -ge "${LOG_LEVELS[$CURRENT_LOG_LEVEL]}" ]; then
-        echo "$(printf "%-${MAX_LOG_LEVEL_LENGTH}s" "$LOG_LEVEL"):${SCRIPT_NAME}: ${MESSAGE}"
+    local msg_log_level="${log_level_name_to_level_map[$msg_log_level_name]}"
+    local current_log_level="${log_level_name_to_level_map[$current_log_level_name]}"
+    if [ $msg_log_level -ge $current_log_level ]; then
+        echo "$(printf "%-${log_level_name_length_max}s" "$msg_log_level_name"):${script_name}: ${msg}"
     fi
 }
 function log_debug() {
