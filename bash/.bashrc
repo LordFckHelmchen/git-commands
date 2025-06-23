@@ -8,6 +8,13 @@ case $- in
     *) return ;;
 esac
 
+# Record the start time (in seconds since epoch)
+__BASHRC_START_TIME__=$(date +%s)
+
+# Current log level
+export BASH_LOG_LEVEL=INFO
+
+
 # don't put duplicate lines or lines starting with space in the history and erase any
 # present duplicates
 # See bash(1) for more options
@@ -69,8 +76,6 @@ esac
 # Colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
-export BASH_LOG_LEVEL=INFO
-
 # Logging function
 # First input: Log-level name at which to log (DEBUG, INFO, WARN, ERROR)
 # Second input: Message to log
@@ -119,8 +124,21 @@ function log_warn() {
 function log_error() {
     log_message ERROR "$1"
 }
+# Log a done message with an optional duration since some predefined start time.
+# Usage: log_done [start_time]
+# First input (optional): Start time in seconds since epoch. If omitted, no duration will be logged.
 function log_done() {
-    log_message DEBUG "Done!"
+    msg="Done"
+
+    local start_time="$1"
+    if [ -n "$start_time" ]; then
+        local end_time
+        end_time=$(date +%s)
+        local duration=$((end_time - start_time))
+        msg="${msg} - took ${duration}s"
+    fi
+
+    log_message DEBUG "$msg"
 }
 
 # Alias & other function definitions.
@@ -158,4 +176,6 @@ if ! shopt -oq posix; then
         source_if_exists "$HOME/.bash_completion"
 fi
 
-log_done
+
+log_done __BASHRC_START_TIME__
+unset __BASHRC_START_TIME__
