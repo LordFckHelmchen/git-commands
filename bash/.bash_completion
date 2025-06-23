@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Record the start time (in seconds since epoch)
+__BASH_COMPLETION_START_TIME__=$(date +%s)
 
 # Source bash completions
 if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
@@ -13,4 +15,5 @@ for file in "$BASH_COMPLETION_FOLDER"/*; do
 done
 unset file
 
-log_done
+log_done __BASH_COMPLETION_START_TIME__
+unset __BASH_COMPLETION_START_TIME__

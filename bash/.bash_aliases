@@ -1,6 +1,8 @@
 # Alias & function definitions.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
+# Record the start time (in seconds since epoch)
+__BASH_ALIASES_START_TIME__=$(date +%s)
 
 ########################################################################################################################
 # Default aliases
@@ -312,4 +314,5 @@ function updateAll {
     fi
 }
 
-log_done
+log_done __BASH_ALIASES_START_TIME__
+unset __BASH_ALIASES_START_TIME__
