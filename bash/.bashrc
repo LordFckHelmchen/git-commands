@@ -109,7 +109,7 @@ function log_message() {
     local msg_log_level="${log_level_name_to_level_map[$msg_log_level_name]}"
     local current_log_level="${log_level_name_to_level_map[$current_log_level_name]}"
     if [ $msg_log_level -ge $current_log_level ]; then
-        echo "$(printf "%-${log_level_name_length_max}s" "$msg_log_level_name"):${script_name}: ${msg}"
+        echo "$(date +"%Y-%m-%d %H:%M:%S") $(printf "%-${log_level_name_length_max}s" "$msg_log_level_name"):${script_name}: ${msg}"
     fi
 }
 function log_debug() {
