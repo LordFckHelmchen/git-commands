@@ -60,23 +60,14 @@ STARSHIP_CONFIG_FILE = RepoFileMap(
     repo_sub_dir="themes",
     home_sub_dir=CONFIG_SUBDIR,
 )
-XONSH_CONFIG_FILE = RepoFileMap(
-    file_names={"rc.xsh"},
-    repo_sub_dir="xonsh",
-    home_sub_dir=os.environ.get("XONSH_CONFIG_DIR", f"{CONFIG_SUBDIR}/xonsh"),
-)
 
 
-def symlink_files(
-    link_git_prompt: bool, link_starship_config: bool, link_xonsh_config: bool
-) -> None:
+def symlink_files(link_git_prompt: bool, link_starship_config: bool) -> None:
     files = [BASH_FILES, GIT_CONFIG_FILE]
     if link_git_prompt:
         files.append(GIT_PROMPT_FILE)
     if link_starship_config:
         files.append(STARSHIP_CONFIG_FILE)
-    if link_xonsh_config:
-        files.append(XONSH_CONFIG_FILE)
 
     repo_file_name_width_in_chars = max(
         file_map.max_repo_file_name_chars for file_map in files
@@ -132,13 +123,7 @@ if __name__ == "__main__":
         default=False,
         help="Link to starship configuration file.",
     )
-    parser.add_argument(
-        "-x",
-        "--link_xonsh_config",
-        action="store_true",
-        default=False,
-        help="Link to xonsh configuration file.",
-    )
+
     args = parser.parse_args()
     if args.link_git_prompt and args.link_xonsh_config:
         warnings.warn(
@@ -147,5 +132,4 @@ if __name__ == "__main__":
     symlink_files(
         link_git_prompt=args.link_git_prompt,
         link_starship_config=args.link_starship_config,
-        link_xonsh_config=args.link_xonsh_config,
     )
