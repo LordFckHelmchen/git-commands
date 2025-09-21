@@ -62,13 +62,6 @@
                 "source": "nu"
             },
             {
-                "commandline": "%PYENV_HOME%\\versions\\3.10.7\\Scripts\\xonsh.exe",
-                "guid": "{63d361da-fc85-42c5-8ffb-a38af0e9527a}",
-                "hidden": false,
-                "icon": "https://xon.sh/_static/ascii_conch_part_transparent_tight.png",
-                "name": "xonsh"
-            },
-            {
                 "commandline": "%PYENV_HOME%\\versions\\3.10.7\\Scripts\\ptpython.exe",
                 "guid": "{f91d49a3-741b-409c-8a15-c4360649121f}",
                 "hidden": false,
