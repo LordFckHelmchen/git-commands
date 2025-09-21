@@ -61,7 +61,11 @@ STARSHIP_CONFIG_FILE = RepoFileMap(
 )
 
 
-def symlink_files(link_git_prompt: bool, link_starship_config: bool) -> None:
+def symlink_files(
+    link_git_prompt: bool,
+    link_starship_config: bool,
+    overwrite_existing_files: bool = False,
+) -> None:
     files = [BASH_FILES, GIT_CONFIG_FILE]
     if link_git_prompt:
         files.append(GIT_PROMPT_FILE)
@@ -87,14 +91,15 @@ def symlink_files(link_git_prompt: bool, link_starship_config: bool) -> None:
                     f"{str(repo_file):{home_file_name_width_in_chars}}   ",
                     end="",
                 )
-                if not link.exists():
-                    link.parent.mkdir(parents=True, exist_ok=True)
-                    link.symlink_to(link_target)
-                    print("SUCCESS.")
-                else:
+                if link.exists() and not overwrite_existing_files:
                     print(
                         "ERROR: File already exists! Remove it before calling this script."
                     )
+                else:
+                    link.parent.mkdir(parents=True, exist_ok=True)
+                    link.unlink(missing_ok=True)
+                    link.symlink_to(link_target)
+                    print("SUCCESS.")
     except OSError as err:
         if str(err).startswith("[WinError 1314]"):
             msg = (
@@ -102,8 +107,7 @@ def symlink_files(link_git_prompt: bool, link_starship_config: bool) -> None:
                 "admin rights for symlinks. Not kidding! So start the console as admin and execute this script again"
             )
             raise OSError(msg) from err
-        else:
-            raise err
+        raise
 
 
 if __name__ == "__main__":
@@ -123,9 +127,16 @@ if __name__ == "__main__":
         default=False,
         help="Link to starship configuration file.",
     )
-
+    parser.add_argument(
+        "-f",
+        "--force",
+        action="store_true",
+        default=False,
+        help="Force overwriting existing files.",
+    )
     args = parser.parse_args()
     symlink_files(
         link_git_prompt=args.link_git_prompt,
         link_starship_config=args.link_starship_config,
+        overwrite_existing_files=args.force,
     )
