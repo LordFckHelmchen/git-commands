@@ -4,7 +4,6 @@
 
 import argparse
 import os
-import warnings
 from collections.abc import Iterable
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -109,14 +108,15 @@ def symlink_files(link_git_prompt: bool, link_starship_config: bool) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
         "-g",
         "--link_git_prompt",
         action="store_true",
         default=False,
         help="Use bash-native git-prompt. Useful if no git-enhanced prompt (e.g. starship/oh-my-posh) is available.",
     )
-    parser.add_argument(
+    group.add_argument(
         "-s",
         "--link_starship_config",
         action="store_true",
@@ -125,10 +125,6 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    if args.link_git_prompt and args.link_xonsh_config:
-        warnings.warn(
-            "Using bash-native git-prompt and starship is superfluous. Use starship alone instead."
-        )
     symlink_files(
         link_git_prompt=args.link_git_prompt,
         link_starship_config=args.link_starship_config,
