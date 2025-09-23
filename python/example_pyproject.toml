@@ -1,0 +1,53 @@
+# BASE CONFIGURATION FOR RUFF & FAWLTYDEPS
+
+[tool.fawltydeps]
+# Via pre-commit
+ignore_unused = [
+    "coverage",
+    "coolkit-data-io-interface",
+    "numpy",
+    "pandas",
+    "pytest*",
+    ]
+
+[tool.ruff]
+# Via pre-commit
+line-length = 120
+preview = true
+
+[tool.ruff.format]
+docstring-code-format = true
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint]
+select = ["ALL"]
+# Top-level ignores - since algorithms are also in the repo, do add with care!
+ignore = [
+    "AIR",     # Disable all Airflow-related rules - not relevant here
+    "COM812",  # Comma warning suggested by ruff to be ignored
+    "D100",    # Allow missing docstring in public module
+    "D101",    # Allow missing docstring in public class
+    "D104",    # Allow missing docstring in public package
+    "D105",    # Allow missing docstring in magic method
+    "TD",      # Disable ToDo-Formatting - we don't allow TODOs in the code (detected via FIX rules)
+]
+
+[tool.ruff.lint.per-file-ignores]
+# Test code
+"tests/*" = [
+    "ANN401",  # Allow Any-annotations to feed-in data for tests
+    "D",       # Ignore all pydocstyle warnings
+    "DOC",     # Ignore all docstring warnings
+    "S311",    # Allow use of pseudo-number generators - no cryptographic concerns
+    "T201",    # Allow prints in tests
+]
+"tests/**/test_*" = ["S101"]  # Allow bare asserts in actual tests (used by Pytest)
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
