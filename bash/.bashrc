@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -60,6 +62,7 @@ if [ -z "${debian_chroot:-}" ] && [ -r /etc/debian_chroot ]; then
 fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
+# shellcheck disable=SC2034  # Code from the vanilla .bashrc on Linux
 case "$TERM" in
     xterm-color | *-256color) color_prompt=yes ;;
 esac
@@ -79,7 +82,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # Logging function
 # First input: Log-level name at which to log (DEBUG, INFO, WARN, ERROR)
 # Second input: Message to log
-# Note: Uses Env. Var $BASH_LOG_LEVEL to determine the log level to log at 
+# Note: Uses Env. Var $BASH_LOG_LEVEL to determine the log level to log at
 #       (default: INFO)
 function log_message() {
     local msg_log_level_name="$1"
@@ -93,7 +96,7 @@ function log_message() {
     local log_level_name_length_max=0
     for level_name in "${!log_level_name_to_level_map[@]}"; do
         local level_name_length=${#level_name}
-        if [ $level_name_length -gt $log_level_name_length_max ]; then
+        if [ "$level_name_length" -gt "$log_level_name_length_max" ]; then
             log_level_name_length_max=$level_name_length
         fi
     done
@@ -108,7 +111,7 @@ function log_message() {
     # Only log the message if the log level is the same or higher
     local msg_log_level="${log_level_name_to_level_map[$msg_log_level_name]}"
     local current_log_level="${log_level_name_to_level_map[$current_log_level_name]}"
-    if [ $msg_log_level -ge $current_log_level ]; then
+    if [ "$msg_log_level" -ge "$current_log_level" ]; then
         echo "$(date +"%Y-%m-%d %H:%M:%S") $(printf "%-${log_level_name_length_max}s" "$msg_log_level_name"):${script_name}: ${msg}"
     fi
 }
@@ -150,6 +153,7 @@ function source_if_exists() {
     local SUPPRESS_ERROR="${2:-false}"
 
     if [ -f "$FILE" ]; then
+        # shellcheck disable=SC1090  # We don't know which file will be sourced here
         source "$FILE"
         return 0
     else

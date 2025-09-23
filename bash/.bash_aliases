@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Alias & function definitions.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
@@ -110,15 +112,15 @@ function remove_from_path() {
 # Return: true if the dir/file has been added
 # Example: prepend_to_path "newpath" MANPATH
 function prepend_to_path() {
-    local PATHVARIABLE=${2:-PATH}
+    local PATH_VARIABLE=${2:-PATH}
     if [[ -d $1 ]] || [[ -f $1 ]]; then # Directory or file
-        log_debug "prepend_to_path: Adding '$1' to \$$PATHVARIABLE."
-        remove_from_path "$1" "$PATHVARIABLE"
-        export $PATHVARIABLE="$1${!PATHVARIABLE:+:${!PATHVARIABLE}}"
+        log_debug "prepend_to_path: Adding '$1' to \$$PATH_VARIABLE."
+        remove_from_path "$1" "$PATH_VARIABLE"
+        export "$PATH_VARIABLE"="$1${!PATH_VARIABLE:+:${!PATH_VARIABLE}}"
         true
     else
         if [[ -n $DEBUG_BASH_SCRIPTS && $DEBUG_BASH_SCRIPTS -eq 1 ]]; then
-            log_warn "prepend_to_path can't add '$1' to \$$PATHVARIABLE: Not a path or directory."
+            log_warn "prepend_to_path can't add '$1' to \$$PATH_VARIABLE: Not a path or directory."
         fi
         false
     fi
@@ -191,7 +193,7 @@ if [[ $(type -t starship) ]]; then
         log_debug "Setting PYTHONIOENCODING to utf8."
         export PYTHONIOENCODING=utf8
     fi
-elif source_if_exists $XDG_CONFIG_HOME/bash/git-prompt.sh true || source_if_exists $HOME/.config/bash/git-prompt.sh true; then
+elif source_if_exists "$XDG_CONFIG_HOME"/bash/git-prompt.sh true || source_if_exists "$HOME"/.config/bash/git-prompt.sh true; then
     log_debug "Using git-prompt.sh for git branch highlighting."
 fi
 
@@ -235,7 +237,9 @@ function add_completion() {
 # First input: Directory of the git repo to update
 function updateGitRepo {
     local repo_dir=$1
-    printf "\n[GIT-PULL LATEST CHANGES FOR $(basename "$repo_dir")]\n"
+    local repo_name
+    repo_name=$(basename "$repo_dir")
+    printf "\n[GIT-PULL LATEST CHANGES FOR %s]\n" "$repo_name"
     local current_dir
     current_dir=$(pwd)
     cd "$repo_dir" || return
