@@ -1,0 +1,31 @@
+# Via pre-commit
+line-length = 120
+preview = true
+
+[format]
+docstring-code-format = true
+skip-magic-trailing-comma = true
+
+[lint]
+select = ["ALL"]
+# Top-level ignores - since algorithms are also in the repo, do add with care!
+ignore = [
+    "AIR",     # Disable all Airflow-related rules - not relevant here
+    "COM812",  # Comma warning suggested by ruff to be ignored
+    "CPY001",  # Ignore missing copyright notice - contained in the LICENSE file
+    "D100",    # Allow missing docstring in public module
+    "D104",    # Allow missing docstring in public package
+    "D105",    # Allow missing docstring in magic method
+    "FBT001",  # Allow boolean flags in function definitions (used in scripts)
+    "TD",      # Disable ToDo-Formatting - we don't allow TODOs in the code (detected via FIX rules)
+    "T201",    # Allow print statements (used in scripts)
+]
+
+[lint.isort]
+force-single-line = true
+
+[lint.flake8-type-checking]
+strict = true
+
+[lint.pydocstyle]
+convention = "numpy"
