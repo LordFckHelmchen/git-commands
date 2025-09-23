@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Make a colorful git prompt.
 # Adapted from
 #   https://coderwall.com/p/pn8f0g/show-your-git-status-and-branch-in-color-at-the-command-prompt
