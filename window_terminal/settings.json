@@ -92,12 +92,6 @@
         "name": "Windows PowerShell"
       },
       {
-        "guid": "{aab79973-318f-43b6-a9bc-b4096493753f}",
-        "hidden": true,
-        "name": "Nushell",
-        "source": "nu"
-      },
-      {
         "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
         "hidden": true,
         "name": "Azure Cloud Shell",
