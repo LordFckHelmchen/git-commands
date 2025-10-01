@@ -140,7 +140,7 @@ function is_linux() {
 # Checks we are running on Windows
 # Return: true if on Windows, false otherwise
 function is_windows() {
-    [[ "$(uname)" == MINGW* ]]
+    [[ "$(uname)" == MINGW* || "$(uname)" == MSYS* ]]
 }
 
 if ! is_linux && ! is_windows; then
