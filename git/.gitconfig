@@ -19,7 +19,7 @@ autosetupremote = true
 	# List Deleted Branches (ie. where the remote is gone)
 	ldb = !git branch --verbose | grep gone
 	p = push
-	pf = push --force
+	pf = push --force-with-lease
 	s = status
 	sw = switch
 	# Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
