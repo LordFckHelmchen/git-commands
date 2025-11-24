@@ -8,73 +8,87 @@ default_install_hook_types:
   - pre-commit
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
     hooks:
-      - id: end-of-file-fixer
       - id: check-case-conflict
       - id: check-illegal-windows-names
       - id: check-json
+      - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
       - id: check-vcs-permalinks
       - id: check-yaml
+      - id: detect-private-key
       - id: end-of-file-fixer
       - id: fix-byte-order-marker
       - id: mixed-line-ending
       - id: pretty-format-json
+        exclude: "^\\.release-please-manifest\\.json$" # Exclude auto-generated release-please manifest
         args:
-        - --autofix
+          - --autofix
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/uv-pre-commit
-    rev: 0.8.19
+    rev: 88cb1bdc3f975bf753e85082b4784f6119fd3b15  # frozen: 0.9.11
     hooks:
-      - id: uv-lock
-      - id: uv-sync
+      - id: uv-lock # Check lock files
+      - id: uv-sync # Sync. local .venv
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.13.1
+    rev: fa1ed65ba95bfa7771a71003a9d74402541f5a5c  # frozen: v0.14.6
     hooks:
-      - id: ruff-check
+      - id: ruff-check # Run the linter & fix fixable issues
         args:
-        - --fix
+          - --fix
       - id: ruff-format
 
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: 9f70dc58c23dfcca1b97af99eaeee3140a807c7e  # frozen: v1.18.2
+    hooks:
+      - id: mypy
+        additional_dependencies:
+          - numpy==1.26.4 # Yocto-defined; for numpy typing plugin
+          - types-PyYAML # for YAML typing
+        exclude: "(docs|site|.+/tests)/.+\\.py" # Exclude file where mypy is not needed; done here as it would otherwise fail on file discovery due to duplicated tests folders in the monorepo
+        args:
+          - --config-file=pyproject.toml # Use pyproject.toml for configuration
+
   - repo: https://github.com/hukkin/mdformat # Format markdown files
-    rev: 0.7.22
+    rev: 2d496dbc18e31b83a1596685347ffe0b6041daf0  # frozen: 1.0.0
     hooks:
       - id: mdformat
         additional_dependencies:
-          - mdformat-beautysh>=0.1.1 # Use beautysh to format shell code blocks
-          - mdformat-config>=0.2.1 # Format JSON, TOML & YAML code blocks
-          - mdformat-footnote>=0.1.1
-          - mdformat-frontmatter>=2.0.8
-          - mdformat-gfm>=0.4.1 # Github Flavored Markdown
-          - mdformat-ruff>=0.1.3 # Use ruff to lint code blocks
-          - setuptools==78.1.0 # Required for beautysh, which assumes setuptools is installed
-        exclude: "CHANGELOG\\.md" # Exclude auto-generated release-please CHANGELOG
+          - mdformat-beautysh # Use beautysh to format shell code blocks
+          - mdformat-config # Format JSON, TOML & YAML code blocks
+          - mdformat-footnote # Format footnotes
+          - mdformat-front-matters # Format front matters
+          - mdformat-gfm # Github Flavored Markdown
+          - mdformat-ruff # Use ruff to lint code blocks
+        exclude: "CHANGELOG\\.md$" # Exclude auto-generated release-please CHANGELOG
         args:
           - --number
           - --wrap=120
           - --end-of-line=keep
 
   - repo: https://github.com/espressif/conventional-precommit-linter
-    rev: v1.10.0
+    rev: 7bc85936608ba0ae03887bb6e110555535d1c3ac  # frozen: v1.10.0
     hooks:
       - id: conventional-precommit-linter
         stages:
           - commit-msg
         args:
           - --allow-breaking
-          - --types=build,chore,ci,docs,feat,fix,refactor,test
+          - --types=build,chore,ci,docs,feat,fix,refactor,revert,test # Keep types in sync with .github/workflows/validate_pr_title.yml
 
-  - repo: https://github.com/tweag/FawltyDeps
-    rev: v0.20.0
+  - repo: https://github.com/tweag/FawltyDeps # Check for unused dependencies
+    rev: eeb37db10367fc47bfe80cf57087b86bc8d6d13e  # frozen: v0.20.0
     hooks:
       - id: check-undeclared
       - id: check-unused
 
-  -   repo: https://github.com/koalaman/shellcheck-precommit
-      rev: v0.11.0
-      hooks:
-      -   id: shellcheck
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.11.0
+    hooks:
+      - id: shellcheck
+        args:
+          - --exclude=SC1017 # Carriage return is handled by git & pre-commit
