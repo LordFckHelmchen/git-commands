@@ -180,6 +180,12 @@ if ! shopt -oq posix; then
         source_if_exists "$HOME/.bash_completion"
 fi
 
+# Enable vscode terminal shell integration (see https://code.visualstudio.com/docs/terminal/shell-integration)
+if [[ $(type -t code) ]]; then
+    log_info "Enabling VSCode terminal-shell integration"
+    # shellcheck disable=SC1090  # Determined dynamically & assured via if above
+    [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"
+fi
 
 log_done __BASHRC_START_TIME__
 unset __BASHRC_START_TIME__

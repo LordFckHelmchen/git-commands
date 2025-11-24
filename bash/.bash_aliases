@@ -64,6 +64,13 @@ alias now='date -u +"%Y-%m-%dT%H:%M:%S.%7N%:z"'
 
 
 # GH Copilot
+if [[ $(type -t copilot) ]]; then
+    alias cop='copilot'
+else
+    log_debug "'copilot' not found - can't define alias 'cop'."
+fi
+
+# GH Copilot via GH CLI (deprecated)
 if [[ $(type -t gh) ]]; then
     alias ghc='gh copilot'
     alias ghcs='ghc suggest'
