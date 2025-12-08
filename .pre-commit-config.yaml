@@ -2,6 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 
 default_install_hook_types:
+  - commit-msg # For conventional commit linting
   - pre-commit
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -24,7 +25,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: fa1ed65ba95bfa7771a71003a9d74402541f5a5c  # frozen: v0.14.6
+    rev: d96cc7adddf7d15b77f99dbd5d20e037dfd1b29c  # frozen: v0.14.9
     hooks:
       - id: ruff-check # Run the linter & fix fixable issues
         args:
@@ -32,7 +33,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/hukkin/mdformat # Format markdown files
-    rev: 2d496dbc18e31b83a1596685347ffe0b6041daf0  # frozen: 1.0.0
+    rev: 82912cdaea4fb830f751504486a7879c70526547  # frozen: 1.0.0
     hooks:
       - id: mdformat
         additional_dependencies:
@@ -42,24 +43,26 @@ repos:
           - mdformat-front-matters # Format front matters
           - mdformat-gfm # Github Flavored Markdown
           - mdformat-ruff # Use ruff to lint code blocks
-        exclude: "CHANGELOG\\.md$" # Exclude auto-generated release-please CHANGELOG
+        exclude: "CHANGELOG\\.md$" # Exclude auto-generated files
         args:
           - --number
           - --wrap=120
           - --end-of-line=keep
+          - --strict-front-matter # mdformat-front-matters: Enforce valid front-matter
 
   - repo: https://github.com/espressif/conventional-precommit-linter
-    rev: 7bc85936608ba0ae03887bb6e110555535d1c3ac  # frozen: v1.10.0
+    rev: aeba78b29b06233289a1a6ed80371a337e893e19  # frozen: v1.11.0
     hooks:
       - id: conventional-precommit-linter
         stages:
           - commit-msg
         args:
           - --allow-breaking
+          - --scopes=bash,git,github,python,themes,vs_code,windows_terminal
           - --types=build,chore,ci,docs,feat,fix,refactor,revert,test
 
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.11.0
+    rev: 99470f5e12208ff0fb17ab81c3c494f7620a1d8d  # frozen: v0.11.0
     hooks:
       - id: shellcheck
         args:
