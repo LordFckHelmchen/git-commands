@@ -12,17 +12,17 @@ __BASH_ALIASES_START_TIME__=$(date +%s)
 
 # Enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
-    if [ -r ~/.dircolors ]; then
-        eval "$(dircolors -b ~/.dircolors)"
-    else
-        eval "$(dircolors -b)"
-    fi
-    alias ls='ls --color=auto'
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
+	if [ -r ~/.dircolors ]; then
+		eval "$(dircolors -b ~/.dircolors)"
+	else
+		eval "$(dircolors -b)"
+	fi
+	alias ls='ls --color=auto'
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
 else
-    log_warn "'dircolors' not found - can't define colored aliases for 'ls' & the 'grep'-family."
+	log_warn "'dircolors' not found - can't define colored aliases for 'ls' & the 'grep'-family."
 fi
 
 # Add human readable file sizes & sort by byte-order (LC_ALL=C; e.g. hidden things first)
@@ -35,7 +35,6 @@ alias ll='l -l'
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
-
 ########################################################################################################################
 # Misc aliases
 ########################################################################################################################
@@ -44,7 +43,7 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # First input: Name of the command to check
 # Return: true if the command exists
 function is_command() {
-    [[ $(type -t "$1") ]]
+	[[ $(type -t "$1") ]]
 }
 
 # Print env variables sorted by name
@@ -61,14 +60,13 @@ alias findstr='grep --ignore-case --recursive --files-with-matches'
 
 # Syntax-highlighted (and therefore cooler) cat
 if is_command pygmentize; then
-    alias dog='pygmentize -g'
+	alias dog='pygmentize -g'
 else
-    log_warn "'pygmentize' not found - can't define alias 'dog'."
+	log_warn "'pygmentize' not found - can't define alias 'dog'."
 fi
 
 # Show the current date in ISO 8601 format (UTC)
 alias now='date -u +"%Y-%m-%dT%H:%M:%S.%7N%:z"'
-
 
 ########################################################################################################################
 # Functions to help us manage paths
@@ -78,29 +76,29 @@ alias now='date -u +"%Y-%m-%dT%H:%M:%S.%7N%:z"'
 # Second input: Name of the path variable to check (default: PATH)
 # Return: true if the entity existed on the path variable
 function is_on_path() {
-    local PATHVARIABLE=${2:-PATH}
-    [[ :${!PATHVARIABLE}: == *:"$1":* ]] # Returns true if it's on the path
+	local PATHVARIABLE=${2:-PATH}
+	[[ :${!PATHVARIABLE}: == *:"$1":* ]] # Returns true if it's on the path
 }
 
 # First input: Name of the entity to be removed from the path variable
 # Second input: Name of the path variable to be modified (default: PATH)
 # Return: true if the entity existed on the path variable & has been removed
 function remove_from_path() {
-    if is_on_path "$1"; then
-        local IFS=':'
-        local NEWPATH
-        local DIR
-        local PATHVARIABLE=${2:-PATH}
-        for DIR in ${!PATHVARIABLE}; do
-            if [[ $DIR != "$1" ]]; then
-                NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
-            fi
-        done
-        export "$PATHVARIABLE"="$NEWPATH"
-        true
-    else
-        false
-    fi
+	if is_on_path "$1"; then
+		local IFS=':'
+		local NEWPATH
+		local DIR
+		local PATHVARIABLE=${2:-PATH}
+		for DIR in ${!PATHVARIABLE}; do
+			if [[ $DIR != "$1" ]]; then
+				NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
+			fi
+		done
+		export "$PATHVARIABLE"="$NEWPATH"
+		true
+	else
+		false
+	fi
 }
 
 # First input: Name of a directory or file to be added to the front of a path variable
@@ -109,20 +107,19 @@ function remove_from_path() {
 # Return: true if the dir/file has been added
 # Example: prepend_to_path "newpath" MANPATH
 function prepend_to_path() {
-    local PATH_VARIABLE=${2:-PATH}
-    if [[ -d $1 ]] || [[ -f $1 ]]; then # Directory or file
-        log_debug "prepend_to_path: Adding '$1' to \$$PATH_VARIABLE."
-        remove_from_path "$1" "$PATH_VARIABLE"
-        export "$PATH_VARIABLE"="$1${!PATH_VARIABLE:+:${!PATH_VARIABLE}}"
-        true
-    else
-        if [[ -n $DEBUG_BASH_SCRIPTS && $DEBUG_BASH_SCRIPTS -eq 1 ]]; then
-            log_warn "prepend_to_path can't add '$1' to \$$PATH_VARIABLE: Not a path or directory."
-        fi
-        false
-    fi
+	local PATH_VARIABLE=${2:-PATH}
+	if [[ -d $1 ]] || [[ -f $1 ]]; then # Directory or file
+		log_debug "prepend_to_path: Adding '$1' to \$$PATH_VARIABLE."
+		remove_from_path "$1" "$PATH_VARIABLE"
+		export "$PATH_VARIABLE"="$1${!PATH_VARIABLE:+:${!PATH_VARIABLE}}"
+		true
+	else
+		if [[ -n $DEBUG_BASH_SCRIPTS && $DEBUG_BASH_SCRIPTS -eq 1 ]]; then
+			log_warn "prepend_to_path can't add '$1' to \$$PATH_VARIABLE: Not a path or directory."
+		fi
+		false
+	fi
 }
-
 
 ########################################################################################################################
 # OS checks
@@ -131,19 +128,18 @@ function prepend_to_path() {
 # Checks we are running on Linux
 # Return: true if on Linux, false otherwise
 function is_linux() {
-    [[ "$(uname)" == "Linux" ]]
+	[[ "$(uname)" == "Linux" ]]
 }
 
 # Checks we are running on Windows
 # Return: true if on Windows, false otherwise
 function is_windows() {
-    [[ "$(uname)" == MINGW* || "$(uname)" == MSYS* ]]
+	[[ "$(uname)" == MINGW* || "$(uname)" == MSYS* ]]
 }
 
 if ! is_linux && ! is_windows; then
-    log_error "Running on an unknown operating system."
+	log_error "Running on an unknown operating system."
 fi
-
 
 ########################################################################################################################
 # Git
@@ -151,68 +147,65 @@ fi
 
 # Highlight git branches based on Starship config
 if is_command starship; then
-    log_debug "Using Starship."
-    eval "$(starship init bash)"  # Assume git bash for windows
-    if is_linux; then
-        log_debug "Setting PYTHONIOENCODING to utf8."
-        export PYTHONIOENCODING=utf8
-    fi
+	log_debug "Using Starship."
+	eval "$(starship init bash)" # Assume git bash for windows
+	if is_linux; then
+		log_debug "Setting PYTHONIOENCODING to utf8."
+		export PYTHONIOENCODING=utf8
+	fi
 elif source_if_exists "$XDG_CONFIG_HOME"/bash/git-prompt.sh true || source_if_exists "$HOME"/.config/bash/git-prompt.sh true; then
-    log_debug "Using git-prompt.sh for git branch highlighting."
+	log_debug "Using git-prompt.sh for git branch highlighting."
 fi
-
-
 
 ########################################################################################################################
 # Local bin paths
 ########################################################################################################################
 # Pyenv
 if is_windows; then
-    # WINDOWS: Use pyenv-win
-    export PYENV_HOME="$HOME/.pyenv/pyenv-win"
-    if [[ -d $PYENV_HOME ]]; then
-        export PYENV_ROOT=$PYENV_HOME
-        export PYENV=$PYENV_HOME
-        prepend_to_path "$PYENV_HOME/bin"
-        prepend_to_path "$PYENV_HOME/shims"
-    else
-        unset PYENV_HOME
-    fi
+	# WINDOWS: Use pyenv-win
+	export PYENV_HOME="$HOME/.pyenv/pyenv-win"
+	if [[ -d $PYENV_HOME ]]; then
+		export PYENV_ROOT=$PYENV_HOME
+		export PYENV=$PYENV_HOME
+		prepend_to_path "$PYENV_HOME/bin"
+		prepend_to_path "$PYENV_HOME/shims"
+	else
+		unset PYENV_HOME
+	fi
 elif is_linux; then
-    # LINUX: Use native pyenv
-    export PYENV_HOME="$HOME/.pyenv"
-    if [[ -d $PYENV_HOME ]]; then
-        prepend_to_path "$PYENV_HOME/bin"
-        eval "$(pyenv init -)"
-        eval "$(pyenv virtualenv-init -)"
-    else
-        unset PYENV_HOME
-    fi
+	# LINUX: Use native pyenv
+	export PYENV_HOME="$HOME/.pyenv"
+	if [[ -d $PYENV_HOME ]]; then
+		prepend_to_path "$PYENV_HOME/bin"
+		eval "$(pyenv init -)"
+		eval "$(pyenv virtualenv-init -)"
+	else
+		unset PYENV_HOME
+	fi
 fi
 
 # Poetry
 if is_linux; then
-    export POETRY_HOME="$HOME/.poetry"
-    if [[ -d $POETRY_HOME ]]; then
-        prepend_to_path "$POETRY_HOME/bin"
-    else
-        unset POETRY_HOME
-    fi
+	export POETRY_HOME="$HOME/.poetry"
+	if [[ -d $POETRY_HOME ]]; then
+		prepend_to_path "$POETRY_HOME/bin"
+	else
+		unset POETRY_HOME
+	fi
 fi
 
 # LINUX: User-specific bin path
 if is_linux; then
-    prepend_to_path "$HOME/.local/bin"
+	prepend_to_path "$HOME/.local/bin"
 fi
 
 # ADR-tools
 export ADR_HOME="$HOME/.adr-tools"
 if [[ -d $ADR_HOME ]]; then
-    prepend_to_path "$ADR_HOME/src"
+	prepend_to_path "$ADR_HOME/src"
 else
-    unset ADR_HOME
+	unset ADR_HOME
 fi
-
 
 ########################################################################################################################
 # Update functions
@@ -220,93 +213,92 @@ fi
 
 export BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
 if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
-    log_debug "Creating new bash-completion folder at '$BASH_COMPLETION_FOLDER'"
-    mkdir --parents --verbose "$BASH_COMPLETION_FOLDER"
+	log_debug "Creating new bash-completion folder at '$BASH_COMPLETION_FOLDER'"
+	mkdir --parents --verbose "$BASH_COMPLETION_FOLDER"
 fi
 
 # Add completions for a command
 # First input: name of the command
 # Second input: command to add the completions
 function add_completion() {
-    local cmd=$1
-    local completion_cmd=$2
-    log_info "Create completions for '$cmd'"
-    local completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
-    log_debug "'$cmd' will be created via '$completion_cmd > $completion_file'"
-    eval "$completion_cmd" > "$completion_file"
+	local cmd=$1
+	local completion_cmd=$2
+	log_info "Create completions for '$cmd'"
+	local completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
+	log_debug "'$cmd' will be created via '$completion_cmd > $completion_file'"
+	eval "$completion_cmd" >"$completion_file"
 }
 
-
 function updateAll {
-    if is_windows; then
-        # winget-based upgrade on Windows
-        printf "\n[WINGET UPGRADE --ALL]\n"
-        winget upgrade --all
-    elif is_linux; then
-        # apt-based upgrade on Linux
-        printf "\n[APT UPDATE]\n"
-        sudo apt update -y
-        echo '[APT UPGRADE]'
-        sudo apt upgrade -y
-        echo '[APT AUTOCLEAN]'
-        sudo apt autoclean -y
-        echo '[APT AUTOREMOVE]'
-        sudo apt autoremove -y
-    fi
+	if is_windows; then
+		# winget-based upgrade on Windows
+		printf "\n[WINGET UPGRADE --ALL]\n"
+		winget upgrade --all
+	elif is_linux; then
+		# apt-based upgrade on Linux
+		printf "\n[APT UPDATE]\n"
+		sudo apt update -y
+		echo '[APT UPGRADE]'
+		sudo apt upgrade -y
+		echo '[APT AUTOCLEAN]'
+		sudo apt autoclean -y
+		echo '[APT AUTOREMOVE]'
+		sudo apt autoremove -y
+	fi
 
-    if is_command pipx; then
-        printf "\n[PIPX UPGRADE-ALL]\n"
-        pipx upgrade-all
-        add_completion "pipx" "register-python-argcomplete pipx"
-    fi
+	if is_command pipx; then
+		printf "\n[PIPX UPGRADE-ALL]\n"
+		pipx upgrade-all
+		add_completion "pipx" "register-python-argcomplete pipx"
+	fi
 
-    if is_command uv; then
-        if is_linux; then
-            # Assume installation on windows was done via winget
-            printf "\n[UV SELF UPDATE]\n"
-            uv self update
-        fi
+	if is_command uv; then
+		if is_linux; then
+			# Assume installation on windows was done via winget
+			printf "\n[UV SELF UPDATE]\n"
+			uv self update
+		fi
 
-        printf "\n[UV TOOL UPGRADE --ALL]\n"
-        uv tool upgrade --all
-        add_completion "uv" "uv generate-shell-completion bash"
-    fi
+		printf "\n[UV TOOL UPGRADE --ALL]\n"
+		uv tool upgrade --all
+		add_completion "uv" "uv generate-shell-completion bash"
+	fi
 
-    if is_command gh; then
-        printf "\n[GH EXTENSION UPGRADE --ALL]\n"
-        gh extension upgrade --all
-        add_completion "gh" "gh completion -s bash"
-    fi
+	if is_command gh; then
+		printf "\n[GH EXTENSION UPGRADE --ALL]\n"
+		gh extension upgrade --all
+		add_completion "gh" "gh completion -s bash"
+	fi
 
-    if is_command rustup; then
-        printf "\n[RUSTUP UPDATE]\n"
-        rustup update
-    fi
+	if is_command rustup; then
+		printf "\n[RUSTUP UPDATE]\n"
+		rustup update
+	fi
 
-    # Loop through repo directories and update them
-    if is_command gittyup; then
-        local repo_dirs=("$HOME/Git" "$PYENV_HOME" "$ADR_HOME")
-        for repo_dir in "${repo_dirs[@]}"; do
-            # Update all git repositories in the given directory sequentially
-            gittyup --ignore-all-changes --sync "$repo_dir"
-        done
-    else
-        log_warn "'gittyup' command not found - can't update git repositories. Please install gittyup via 'uv tool install gittyup' or update your git repos manually."
-    fi
+	# Loop through repo directories and update them
+	if is_command gittyup; then
+		local repo_dirs=("$HOME/Git" "$PYENV_HOME" "$ADR_HOME")
+		for repo_dir in "${repo_dirs[@]}"; do
+			# Update all git repositories in the given directory sequentially
+			gittyup --ignore-all-changes --sync "$repo_dir"
+		done
+	else
+		log_warn "'gittyup' command not found - can't update git repositories. Please install gittyup via 'uv tool install gittyup' or update your git repos manually."
+	fi
 
-    # Update bash completions for additional binaries
-    if is_command adr; then
-        add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
-    fi
-    if is_command pip; then
-        add_completion "pip" "pip completion --bash"
-    fi
-    if is_command poetry; then
-        add_completion "poetry" "poetry completions bash"
-    fi
-    if is_command starship; then
-        add_completion "starship" "starship completions bash"
-    fi
+	# Update bash completions for additional binaries
+	if is_command adr; then
+		add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
+	fi
+	if is_command pip; then
+		add_completion "pip" "pip completion --bash"
+	fi
+	if is_command poetry; then
+		add_completion "poetry" "poetry completions bash"
+	fi
+	if is_command starship; then
+		add_completion "starship" "starship completions bash"
+	fi
 }
 
 log_done __BASH_ALIASES_START_TIME__
