@@ -1,6 +1,15 @@
 # This is Git's per-user configuration file.
+[core]
+autocrlf = input
+
 [push]
 autosetupremote = true
+
+[pull]
+rebase = true
+
+[init]
+defaultBranch = main
 
 [alias]
 	bD = branch --delete --force
