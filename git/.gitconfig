@@ -26,3 +26,5 @@ autosetupremote = true
 	tree = !git ls-tree --full-name --name-only -tr HEAD | sed --expression=\"s/[^-][^\\/]*\\// |/g\" --expression=\"s/|\\([^ ]\\)/|-- \\1/\"
 	# Fetch, prune and pull
 	up = !git fetch --all --prune && git pull
+	# List unique conventional commit scopes
+	ccscopes = !git log --format=%s | grep -oP \"^\\w+\\(\\K[^)]+(?=\\):)\" | sort -u
