@@ -40,6 +40,13 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # Misc aliases
 ########################################################################################################################
 
+# Check if a command exists
+# First input: Name of the command to check
+# Return: true if the command exists
+function is_command() {
+    [[ $(type -t "$1") ]]
+}
+
 # Print env variables sorted by name
 alias envsrt='env | sort'
 
@@ -53,7 +60,7 @@ alias lspath='echo $PATH | tr ":" "\n"'
 alias findstr='grep --ignore-case --recursive --files-with-matches'
 
 # Syntax-highlighted (and therefore cooler) cat
-if [[ $(type -t pygmentize) ]]; then
+if is_command pygmentize; then
     alias dog='pygmentize -g'
 else
     log_warn "'pygmentize' not found - can't define alias 'dog'."
@@ -140,6 +147,24 @@ fi
 
 
 ########################################################################################################################
+# Git
+########################################################################################################################
+
+# Highlight git branches based on Starship config
+if is_command starship; then
+    log_debug "Using Starship."
+    eval "$(starship init bash)"  # Assume git bash for windows
+    if is_linux; then
+        log_debug "Setting PYTHONIOENCODING to utf8."
+        export PYTHONIOENCODING=utf8
+    fi
+elif source_if_exists "$XDG_CONFIG_HOME"/bash/git-prompt.sh true || source_if_exists "$HOME"/.config/bash/git-prompt.sh true; then
+    log_debug "Using git-prompt.sh for git branch highlighting."
+fi
+
+
+
+########################################################################################################################
 # Local bin paths
 ########################################################################################################################
 # Pyenv
@@ -174,18 +199,6 @@ if is_linux; then
     else
         unset POETRY_HOME
     fi
-fi
-
-# Highlight git branches based on Starship config
-if [[ $(type -t starship) ]]; then
-    log_debug "Using Starship."
-    eval "$(starship init bash)"  # Assume git bash for windows
-    if is_linux; then
-        log_debug "Setting PYTHONIOENCODING to utf8."
-        export PYTHONIOENCODING=utf8
-    fi
-elif source_if_exists "$XDG_CONFIG_HOME"/bash/git-prompt.sh true || source_if_exists "$HOME"/.config/bash/git-prompt.sh true; then
-    log_debug "Using git-prompt.sh for git branch highlighting."
 fi
 
 # LINUX: User-specific bin path
@@ -255,13 +268,13 @@ function updateAll {
         sudo apt autoremove -y
     fi
 
-    if [[ $(type -t pipx) ]]; then
+    if is_command pipx; then
         printf "\n[PIPX UPGRADE-ALL]\n"
         pipx upgrade-all
         add_completion "pipx" "register-python-argcomplete pipx"
     fi
 
-    if [[ $(type -t uv) ]]; then
+    if is_command uv; then
         if is_linux; then
             # Assume installation on windows was done via winget
             printf "\n[UV SELF UPDATE]\n"
@@ -273,13 +286,13 @@ function updateAll {
         add_completion "uv" "uv generate-shell-completion bash"
     fi
 
-    if [[ $(type -t gh) ]]; then
+    if is_command gh; then
         printf "\n[GH EXTENSION UPGRADE --ALL]\n"
         gh extension upgrade --all
         add_completion "gh" "gh completion -s bash"
     fi
 
-    if [[ $(type -t rustup) ]]; then
+    if is_command rustup; then
         printf "\n[RUSTUP UPDATE]\n"
         rustup update
     fi
@@ -295,16 +308,16 @@ function updateAll {
     done
 
     # Update bash completions for additional binaries
-    if [[ $(type -t adr) ]]; then
+    if is_command adr; then
         add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
     fi
-    if [[ $(type -t pip) ]]; then
+    if is_command pip; then
         add_completion "pip" "pip completion --bash"
     fi
-    if [[ $(type -t poetry) ]]; then
+    if is_command poetry; then
         add_completion "poetry" "poetry completions bash"
     fi
-    if [[ $(type -t starship) ]]; then
+    if is_command starship; then
         add_completion "starship" "starship completions bash"
     fi
 }
