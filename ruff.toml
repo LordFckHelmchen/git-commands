@@ -16,7 +16,6 @@ ignore = [
     "D100",    # Allow missing docstring in public module
     "D104",    # Allow missing docstring in public package
     "D105",    # Allow missing docstring in magic method
-    "FBT001",  # Allow boolean flags in function definitions (used in scripts)
     "TD",      # Disable ToDo-Formatting - we don't allow TODOs in the code (detected via FIX rules)
     "T201",    # Allow print statements (used in scripts)
 ]

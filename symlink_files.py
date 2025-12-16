@@ -81,7 +81,7 @@ GIT_PROMPT_FILE = RepoFileMap(file_names={"git-prompt.sh"}, repo_sub_dir="bash",
 STARSHIP_CONFIG_FILE = RepoFileMap(file_names={"starship.toml"}, repo_sub_dir="themes", home_sub_dir=CONFIG_SUBDIR)
 
 
-def symlink_files(link_git_prompt: bool, link_starship_config: bool, overwrite_existing_files: bool) -> None:
+def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, overwrite_existing_files: bool) -> None:
     """
     Create symbolic links from the configuration files in this repo to the user's home directory.
 
