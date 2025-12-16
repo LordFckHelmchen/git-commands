@@ -181,7 +181,7 @@ if ! shopt -oq posix; then
 fi
 
 # Enable vscode terminal shell integration (see https://code.visualstudio.com/docs/terminal/shell-integration)
-if [[ $(type -t code) ]]; then
+if is_command code; then
     log_info "Enabling VSCode terminal-shell integration"
     # shellcheck disable=SC1090  # Determined dynamically & assured via if above
     [[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"
