@@ -29,6 +29,7 @@ ignore = [
     "D101",    # Allow missing docstring in public class
     "D104",    # Allow missing docstring in public package
     "D105",    # Allow missing docstring in magic method
+    "FAST",    # Disable all FastAPI-related rules - not relevant here
     "TD",      # Disable ToDo-Formatting - we don't allow TODOs in the code (detected via FIX rules)
 ]
 

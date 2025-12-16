@@ -2,9 +2,8 @@
 # requires-python = ">=3.7"
 # dependencies = []
 # ///
-# SPDX-FileCopyrightText: Copyright (c) 2025 Koninklijke Philips N.V
-# SPDX-License-Identifier: LicenseRef-PhilipsProprietary
-
+# SPDX-FileCopyrightText: Copyright (c) 2025 LordFckHelmchen
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 import argparse
 import importlib
