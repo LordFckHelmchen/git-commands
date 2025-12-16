@@ -57,7 +57,7 @@ repos:
           - --config-file=pyproject.toml # Use pyproject.toml for configuration
 
   - repo: https://github.com/hukkin/mdformat # Format markdown files
-    rev: 2d496dbc18e31b83a1596685347ffe0b6041daf0  # frozen: 1.0.0
+    rev: 82912cdaea4fb830f751504486a7879c70526547  # frozen: 1.0.0
     hooks:
       - id: mdformat
         additional_dependencies:
@@ -75,7 +75,7 @@ repos:
           - --strict-front-matter # mdformat-front-matters: Enforce valid front-matter
 
   - repo: https://github.com/espressif/conventional-precommit-linter
-    rev: c19d9dd4e304f52bab98a27b49d7e15d841f7475  # frozen: v1.11.0
+    rev: aeba78b29b06233289a1a6ed80371a337e893e19  # frozen: v1.11.0
     hooks:
       - id: conventional-precommit-linter
         stages:
@@ -93,8 +93,13 @@ repos:
       - id: check-unused
 
   - repo: https://github.com/koalaman/shellcheck-precommit
-    rev: v0.11.0
+    rev: 99470f5e12208ff0fb17ab81c3c494f7620a1d8d  # frozen: v0.11.0
     hooks:
       - id: shellcheck
         args:
           - --exclude=SC1017 # Carriage return is handled by git & pre-commit
+
+  - repo: https://github.com/scop/pre-commit-shfmt
+    rev: 2a30809d16bc7a60d9b97353c797f42b510d3368  # frozen: v3.12.0-2
+    hooks:
+      - id: shfmt

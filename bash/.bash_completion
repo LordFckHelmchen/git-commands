@@ -5,13 +5,13 @@ __BASH_COMPLETION_START_TIME__=$(date +%s)
 
 # Source bash completions
 if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
-    log_warn "No bash-completion folder found at '$BASH_COMPLETION_FOLDER' - skipping custom completions"
+	log_warn "No bash-completion folder found at '$BASH_COMPLETION_FOLDER' - skipping custom completions"
 fi
 for file in "$BASH_COMPLETION_FOLDER"/*; do
-    if [ -f "$file" ]; then
-        log_debug "Sourcing '$file'"
-        source_if_exists "$file"
-    fi
+	if [ -f "$file" ]; then
+		log_debug "Sourcing '$file'"
+		source_if_exists "$file"
+	fi
 done
 unset file
 
