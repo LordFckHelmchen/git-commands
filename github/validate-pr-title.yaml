@@ -1,0 +1,25 @@
+name: validate PR title
+
+on:
+  pull_request:
+    types:
+      - edited
+      - opened
+      - reopened
+      - synchronize
+
+jobs:
+  validate-pr-title:
+    runs-on: [self-hosted, linux, x64, philips-code-hub, ubuntu-latest]
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Check for Conventional Commit PR title
+        uses: ytanikin/pr-conventional-commits@fda730cb152c05a849d6d84325e50c6182d9d1e9 # v1.5.1
+        with:
+          # Keep configuration in sync with .pre-commit-config.yaml's conventional-precommit-linter hook
+          task_types: '["build", "chore", "ci", "docs", "feat", "fix", "test", "refactor", "revert"]'
+          scope_types: '["bash","git","github","python","themes","vs_code","windows_terminal"]'
+
+          # Also add the scope as label if given
+          add_scope_label: true
