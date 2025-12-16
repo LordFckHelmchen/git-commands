@@ -70,7 +70,6 @@ fi
 alias now='date -u +"%Y-%m-%dT%H:%M:%S.%7N%:z"'
 
 
-
 ########################################################################################################################
 # Functions to help us manage paths
 ########################################################################################################################
@@ -237,19 +236,6 @@ function add_completion() {
     eval "$completion_cmd" > "$completion_file"
 }
 
-# Update a git repo
-# First input: Directory of the git repo to update
-function updateGitRepo {
-    local repo_dir=$1
-    local repo_name
-    repo_name=$(basename "$repo_dir")
-    printf "\n[GIT-PULL LATEST CHANGES FOR %s]\n" "$repo_name"
-    local current_dir
-    current_dir=$(pwd)
-    cd "$repo_dir" || return
-    git fetch --all --prune && git pull
-    cd "$current_dir" || return
-}
 
 function updateAll {
     if is_windows; then
@@ -298,14 +284,15 @@ function updateAll {
     fi
 
     # Loop through repo directories and update them
-    local repo_dirs=("$PYENV_HOME" "$ADR_HOME")
-    for repo_dir in "${repo_dirs[@]}"; do
-        if [[ -d $repo_dir ]]; then
-            updateGitRepo "$repo_dir"
-        else
-            log_debug "Directory '$repo_dir' not found - can't update."
-        fi
-    done
+    if is_command gittyup; then
+        local repo_dirs=("$HOME/Git" "$PYENV_HOME" "$ADR_HOME")
+        for repo_dir in "${repo_dirs[@]}"; do
+            # Update all git repositories in the given directory sequentially
+            gittyup --ignore-all-changes --sync "$repo_dir"
+        done
+    else
+        log_warn "'gittyup' command not found - can't update git repositories. Please install gittyup via 'uv tool install gittyup' or update your git repos manually."
+    fi
 
     # Update bash completions for additional binaries
     if is_command adr; then
