@@ -212,22 +212,70 @@ fi
 ########################################################################################################################
 
 export BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
-if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
-	log_debug "Creating new bash-completion folder at '$BASH_COMPLETION_FOLDER'"
-	mkdir --parents --verbose "$BASH_COMPLETION_FOLDER"
-fi
 
-# Add completions for a command
+function create_bash_completion_folder() {
+	log_info "Creating new bash-completion folder at '$BASH_COMPLETION_FOLDER'"
+	mkdir --parents --verbose "$BASH_COMPLETION_FOLDER"
+}
+
+# Add completions for a command and source them
 # First input: name of the command
-# Second input: command to add the completions
+# Second input: command to show the completions - the output will be redirected to a .bash-completion file
 function add_completion() {
+	# Call it to make sure the folder exists, i.e. in case it was deleted after sourcing this script
+	if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
+		create_bash_completion_folder
+	fi
+
 	local cmd=$1
 	local completion_cmd=$2
 	log_info "Create completions for '$cmd'"
 	local completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
 	log_debug "'$cmd' will be created via '$completion_cmd > $completion_file'"
 	eval "$completion_cmd" >"$completion_file"
+
+	# Source the completion file
+	log_debug "Sourcing completion file for '$cmd'"
+	# shellcheck source=/dev/null
+	source "$completion_file"
 }
+
+# Update bash completions for installed binaries
+function add_completions() {
+	if is_command adr; then
+		add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
+	fi
+	if is_command complexipy; then
+		add_completion "complexipy" "complexipy --show-completion bash"
+	fi
+	if is_command gh; then
+		add_completion "gh" "gh completion -s bash"
+	fi
+	if is_command pip; then
+		add_completion "pip" "pip completion --bash"
+	fi
+	if is_command pipx; then
+		add_completion "pipx" "register-python-argcomplete pipx"
+	fi
+	if is_command poetry; then
+		add_completion "poetry" "poetry completions bash"
+	fi
+	if is_command prek; then
+		add_completion "prek" "COMPLETE=bash prek"
+	fi
+	if is_command starship; then
+		add_completion "starship" "starship completions bash"
+	fi
+	if is_command uv; then
+		add_completion "uv" "uv generate-shell-completion bash"
+	fi
+
+}
+
+# Make sure completions are added when the file is sourced
+if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
+	add_completions
+fi
 
 function updateAll {
 	if is_windows; then
@@ -249,7 +297,6 @@ function updateAll {
 	if is_command pipx; then
 		printf "\n[PIPX UPGRADE-ALL]\n"
 		pipx upgrade-all
-		add_completion "pipx" "register-python-argcomplete pipx"
 	fi
 
 	if is_command uv; then
@@ -261,13 +308,11 @@ function updateAll {
 
 		printf "\n[UV TOOL UPGRADE --ALL]\n"
 		uv tool upgrade --all
-		add_completion "uv" "uv generate-shell-completion bash"
 	fi
 
 	if is_command gh; then
 		printf "\n[GH EXTENSION UPGRADE --ALL]\n"
 		gh extension upgrade --all
-		add_completion "gh" "gh completion -s bash"
 	fi
 
 	if is_command rustup; then
@@ -286,19 +331,8 @@ function updateAll {
 		log_warn "'gittyup' command not found - can't update git repositories. Please install gittyup via 'uv tool install gittyup' or update your git repos manually."
 	fi
 
-	# Update bash completions for additional binaries
-	if is_command adr; then
-		add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
-	fi
-	if is_command pip; then
-		add_completion "pip" "pip completion --bash"
-	fi
-	if is_command poetry; then
-		add_completion "poetry" "poetry completions bash"
-	fi
-	if is_command starship; then
-		add_completion "starship" "starship completions bash"
-	fi
+	# Update bash completions for all installed binaries
+	add_completions
 }
 
 log_done __BASH_ALIASES_START_TIME__
