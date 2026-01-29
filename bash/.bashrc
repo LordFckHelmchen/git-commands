@@ -186,5 +186,24 @@ if is_command code; then
 	[[ "$TERM_PROGRAM" == "vscode" ]] && . "$(code --locate-shell-integration-path bash)"
 fi
 
+########################################################################################################################
+# System-specific configuration
+########################################################################################################################
+# Source system-specific local configuration that should not be checked into the repository.
+# This allows for environment variables, aliases, and functions specific to a system or work
+# environment without polluting the shared repository.
+#
+# Create ~/.bash_config.local with your local settings.
+# Examples of what to put there:
+#   - export COMPANY_PROXY="http://proxy.company.com:8080"
+#   - export WORK_REPO_PATH="/mnt/c/work/projects"
+#   - alias vpn='sudo openvpn --config /etc/openvpn/work.conf'
+
+export BASH_CONFIG_LOCAL_FILE="$HOME/.bash_config_local.sh"
+
+if source_if_exists "$BASH_CONFIG_LOCAL_FILE" true; then
+	log_debug "Sourced system-specific config from $BASH_CONFIG_LOCAL_FILE"
+fi
+
 log_done __BASHRC_START_TIME__
 unset __BASHRC_START_TIME__
