@@ -16,27 +16,29 @@ permissions:
 jobs:
   pre-commit-update:
     name: Auto-update pre-commit hooks
-    runs-on: [self-hosted, x64, linux, philips-code-hub]
+    runs-on: [self-hosted, x64, linux, philips-code-hub, ubuntu-2404]
     steps:
       - name: Checkout code
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Install Python
-        uses: actions/setup-python@83679a892e2d95755f2dac6acb0bfd1e9ac5d548 # v6.1.0
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version-file: pyproject.toml
 
-      - name: Install pre-commit
-        run: pip install pre-commit
+      - name: Install prek
+        uses: j178/prek-action@9d6a3097e0c1865ecce00cfb89fe80f2ee91b547 # v1.0.12
+        with:
+          install-only: true  # Do not `prek run`
 
       - name: Update pre-commit hooks
-        run: pre-commit autoupdate --freeze  # Use hashes for versions
+        run: prek autoupdate --freeze
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7.0.11
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
         with:
           branch: pre-commit/autoupdate
           title: "build(deps): Update pre-commit hooks"
           commit-message: "build(deps): Update pre-commit hooks"
-          body: # Empty
+          body: ""  # Empty
           labels: dependencies
