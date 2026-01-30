@@ -242,37 +242,30 @@ function add_completion() {
 
 # Update bash completions for installed binaries
 function add_completions() {
-	if is_command adr; then
-		add_completion "adr" "cat $ADR_HOME/autocomplete/adr"
-	fi
-	if is_command complexipy; then
-		add_completion "complexipy" "complexipy --show-completion bash"
-	fi
-	if is_command gh; then
-		add_completion "gh" "gh completion -s bash"
-	fi
-	if is_command pip; then
-		add_completion "pip" "pip completion --bash"
-	fi
-	if is_command pipx; then
-		add_completion "pipx" "register-python-argcomplete pipx"
-	fi
-	if is_command poetry; then
-		add_completion "poetry" "poetry completions bash"
-	fi
-	if is_command prek; then
-		add_completion "prek" "COMPLETE=bash prek"
-	fi
-	if is_command starship; then
-		add_completion "starship" "starship completions bash"
-	fi
-	if is_command uv; then
-		add_completion "uv" "uv generate-shell-completion bash"
-	fi
+	# Define commands with their corresponding completion commands
+	declare -A completion_commands=(
+		["adr"]="cat $ADR_HOME/autocomplete/adr"
+		["complexipy"]="complexipy --show-completion bash"
+		["gh"]="gh completion -s bash"
+		["pip"]="pip completion --bash"
+		["pipx"]="register-python-argcomplete pipx"
+		["poetry"]="poetry completions bash"
+		["prek"]="COMPLETE=bash prek"
+		["rumdl"]="rumdl completions bash"
+		["starship"]="starship completions bash"
+		["uv"]="uv generate-shell-completion bash"
+	)
 
+	# Loop through commands and add completions if command exists
+	local cmd
+	for cmd in "${!completion_commands[@]}"; do
+		if is_command "$cmd"; then
+			add_completion "$cmd" "${completion_commands[$cmd]}"
+		fi
+	done
 }
 
-# Make sure completions are added when the file is sourced
+# Make sure completions are added when the file is sourced and the completions folder doesn't exist yet
 if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
 	add_completions
 fi
