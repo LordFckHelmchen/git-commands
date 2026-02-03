@@ -161,26 +161,27 @@ fi
 # Local bin paths
 ########################################################################################################################
 # Pyenv
+export PYENV_DIR="$HOME/.pyenv"
 if is_windows; then
 	# WINDOWS: Use pyenv-win
-	export PYENV_HOME="$HOME/.pyenv/pyenv-win"
+	export PYENV_HOME="$PYENV_DIR/pyenv-win"
 	if [[ -d $PYENV_HOME ]]; then
 		export PYENV_ROOT=$PYENV_HOME
 		export PYENV=$PYENV_HOME
 		prepend_to_path "$PYENV_HOME/bin"
 		prepend_to_path "$PYENV_HOME/shims"
 	else
-		unset PYENV_HOME
+		unset PYENV_DIR PYENV_HOME
 	fi
 elif is_linux; then
 	# LINUX: Use native pyenv
-	export PYENV_HOME="$HOME/.pyenv"
+	export PYENV_HOME="$PYENV_DIR"
 	if [[ -d $PYENV_HOME ]]; then
 		prepend_to_path "$PYENV_HOME/bin"
 		eval "$(pyenv init -)"
 		eval "$(pyenv virtualenv-init -)"
 	else
-		unset PYENV_HOME
+		unset PYENV_DIR PYENV_HOME
 	fi
 fi
 
@@ -315,7 +316,7 @@ function updateAll {
 
 	# Loop through repo directories and update them
 	if is_command gittyup; then
-		local repo_dirs=("$HOME/Git" "$PYENV_HOME" "$ADR_HOME")
+		local repo_dirs=("$HOME/Git" "$PYENV_DIR" "$ADR_HOME")
 		for repo_dir in "${repo_dirs[@]}"; do
 			# Update all git repositories in the given directory sequentially
 			gittyup --ignore-all-changes --sync "$repo_dir"
