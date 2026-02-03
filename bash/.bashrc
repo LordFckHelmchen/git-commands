@@ -205,5 +205,8 @@ if source_if_exists "$BASH_CONFIG_LOCAL_FILE" true; then
 	log_debug "Sourced system-specific config from $BASH_CONFIG_LOCAL_FILE"
 fi
 
+log_info "Deduplicating PATH"
+deduplicate_path
+
 log_done __BASHRC_START_TIME__
 unset __BASHRC_START_TIME__

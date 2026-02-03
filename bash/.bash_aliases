@@ -115,10 +115,29 @@ function prepend_to_path() {
 		true
 	else
 		if [[ -n $DEBUG_BASH_SCRIPTS && $DEBUG_BASH_SCRIPTS -eq 1 ]]; then
-			log_warn "prepend_to_path can't add '$1' to \$$PATH_VARIABLE: Not a path or directory."
+			log_warn "prepend_to_path: can't add '$1' to \$$PATH_VARIABLE: Not a path or directory."
 		fi
 		false
 	fi
+}
+
+# Deduplicate entries in a path variable
+# First input: Name of the path variable to be deduplicated (default: PATH)
+# Return: none
+# Example: deduplicate_path PATH
+function deduplicate_path() {
+	local PATHVARIABLE=${1:-PATH}
+	local IFS=':'
+	local NEWPATH
+	local DIR
+	for DIR in ${!PATHVARIABLE}; do
+		if [[ $NEWPATH != *:"$DIR":* && $NEWPATH != "$DIR":* && $NEWPATH != *:"$DIR" && $NEWPATH != "$DIR" ]]; then
+			NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
+		else
+			log_info "deduplicate_path: Removing duplicate entry '$DIR' from \$$PATHVARIABLE."
+		fi
+	done
+	export "$PATHVARIABLE"="$NEWPATH"
 }
 
 ########################################################################################################################
