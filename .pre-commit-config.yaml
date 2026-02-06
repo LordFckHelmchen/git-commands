@@ -4,6 +4,8 @@
 default_install_hook_types:
   - commit-msg # For conventional commit linting
   - pre-commit
+default_stages:
+  - pre-commit  # Run hooks, that do not say differently in this stage (allows to exclude duplicated runs for commit-msg stage)
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
@@ -58,7 +60,7 @@ repos:
           - commit-msg
         args:
           - --allow-breaking
-          - --scopes=bash,git,github,python,themes,vs_code,windows_terminal
+          - --scopes=bash,git,github,pre-commit,python,themes,vs_code,windows_terminal
           - --types=build,chore,ci,docs,feat,fix,refactor,revert,test
 
   - repo: https://github.com/koalaman/shellcheck-precommit
