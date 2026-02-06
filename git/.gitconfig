@@ -1,4 +1,9 @@
-# This is Git's per-user configuration file.
+# This is the shared, per-user Git configuration file.
+
+# Include local config
+[include]
+    path = ~/.gitconfig_local
+
 [core]
 autocrlf = input
 
