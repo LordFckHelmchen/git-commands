@@ -337,8 +337,12 @@ function updateAll {
 	if is_command gittyup; then
 		local repo_dirs=("$HOME/Git" "$PYENV_DIR" "$ADR_HOME")
 		for repo_dir in "${repo_dirs[@]}"; do
-			# Update all git repositories in the given directory sequentially
-			gittyup --ignore-all-changes --sync "$repo_dir"
+			if [[ -d $repo_dir ]]; then
+				# Update all git repositories in the given directory sequentially
+				gittyup --ignore-all-changes --sync "$repo_dir"
+			else
+				log_warn "Directory '$repo_dir' does not exist - skipping git update for this directory."
+			fi
 		done
 	else
 		log_warn "'gittyup' command not found - can't update git repositories. Please install gittyup via 'uv tool install gittyup' or update your git repos manually."
