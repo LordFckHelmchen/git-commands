@@ -237,40 +237,20 @@ else
 fi
 
 ########################################################################################################################
-# Update functions
+# Completions
 ########################################################################################################################
 
 export BASH_COMPLETION_FOLDER="$HOME/.bash_completion.d"
 
-function create_bash_completion_folder() {
-	log_info "Creating new bash-completion folder at '$BASH_COMPLETION_FOLDER'"
-	mkdir --parents --verbose "$BASH_COMPLETION_FOLDER"
-}
-
-# Add completions for a command and source them
-# First input: name of the command
-# Second input: command to show the completions - the output will be redirected to a .bash-completion file
-function add_completion() {
-	# Call it to make sure the folder exists, i.e. in case it was deleted after sourcing this script
+# Update bash completions for installed binaries
+# Will create the BASH_COMPLETION_FOLDER if it doesn't exist yet
+function add_completions() {
+	# Make sure the folder exists, i.e. in case it was deleted after sourcing this script
 	if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
-		create_bash_completion_folder
+		log_info "Creating new bash-completion folder at '$BASH_COMPLETION_FOLDER'"
+		mkdir --parents --verbose "$BASH_COMPLETION_FOLDER"
 	fi
 
-	local cmd=$1
-	local completion_cmd=$2
-	log_info "Create completions for '$cmd'"
-	local completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
-	log_debug "'$cmd' will be created via '$completion_cmd > $completion_file'"
-	eval "$completion_cmd" >"$completion_file"
-
-	# Source the completion file
-	log_debug "Sourcing completion file for '$cmd'"
-	# shellcheck source=/dev/null
-	source "$completion_file"
-}
-
-# Update bash completions for installed binaries
-function add_completions() {
 	# Define commands with their corresponding completion commands
 	declare -A completion_commands=(
 		["adr"]="cat $ADR_HOME/autocomplete/adr"
@@ -285,11 +265,21 @@ function add_completions() {
 		["uv"]="uv generate-shell-completion bash"
 	)
 
-	# Loop through commands and add completions if command exists
+	# Add completions if command exists & source them
 	local cmd
+	local completion_cmd
+	local completion_file
 	for cmd in "${!completion_commands[@]}"; do
 		if is_command "$cmd"; then
-			add_completion "$cmd" "${completion_commands[$cmd]}"
+			log_info "Create completions for '$cmd'"
+			completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
+			completion_cmd="${completion_commands[$cmd]}"
+			log_debug "'$cmd' will be created via '$completion_cmd > $completion_file'"
+			eval "$completion_cmd" >"$completion_file"
+
+			log_debug "Sourcing completion file for '$cmd'"
+			# shellcheck source=/dev/null
+			source "$completion_file"
 		fi
 	done
 }
@@ -299,12 +289,16 @@ if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
 	add_completions
 fi
 
-# Execute a command with a header
+########################################################################################################################
+# Update functions
+########################################################################################################################
+
+# Execute a command and print it as a header
 # First input: Command to execute
-function run_with_header() {
+function __run_with_header() {
 	local cmd=$1
 	local header
-	header=$(echo "$cmd" | tr '[:lower:]' '[:upper:]')
+	header=${cmd^^} # Make uppercase for better visibility
 	printf "\n[%s]\n" "$header"
 	eval "$cmd"
 }
@@ -327,7 +321,7 @@ function updateTools() {
 	)
 	for cmd in "${!upgrade_commands[@]}"; do
 		if is_command "$cmd"; then
-			run_with_header "$cmd ${upgrade_commands[$cmd]}"
+			__run_with_header "$cmd ${upgrade_commands[$cmd]}"
 		fi
 	done
 }
@@ -371,14 +365,9 @@ function updateAll {
 		sudo apt autoremove -y
 	fi
 
-	# Update all installed tools
-	updateTools
-
-	# Update git repositories
-	updateRepos
-
-	# Update bash completions for all installed binaries
-	add_completions
+	updateTools     # Update all installed tools
+	updateRepos     # Update git repositories
+	add_completions # Update bash completions for all installed binaries
 }
 
 log_done __BASH_ALIASES_START_TIME__
