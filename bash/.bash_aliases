@@ -275,11 +275,13 @@ function add_completions() {
 			completion_file="$BASH_COMPLETION_FOLDER/$cmd.bash-completion"
 			completion_cmd="${completion_commands[$cmd]}"
 			log_debug "'$cmd' will be created via '$completion_cmd > $completion_file'"
-			eval "$completion_cmd" >"$completion_file"
-
-			log_debug "Sourcing completion file for '$cmd'"
-			# shellcheck source=/dev/null
-			source "$completion_file"
+			if eval "$completion_cmd" >"$completion_file"; then
+				log_debug "Sourcing completion file for '$cmd'"
+				# shellcheck source=/dev/null
+				source "$completion_file"
+			else
+				log_warn "Failed to generate completions for '$cmd'"
+			fi
 		fi
 	done
 }
