@@ -145,13 +145,13 @@ function deduplicate_path() {
 ########################################################################################################################
 
 # Checks we are running on Linux
-# Return: true if on Linux, false otherwise
+# Return: 0 if on Linux, non-zero otherwise
 function is_linux() {
 	[[ "$(uname)" == "Linux" ]]
 }
 
 # Checks we are running on Windows
-# Return: true if on Windows, false otherwise
+# Return: 0 if on Windows, non-zero otherwise
 function is_windows() {
 	[[ "$(uname)" == MINGW* || "$(uname)" == MSYS* ]]
 }
@@ -159,6 +159,15 @@ function is_windows() {
 if ! is_linux && ! is_windows; then
 	log_error "Running on an unknown operating system."
 fi
+
+# Checks if a package is installed via winget
+# First input: command to check with `winget list --command cmd` (e.g., "uv")
+# Return: 0 if winget is available and the package (partially) matches an installed package, non-zero otherwise
+function is_winget_package() {
+	# Need to call winget.exe to avoid using a possible alias that wraps it via winpty (e.g. for WSL), which would break
+	# the output parsing
+	is_command winget.exe && winget.exe list --command "$1" &>/dev/null
+}
 
 ########################################################################################################################
 # Git
@@ -290,6 +299,61 @@ if [ ! -d "$BASH_COMPLETION_FOLDER" ]; then
 	add_completions
 fi
 
+# Execute a command with a header
+# First input: Command to execute
+function run_with_header() {
+	local cmd=$1
+	local header
+	header=$(echo "$cmd" | tr '[:lower:]' '[:upper:]')
+	printf "\n[%s]\n" "$header"
+	eval "$cmd"
+}
+
+function updateTools() {
+	local cmd
+
+	# Only self-update uv if it wasn't installed via winget
+	cmd="uv"
+	if is_command "$cmd" && ! is_winget_package "$cmd"; then
+		__run_with_header "uv self update"
+	fi
+
+	declare -A upgrade_commands=(
+		["claude"]="update"
+		["gh"]="extension upgrade --all"
+		["pipx"]="upgrade-all"
+		["rustup"]="update"
+		["uv"]="tool upgrade --all"
+	)
+	for cmd in "${!upgrade_commands[@]}"; do
+		if is_command "$cmd"; then
+			run_with_header "$cmd ${upgrade_commands[$cmd]}"
+		fi
+	done
+}
+
+function updateRepos() {
+	if is_command gittyup; then
+		declare -A repo_dirs=(
+			["all repos under ~/Git"]="$HOME/Git"
+			["pyenv"]="$PYENV_DIR"
+			["adr-tools"]="$ADR_HOME"
+		)
+		local repo_dir_name
+		local repo_dir
+		for repo_dir_name in "${!repo_dirs[@]}"; do
+			repo_dir="${repo_dirs[$repo_dir_name]}"
+			if [[ -d "$repo_dir" ]]; then
+				gittyup --ignore-all-changes --sync "$repo_dir"
+			else
+				log_warn "Can't update repository for $repo_dir_name - $repo_dir does not exist."
+			fi
+		done
+	else
+		log_warn "'gittyup' command not found - can't update git repositories. Please install gittyup via 'uv tool install gittyup' or update your git repos manually."
+	fi
+}
+
 function updateAll {
 	if is_windows; then
 		# winget-based upgrade on Windows
@@ -307,46 +371,11 @@ function updateAll {
 		sudo apt autoremove -y
 	fi
 
-	if is_command pipx; then
-		printf "\n[PIPX UPGRADE-ALL]\n"
-		pipx upgrade-all
-	fi
+	# Update all installed tools
+	updateTools
 
-	if is_command uv; then
-		if is_linux; then
-			# Assume installation on windows was done via winget
-			printf "\n[UV SELF UPDATE]\n"
-			uv self update
-		fi
-
-		printf "\n[UV TOOL UPGRADE --ALL]\n"
-		uv tool upgrade --all
-	fi
-
-	if is_command gh; then
-		printf "\n[GH EXTENSION UPGRADE --ALL]\n"
-		gh extension upgrade --all
-	fi
-
-	if is_command rustup; then
-		printf "\n[RUSTUP UPDATE]\n"
-		rustup update
-	fi
-
-	# Loop through repo directories and update them
-	if is_command gittyup; then
-		local repo_dirs=("$HOME/Git" "$PYENV_DIR" "$ADR_HOME")
-		for repo_dir in "${repo_dirs[@]}"; do
-			if [[ -d $repo_dir ]]; then
-				# Update all git repositories in the given directory sequentially
-				gittyup --ignore-all-changes --sync "$repo_dir"
-			else
-				log_warn "Directory '$repo_dir' does not exist - skipping git update for this directory."
-			fi
-		done
-	else
-		log_warn "'gittyup' command not found - can't update git repositories. Please install gittyup via 'uv tool install gittyup' or update your git repos manually."
-	fi
+	# Update git repositories
+	updateRepos
 
 	# Update bash completions for all installed binaries
 	add_completions
