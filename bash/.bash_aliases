@@ -134,7 +134,7 @@ function deduplicate_path() {
 		if [[ $NEWPATH != *:"$DIR":* && $NEWPATH != "$DIR":* && $NEWPATH != *:"$DIR" && $NEWPATH != "$DIR" ]]; then
 			NEWPATH=${NEWPATH:+$NEWPATH:}$DIR
 		else
-			log_info "deduplicate_path: Removing duplicate entry '$DIR' from \$$PATHVARIABLE."
+			log_debug "deduplicate_path: Removing duplicate entry '$DIR' from \$$PATHVARIABLE."
 		fi
 	done
 	export "$PATHVARIABLE"="$NEWPATH"

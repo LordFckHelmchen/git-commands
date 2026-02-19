@@ -206,7 +206,7 @@ if source_if_exists "$BASH_CONFIG_LOCAL_FILE" true; then
 fi
 
 log_info "Deduplicating PATH"
-deduplicate_path
+deduplicate_path  # Defined in ~/.bash_aliases
 
 log_done __BASHRC_START_TIME__
 unset __BASHRC_START_TIME__
