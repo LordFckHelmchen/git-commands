@@ -68,6 +68,12 @@ fi
 # Show the current date in ISO 8601 format (UTC)
 alias now='date -u +"%Y-%m-%dT%H:%M:%S.%7N%:z"'
 
+# Unalias winget if it exists, to avoid issues with parsing its output in functions like is_winget_package
+if is_command winget; then
+	log_debug "Unaliasing 'winget' (from winpty winget.exe to winget.exe) to avoid issues with output parsing (might break functionality in WSL)."
+	alias winget='winget.exe'
+fi
+
 ########################################################################################################################
 # Functions to help us manage paths
 ########################################################################################################################
