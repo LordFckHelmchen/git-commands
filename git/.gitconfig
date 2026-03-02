@@ -21,24 +21,17 @@ defaultBranch = main
 	c = commit
 	ca = commit --amend
 	can = commit --amend --no-edit
-	# Diff ignoring all sorts of whitespace.
-	d = diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal
+	ccscopes = !git log --format=%s | grep -oP \"^\\w+\\(\\K[^)]+(?=\\):)\" | sort -u  # List unique conventional commit scopes
+	d = diff --ignore-space-at-eol --ignore-space-change --ignore-all-space --ignore-blank-lines --minimal  # Diff ignoring all sorts of whitespace.
 	graph = log --abbrev-commit --all --decorate --oneline --graph --max-count=30 --pretty=\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\"
-	# List last commits as oneliners
-	l = log --oneline --max-count=10
-	# List Branches
-	lb = branch -vv
-	# List author and date on remotes.
-	list = !git for-each-ref --sort=committerdate refs/remotes --format=\"%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)\" | column --table --separator=\"|\" | cut --characters=1-180
-	# List Deleted Branches (ie. where the remote is gone)
-	ldb = !git branch --verbose | grep gone
+	l = log --oneline --max-count=10  # List last commits as oneliners
+	lb = branch -vv  # List Branches
+	ldb = !git branch --verbose | grep gone  # List Deleted Branches (ie. where the remote is gone)
+	list = !git for-each-ref --sort=committerdate refs/remotes --format=\"%(color:yellow)%(committerdate:relative)%(color:reset)|%(HEAD) %(color:green)%(refname:short)%(color:reset)|%(authorname)|%(contents:subject)\" | column --table --separator=\"|\" | cut --characters=1-180  # List author and date on remotes.
 	p = push
 	pf = push --force-with-lease
+	rbm = !git fetch origin --prune && git rebase origin/main  # Fetch most recent changes for main (m) and rebase (rb) on top of current branch
 	s = status
 	sw = switch
-	# Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
-	tree = !git ls-tree --full-name --name-only -tr HEAD | sed --expression=\"s/[^-][^\\/]*\\// |/g\" --expression=\"s/|\\([^ ]\\)/|-- \\1/\"
-	# Fetch, prune and pull
-	up = !git fetch --all --prune && git pull
-	# List unique conventional commit scopes
-	ccscopes = !git log --format=%s | grep -oP \"^\\w+\\(\\K[^)]+(?=\\):)\" | sort -u
+	tree = !git ls-tree --full-name --name-only -tr HEAD | sed --expression=\"s/[^-][^\\/]*\\// |/g\" --expression=\"s/|\\([^ ]\\)/|-- \\1/\"  # Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
+	up = !git fetch --all --prune && git pull  # Fetch, prune and pull
