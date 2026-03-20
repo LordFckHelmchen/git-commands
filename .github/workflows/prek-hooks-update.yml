@@ -1,0 +1,41 @@
+name: Prek-Hooks Update
+
+on:
+  schedule:
+    - cron: "42 12 * * 5" # Run weekly
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  prek-hooks-update:
+    name: Auto-update prek-hooks
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # To update the pre-commit config & commit the changes
+      pull-requests: write # To create the PR
+    env:
+      COMMIT_MSG: "build(deps): Update prek-hooks"
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false # Avoid leaking secrets
+
+      - name: Install prek
+        uses: j178/prek-action@79f765515bd648eb4d6bb1b17277b7cb22cb6468 # v2.0.0
+        with:
+          install-only: true # Do not immediately call `prek run`
+
+      - run: prek autoupdate --freeze
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        with:
+          branch: prek/autoupdate
+          title: ${{ env.COMMIT_MSG }}
+          commit-message: ${{ env.COMMIT_MSG }}
+          body: "" # Empty
+          labels: dependencies
