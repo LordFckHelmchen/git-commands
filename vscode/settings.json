@@ -1,0 +1,90 @@
+{
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[markdown]": {
+    "diffEditor.ignoreTrimWhitespace": true,
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+  },
+  "[python]": {
+    "diffEditor.ignoreTrimWhitespace": false
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "bashIde.shellcheckArguments": "--exclude=SC1017",
+  "bashIde.shfmt.caseIndent": true,
+  "bashIde.shfmt.languageDialect": "bash",
+  "bashIde.shfmt.simplifyCode": true,
+  "bashIde.shfmt.spaceRedirects": true,
+  "breadcrumbs.enabled": true,
+  "cSpell.language": "en,de",
+  "cSpell.languageSettings": [],
+  "chat.tools.terminal.autoApprove": {
+    "git rev-list": true,
+    "git rev-parse": true,
+    "uniq": true
+  },
+  "chat.viewSessions.orientation": "stacked",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "diffEditor.maxComputationTime": 0,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.markdownlint": "explicit"
+  },
+  "editor.fontFamily": "'FiraCode Nerd Font Propo', Consolas, 'Courier New', monospace",
+  "editor.formatOnSave": true,
+  "editor.formatOnSaveMode": "modifications",
+  "editor.renderWhitespace": "all",
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "editor.unicodeHighlight.ambiguousCharacters": false,
+  "editor.unicodeHighlight.invisibleCharacters": false,
+  "explorer.confirmDelete": false,
+  "extensions.ignoreRecommendations": true,
+  "files.autoSave": "afterDelay",
+  "git.autofetch": true,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": true,
+  "github.copilot.chat.codeGeneration.useInstructionFiles": false,
+  "github.copilot.enable": {
+    "markdown": true,
+    "plaintext": true
+  },
+  "github.copilot.nextEditSuggestions.enabled": true,
+  "markdown.extension.bold.indicator": "__",
+  "markdown.extension.completion.enabled": true,
+  "markdown.extension.italic.indicator": "_",
+  "markdown.extension.toc.levels": "2..4",
+  "markdownlint.config": {
+    "no-duplicate-heading": false
+  },
+  "mypy-type-checker.args": [
+    "\"mypy-type-checker.args\" = [\"--config-file=pyproject.toml\"]"
+  ],
+  "mypy-type-checker.importStrategy": "fromEnvironment",
+  "mypy-type-checker.showNotifications": "onError",
+  "prettier.singleAttributePerLine": true,
+  "python.analysis.autoFormatStrings": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.inlayHints.callArgumentNames": "partial",
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "python.analysis.inlayHints.pytestParameters": true,
+  "python.analysis.inlayHints.variableTypes": true,
+  "python.terminal.launchArgs": [],
+  "python.testing.pytestEnabled": true,
+  "redhat.telemetry.enabled": false,
+  "ruff.trace.server": "messages",
+  "rumdl.fixOnSave": true,
+  "terminal.integrated.allowChords": false,
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
+  "terminal.integrated.stickyScroll.enabled": false,
+  "workbench.colorTheme": "Default Light Modern",
+  "workbench.editor.highlightModifiedTabs": true,
+  "workbench.sideBar.location": "right"
+}
