@@ -48,10 +48,18 @@
       "keys": "alt+shift+d"
     }
   ],
+"newTabMenu": [
+    {
+        "type": "remainingProfiles"
+    }
+],
   "profiles": {
     "defaults": {
       "bellStyle": "none",
-      "colorScheme": "Gruvbox for windows terminal",
+    "colorScheme": {
+        "dark": "Gruvbox for windows terminal",
+        "light": "One Half Light"
+    },
       "font": {
         "face": "FiraCode Nerd Font",
         "size": 11
@@ -355,5 +363,7 @@
     }
   ],
   "showTabsInTitlebar": true,
-  "startOnUserLogin": true
+"startOnUserLogin": true,
+"theme": "system",
+"themes": []
 }
