@@ -8,7 +8,6 @@ skip-magic-trailing-comma = true
 
 [lint]
 select = ["ALL"]
-# Top-level ignores - since algorithms are also in the repo, do add with care!
 ignore = [
     "AIR",     # Disable all Airflow-related rules - not relevant here
     "COM812",  # Comma warning suggested by ruff to be ignored

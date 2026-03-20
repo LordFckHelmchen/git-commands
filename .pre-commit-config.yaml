@@ -1,8 +1,5 @@
-# See https://pre-commit.com for more information
-# See https://pre-commit.com/hooks.html for more hooks
-
 default_install_hook_types:
-  - commit-msg # For conventional commit linting
+  - commit-msg  # For conventional commit linting
   - pre-commit
 default_stages:
   - pre-commit  # Run hooks, that do not say differently in this stage (allows to exclude duplicated runs for commit-msg stage)
@@ -13,6 +10,7 @@ repos:
       - id: check-case-conflict
       - id: check-illegal-windows-names
       - id: check-json
+      - id: check-merge-conflict
       - id: check-symlinks
       - id: check-toml
       - id: check-vcs-permalinks
@@ -27,30 +25,18 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 45ef068da5f21267bb2a7ec4a623092959f09ce5  # frozen: v0.14.14
+    rev: e05c5c0818279e5ac248ac9e954431ba58865e61  # frozen: v0.15.7
     hooks:
       - id: ruff-check # Run the linter & fix fixable issues
         args:
           - --fix
       - id: ruff-format
 
-  - repo: https://github.com/hukkin/mdformat # Format markdown files
-    rev: 82912cdaea4fb830f751504486a7879c70526547  # frozen: 1.0.0
+  - repo: https://github.com/rvben/rumdl-pre-commit
+    rev: e8689b0f1c8828c81c5bde980a5e285e22787455  # frozen: v0.1.57
     hooks:
-      - id: mdformat
-        additional_dependencies:
-          - mdformat-beautysh # Use beautysh to format shell code blocks
-          - mdformat-config # Format JSON, TOML & YAML code blocks
-          - mdformat-footnote # Format footnotes
-          - mdformat-front-matters # Format front matters
-          - mdformat-gfm # Github Flavored Markdown
-          - mdformat-ruff # Use ruff to lint code blocks
-        exclude: "CHANGELOG\\.md$" # Exclude auto-generated files
-        args:
-          - --number
-          - --wrap=120
-          - --end-of-line=keep
-          - --strict-front-matter # mdformat-front-matters: Enforce valid front-matter
+      - id: rumdl
+      - id: rumdl-fmt
 
   - repo: https://github.com/espressif/conventional-precommit-linter
     rev: aeba78b29b06233289a1a6ed80371a337e893e19  # frozen: v1.11.0
@@ -61,16 +47,26 @@ repos:
         args:
           - --allow-breaking
           - --scopes=bash,git,github,nushell,prek,python,starship,themes,vscode,windows-terminal,xonsh
-          - --types=build,chore,ci,docs,feat,fix,refactor,revert,test
+          - --types=build,chore,ci,docs,feat,fix,refactor,revert,test  # Keep in sync with /.github/workflows/validate_pr_title.yml
 
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: 99470f5e12208ff0fb17ab81c3c494f7620a1d8d  # frozen: v0.11.0
     hooks:
       - id: shellcheck
         args:
-          - --exclude=SC1017 # Carriage return is handled by git & pre-commit
+          - --exclude=SC1017 # Carriage return is handled by git & prek
 
   - repo: https://github.com/scop/pre-commit-shfmt
     rev: 2a30809d16bc7a60d9b97353c797f42b510d3368  # frozen: v3.12.0-2
     hooks:
       - id: shfmt
+
+  - repo: https://github.com/rhysd/actionlint
+    rev: 393031adb9afb225ee52ae2ccd7a5af5525e03e8 # frozen: v1.7.11
+    hooks:
+      - id: actionlint
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: 8d1f98c7967eb1e79cb44ac6241a124e145d2165 # frozen: v8.30.1
+    hooks:
+      - id: gitleaks

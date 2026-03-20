@@ -1,0 +1,6 @@
+[global]
+exclude = [
+    "CHANGELOG.md",  # Exclude auto-generated changelog
+]
+flavor = "gfm"
+line_length = 120
