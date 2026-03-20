@@ -1,0 +1,12 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    cooldown:
+      default-days: 7 # To safeguard against stability issues of new versions
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      all-actions: # Group all actions in a single PR.
+        patterns:
+          - "*"
