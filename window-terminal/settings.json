@@ -48,18 +48,18 @@
       "keys": "alt+shift+d"
     }
   ],
-"newTabMenu": [
+  "newTabMenu": [
     {
-        "type": "remainingProfiles"
+      "type": "remainingProfiles"
     }
-],
+  ],
   "profiles": {
     "defaults": {
       "bellStyle": "none",
-    "colorScheme": {
+      "colorScheme": {
         "dark": "Gruvbox for windows terminal",
         "light": "One Half Light"
-    },
+      },
       "font": {
         "face": "FiraCode Nerd Font",
         "size": 11
@@ -77,7 +77,7 @@
         "commandline": "%USERPROFILE%/.local/bin/ptpython.exe",
         "guid": "{f91d49a3-741b-409c-8a15-c4360649121f}",
         "hidden": false,
-        "icon": "%USERPROFILE%/Git/git-commands/window_terminal/Python_icon_for_ptpython.png",
+        "icon": "%USERPROFILE%/Git/git-commands/window-terminal/Python_icon_for_ptpython.png",
         "name": "ptpython"
       },
       {
@@ -363,7 +363,7 @@
     }
   ],
   "showTabsInTitlebar": true,
-"startOnUserLogin": true,
-"theme": "system",
-"themes": []
+  "startOnUserLogin": true,
+  "theme": "system",
+  "themes": []
 }
