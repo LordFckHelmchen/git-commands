@@ -7,7 +7,7 @@
   },
   "[markdown]": {
     "diffEditor.ignoreTrimWhitespace": true,
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
+    "editor.defaultFormatter": "rvben.rumdl"
   },
   "[python]": {
     "diffEditor.ignoreTrimWhitespace": false
@@ -56,6 +56,15 @@
     "plaintext": true
   },
   "github.copilot.nextEditSuggestions.enabled": true,
+  "json.schemaDownload.trustedDomains": {
+    "https://developer.microsoft.com/json-schemas/": true,
+    "https://json-schema.org/": true,
+    "https://json.schemastore.org/": true,
+    "https://raw.githubusercontent.com/devcontainers/spec/": true,
+    "https://raw.githubusercontent.com/microsoft/vscode/": true,
+    "https://schemastore.azurewebsites.net/": true,
+    "https://www.schemastore.org/": true
+  },
   "markdown.extension.bold.indicator": "__",
   "markdown.extension.completion.enabled": true,
   "markdown.extension.italic.indicator": "_",
@@ -84,7 +93,7 @@
   "terminal.integrated.allowChords": false,
   "terminal.integrated.defaultProfile.windows": "Git Bash",
   "terminal.integrated.stickyScroll.enabled": false,
-  "workbench.colorTheme": "Default Light Modern",
+  "window.autoDetectColorScheme": true,
   "workbench.editor.highlightModifiedTabs": true,
   "workbench.sideBar.location": "right"
 }
