@@ -77,7 +77,7 @@
         "commandline": "%USERPROFILE%/.local/bin/ptpython.exe",
         "guid": "{f91d49a3-741b-409c-8a15-c4360649121f}",
         "hidden": false,
-        "icon": "%USERPROFILE%/Git/git-commands/window-terminal/Python_icon_for_ptpython.png",
+        "icon": "%USERPROFILE%/Git/git-commands/windows-terminal/Python_icon_for_ptpython.png",
         "name": "ptpython"
       },
       {
