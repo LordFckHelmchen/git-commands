@@ -71,7 +71,7 @@ class RepoFileMap:
         return self._max_home_file_chars
 
 
-HOME = Path(os.environ["HOME"])
+HOME = Path(os.environ.get("HOME", os.environ["USERPROFILE"]))
 CONFIG_SUBDIR = os.environ.get("XDG_CONFIG_HOME", ".config")
 
 BASH_FILES = RepoFileMap(
