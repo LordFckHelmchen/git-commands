@@ -68,10 +68,11 @@
     },
     "list": [
       {
+        "commandline": "%PROGRAMFILES%/Git/bin/bash.exe -li",
         "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
-        "hidden": false,
+        "icon": "%PROGRAMFILES%/Git/mingw64/share/git/git-for-windows.ico",
         "name": "Git Bash",
-        "source": "Git"
+        "startingDirectory": "%USERPROFILE%"
       },
       {
         "commandline": "%USERPROFILE%/.local/bin/ptpython.exe",
@@ -87,23 +88,10 @@
         "name": "Command Prompt"
       },
       {
-        "commandline": "%SYSTEMROOT%/System32/wsl.exe",
-        "guid": "{c8e82635-1213-446e-93c9-61d62efc8646}",
-        "hidden": false,
-        "icon": "%PROGRAMFILES%/WindowsApps/Microsoft.WindowsTerminal_1.23.12371.0_x64__8wekyb3d8bbwe/ProfileIcons/{9acb9455-ca41-5af7-950f-6bca1bc9722f}.scale-100.png",
-        "name": "WSL"
-      },
-      {
         "commandline": "%SYSTEMROOT%/System32/WindowsPowerShell/v1.0/powershell.exe",
         "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
         "hidden": false,
         "name": "Windows PowerShell"
-      },
-      {
-        "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-        "hidden": true,
-        "name": "Azure Cloud Shell",
-        "source": "Windows.Terminal.Azure"
       }
     ]
   },
