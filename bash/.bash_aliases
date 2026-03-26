@@ -74,6 +74,15 @@ if is_command winget; then
 	alias winget='winget.exe'
 fi
 
+# Always create parents
+alias mkdir='mkdir --parents'
+
+# Simple connectivity test
+alias pingw='ping -t www.web.de'
+
+# Delete directories with content - YOLO!
+alias rmd='rm -rf'
+
 ########################################################################################################################
 # Functions to help us manage paths
 ########################################################################################################################
