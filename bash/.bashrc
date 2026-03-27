@@ -21,24 +21,16 @@ export BASH_LOG_LEVEL=INFO
 # See bash(1) for more options
 HISTCONTROL=ignoreboth:erasedups
 
+# Truncate history
+HISTSIZE=3000 # long history
+HISTFILESIZE=$HISTSIZE
+
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-# Make history shared across terminals (taken from https://unix.stackexchange.com/a/48116)
-HISTSIZE=3000 # long history
-HISTFILESIZE=$HISTSIZE
-function bashrc_historySync() {
-	builtin history -a     # Append the just entered line to the $HISTFILE
-	HISTFILESIZE=$HISTSIZE # Truncate $HISTFILE to $HISTFILESIZE lines by removing oldest entries
-	builtin history -c     # Clear the history of the running session
-	builtin history -r     # Insert content of $HISTFILE into history of running session
-}
-# override builtin history() to assure that history is sync'd before it is displayed
-function history() {
-	bashrc_historySync
-	builtin history "$@"
-}
-PROMPT_COMMAND=bashrc_historySync
+# Make history shared across terminals (inspired by https://unix.stackexchange.com/a/48116)
+# After each command, append to the history file and read new lines from the history file.
+PROMPT_COMMAND='history -a; history -n'
 
 # Make history searchable via up/down keys
 bind '"\e[A": history-search-backward'
