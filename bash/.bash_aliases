@@ -323,14 +323,19 @@ function __run_with_header() {
 function updateTools() {
 	local cmd
 
-	# Only self-update uv if it wasn't installed via winget
-	cmd="uv"
-	if is_command "$cmd" && ! is_winget_package "$cmd"; then
-		__run_with_header "uv self update"
-	fi
-
+	# Update commands that can be installed via winget on Windows or via dedicated installer
 	declare -A upgrade_commands=(
 		["claude"]="update"
+		["uv"]="self update"
+	)
+	for cmd in "${!upgrade_commands[@]}"; do
+		if is_command "$cmd" && ! is_winget_package "$cmd"; then
+			__run_with_header "$cmd ${upgrade_commands[$cmd]}"
+		fi
+	done
+
+	# Update things within a tooling ecosystem
+	declare -A upgrade_commands=(
 		["gh"]="extension upgrade --all"
 		["pipx"]="upgrade-all"
 		["rustup"]="update"
