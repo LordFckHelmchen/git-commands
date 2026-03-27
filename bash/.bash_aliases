@@ -357,7 +357,7 @@ function updateRepos() {
 			if [[ -d "$repo_dir" ]]; then
 				gittyup --ignore-all-changes --sync "$repo_dir"
 			else
-				log_warn "Can't update repository for $repo_dir_name - $repo_dir does not exist."
+				log_debug "Can't update repository for $repo_dir_name - $repo_dir does not exist."
 			fi
 		done
 	else
