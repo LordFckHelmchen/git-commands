@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v1.0.0...v2.0.0) (2026-03-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* **windows-terminal:** Remove unused themes
+* **windows-terminal:** Fix wrong folder name
+
+### Features
+
+* **bash:** Add new aliases for ping, mkdir & rm ([dddab4f](https://github.com/LordFckHelmchen/git-commands/commit/dddab4f571acb64ce54f82bfe39d7c87d322d4b8))
+* **bash:** Enhance updateTools function to support multiple command updates ([e644f9a](https://github.com/LordFckHelmchen/git-commands/commit/e644f9ab3e80e2f0dff4ceb3bdf3d55e7b6b7c23))
+* **vscode:** Update settings & profile ([c6d5d8c](https://github.com/LordFckHelmchen/git-commands/commit/c6d5d8cd21bc77f4cd1d3c7340aa492b3a01908f))
+* **windows-terminal:** Update Git Bash profile and remove unused entries ([7318572](https://github.com/LordFckHelmchen/git-commands/commit/73185729208612fe4f08202f5a89906ca018524b))
+
+
+### Bug Fixes
+
+* Use USERPROFILE as fallback if HOME is not in the environment ([0387dce](https://github.com/LordFckHelmchen/git-commands/commit/0387dce9421ad5e0c0655518ef729721c4961e6d))
+* **windows-terminal:** Fix wrong folder name ([9fed6da](https://github.com/LordFckHelmchen/git-commands/commit/9fed6da4b0acbaa23d01a298b46f86a8d3572724))
+
+
+### Code Refactoring
+
+* **windows-terminal:** Remove unused themes ([bd7513e](https://github.com/LordFckHelmchen/git-commands/commit/bd7513e2d4db7f114872066d0e11899c192a13cf))
+
 ## 1.0.0 (2026-03-20)
 
 
