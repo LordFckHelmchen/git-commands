@@ -83,6 +83,13 @@ alias pingw='ping -t www.web.de'
 # Delete directories with content - YOLO!
 alias rmd='rm -rf'
 
+# Prek run all files
+if is_command prek; then
+	alias pra='prek run --all-files'
+else
+	log_warn "'prek' not found - can't define alias 'pra'."
+fi
+
 ########################################################################################################################
 # Functions to help us manage paths
 ########################################################################################################################
