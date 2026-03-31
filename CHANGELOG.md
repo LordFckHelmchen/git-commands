@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.0.0...v2.1.0) (2026-03-31)
+
+
+### Features
+
+* **bash:** add alias for prek to run all files ([e982e23](https://github.com/LordFckHelmchen/git-commands/commit/e982e23b3dd4cbf5a93dd514da9b9d791b469445))
+
 ## [2.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v1.0.0...v2.0.0) (2026-03-30)
 
 
