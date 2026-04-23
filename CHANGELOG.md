@@ -1,5 +1,19 @@
 # Changelog
 
+## [2.1.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.0.0...v2.1.0) (2026-04-23)
+
+
+### Features
+
+* **bash:** add alias for prek to run all files ([e982e23](https://github.com/LordFckHelmchen/git-commands/commit/e982e23b3dd4cbf5a93dd514da9b9d791b469445))
+* **bash:** Add alias for running pytest via uv ([fd62849](https://github.com/LordFckHelmchen/git-commands/commit/fd6284962eb4ac89f399e129e44e7db3a50c937d))
+
+
+### Bug Fixes
+
+* **windows-terminal:** Disable auto-generation of Azure & WSL profiles and reorder keybindings ([35c1116](https://github.com/LordFckHelmchen/git-commands/commit/35c1116ddd3737868f74643da4de1686e9fdba8d))
+* **windows-terminal:** Fix cmd failing to start due to slashed executable path ([4ad2df5](https://github.com/LordFckHelmchen/git-commands/commit/4ad2df5dc24ea99f4bca6dcf3258be87e964fa66))
+
 ## [2.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v1.0.0...v2.0.0) (2026-03-30)
 
 
