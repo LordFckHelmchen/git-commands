@@ -25,14 +25,14 @@ jobs:
           persist-credentials: false # Avoid leaking secrets
 
       - name: Install prek
-        uses: j178/prek-action@79f765515bd648eb4d6bb1b17277b7cb22cb6468 # v2.0.0
+        uses: j178/prek-action@53276d8b0d10f8b6672aa85b4588c6921d0370cc # v2.0.1
         with:
           install-only: true # Do not immediately call `prek run`
 
       - run: prek autoupdate --freeze
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0 # v8.1.0
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
         with:
           branch: prek/autoupdate
           title: ${{ env.COMMIT_MSG }}
