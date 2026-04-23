@@ -90,6 +90,13 @@ else
 	log_warn "'prek' not found - can't define alias 'pra'."
 fi
 
+# uv-run pytest
+if is_command uv; then
+	alias uvpt='uv run pytest'
+else
+	log_warn "'uv' not found - can't define alias 'uvpt'."
+fi
+
 ########################################################################################################################
 # Functions to help us manage paths
 ########################################################################################################################
