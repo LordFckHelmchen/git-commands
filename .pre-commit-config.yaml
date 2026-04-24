@@ -33,7 +33,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 45cfb72446bbcf94f573113a1c53d701c19d3504  # frozen: v0.1.73
+    rev: 7a9cae8b0b2a12b63419789b233f52932917b7a4  # frozen: v0.1.80
     hooks:
       - id: rumdl
       - id: rumdl-fmt
