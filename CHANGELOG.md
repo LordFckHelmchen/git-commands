@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.1.0...v2.2.0) (2026-04-24)
+
+
+### Features
+
+* **cmd:** Add clink configuration for starship integration ([39747c8](https://github.com/LordFckHelmchen/git-commands/commit/39747c84c734b8b1a48ef706fb4a5579f45ecec6))
+* **starship:** Add shell indicators ([1999784](https://github.com/LordFckHelmchen/git-commands/commit/199978446648cefb030502512ec8f003136bac82))
+
 ## [2.1.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.0.0...v2.1.0) (2026-04-23)
 
 
