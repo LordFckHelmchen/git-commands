@@ -1,0 +1,76 @@
+# Clink / Readline keybindings
+# Intended to mirror the Bash behavior from .bashrc and common Bash shortcuts.
+#
+# Usage (Clink): place/symlink this file as ~/.inputrc or %USERPROFILE%\.inputrc.
+#
+# Reference:
+# https://github.com/fliptheweb/bash-shortcuts-cheat-sheet
+
+# ============================================================================
+# Keybindings first
+# ============================================================================
+
+# Your custom Bash behavior from .bashrc:
+# Search history by current prefix when pressing Up/Down.
+"\e[A": history-search-backward
+"\e[B": history-search-forward
+
+# History navigation/search shortcuts
+"\C-p": previous-history
+"\C-n": next-history
+"\C-r": reverse-search-history
+"\C-s": forward-search-history
+"\C-g": abort
+"\C-o": operate-and-get-next
+
+# Cursor movement
+"\C-a": beginning-of-line
+"\C-e": end-of-line
+"\C-b": backward-char
+"\C-f": forward-char
+"\eb": backward-word
+"\ef": forward-word
+"\C-x\C-x": exchange-point-and-mark
+
+# Editing / killing / yanking
+"\C-h": backward-delete-char
+"\C-d": delete-char
+"\C-u": unix-line-discard
+"\C-k": kill-line
+"\C-w": unix-word-rubout
+"\ed": kill-word
+"\e\C-h": backward-kill-word
+"\C-y": yank
+"\C-_": undo
+"\C-t": transpose-chars
+"\et": transpose-words
+
+# Case transforms
+"\eu": upcase-word
+"\el": downcase-word
+"\ec": capitalize-word
+
+# Accept line / execute
+"\C-j": accept-line
+"\C-m": accept-line
+
+# ============================================================================
+# Readline behavior/settings
+# ============================================================================
+
+# Match your Bash setting in .bashrc.
+set bell-style none
+
+# Keep familiar Bash-like editing behavior in Clink.
+set editing-mode emacs
+set enable-keypad on
+set horizontal-scroll-mode off
+set show-all-if-ambiguous on
+set completion-query-items 200
+set completion-ignore-case on
+set completion-map-case on
+set mark-symlinked-directories on
+
+# Make history search/editing feel closer to Bash defaults.
+set history-preserve-point on
+set revert-all-at-newline on

@@ -46,7 +46,7 @@ repos:
           - commit-msg
         args:
           - --allow-breaking
-          - --scopes=bash,git,github,nushell,prek,python,starship,themes,vscode,windows-terminal,xonsh
+          - --scopes=bash,cmd,git,github,nushell,prek,python,starship,themes,vscode,windows-terminal,xonsh  # Keep in sync with /.github/workflows/validate_pr_title.yml
           - --types=build,chore,ci,docs,feat,fix,refactor,revert,test  # Keep in sync with /.github/workflows/validate_pr_title.yml
 
   - repo: https://github.com/koalaman/shellcheck-precommit
