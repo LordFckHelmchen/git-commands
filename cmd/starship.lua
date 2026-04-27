@@ -17,30 +17,40 @@ end
 
 local function load_doskey_macrofile(path)
 	if not os.isfile or not os.setalias then
+		print("warning: os.isfile or os.setalias not available")
 		return
 	end
 
 	if not os.isfile(path) then
+		print("warning: doskey macro file not found: " .. path)
 		return
 	end
 
 	local f = io.open(path, "r")
 	if not f then
+		print("warning: could not open doskey macro file: " .. path)
 		return
 	end
 
+	local count = 0
 	for line in f:lines() do
 		local alias_name, alias_cmd = line:match("^%s*[dD][oO][sS][kK][eE][yY]%s+([^=]+)=(.*)$")
 		if alias_name and alias_cmd then
 			alias_name = trim(alias_name)
 			alias_cmd = trim(alias_cmd)
 			if alias_name ~= "" and alias_cmd ~= "" then
-				os.setalias(alias_name, alias_cmd)
+				local success = os.setalias(alias_name, alias_cmd)
+				if not success then
+					print("warning: failed to set alias '" .. alias_name .. "' = '" .. alias_cmd .. "'")
+				else
+					count = count + 1
+				end
 			end
 		end
 	end
 
 	f:close()
+	print("info: loaded " .. count .. " aliases from " .. path)
 end
 
 local function load_aliases_once()
@@ -51,13 +61,14 @@ local function load_aliases_once()
 		return
 	end
 
-	local profile_dir = os.getenv("LOCALAPPDATA")
-	if not profile_dir or profile_dir == "" then
+	local home_dir = os.getenv("USERPROFILE")
+	if not home_dir or home_dir == "" then
+		print("warning: USERPROFILE environment variable not set")
 		return
 	end
 
-	-- Uses your generated macro file from the git-commands repo.
-	local macrofile = profile_dir .. "\\..\\..\\Git\\git-commands\\bash\\clink_aliases.cmd"
+	-- Read from ~/Git/git-commands/cmd/clink_aliases.cmd
+	local macrofile = home_dir .. "\\Git\\git-commands\\cmd\\clink_aliases.cmd"
 	macrofile = path.normalise(macrofile)
 	load_doskey_macrofile(macrofile)
 end
