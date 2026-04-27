@@ -5,6 +5,7 @@
 
 import argparse
 import os
+import sys
 from collections.abc import Generator
 from collections.abc import Iterable
 from dataclasses import dataclass
@@ -113,6 +114,13 @@ def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, overwrit
             print("WARNING: Cannot link both git-prompt and starship config - ignoring git-prompt.", file=sys.stderr)
     elif link_git_prompt:
         files.append(GIT_PROMPT_FILE)
+
+    clink_dir = Path(os.environ.get("LOCALAPPDATA", "")) / "clink"
+    if clink_dir.is_dir():
+        file_names = {".inputrc"}
+        if link_starship_config:
+            file_names.add("starship.lua")
+        files.append(RepoFileMap(file_names=file_names, repo_sub_dir="cmd", target_dir=clink_dir))
 
     repo_file_name_width_in_chars = max(file_map.max_repo_file_name_chars for file_map in files)
     target_file_name_width_in_chars = max(file_map.max_target_file_name_chars for file_map in files)
