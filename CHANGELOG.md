@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.1.0...v2.2.0) (2026-04-28)
+
+
+### Features
+
+* Add symlinking of cmd starship & alias configs when using clink ([7e043d2](https://github.com/LordFckHelmchen/git-commands/commit/7e043d2f0208f346edd5cf741f51af8438daf5d4))
+* **cmd:** Add clink configuration for starship integration ([39747c8](https://github.com/LordFckHelmchen/git-commands/commit/39747c84c734b8b1a48ef706fb4a5579f45ecec6))
+* **cmd:** Enhance error handling & bash aliases for clink ([b4c41e4](https://github.com/LordFckHelmchen/git-commands/commit/b4c41e43f716656af064b098446cc42aa4c88b23))
+* **starship:** Add shell indicators ([1999784](https://github.com/LordFckHelmchen/git-commands/commit/199978446648cefb030502512ec8f003136bac82))
+
 ## [2.1.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.0.0...v2.1.0) (2026-04-23)
 
 
