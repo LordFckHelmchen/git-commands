@@ -6,38 +6,23 @@
 import argparse
 import os
 import sys
-from collections.abc import Generator
 from collections.abc import Iterable
+from collections.abc import Iterator
 from dataclasses import dataclass
-from dataclasses import field
 from pathlib import Path
-from typing import Any
 
 WIN_ERROR_INSUFFICIENT_PRIVILEGES = 1314
 
 
 @dataclass(frozen=True)
 class RepoFileMap:
-    """
-    Maps files in the repo to an explicit target directory.
+    """Maps files in the repo to an explicit target directory."""
 
-    Also provides formatting information for printing the file names in a tabular format.
-    """
-
-    file_names: Iterable
+    file_names: Iterable[str]
     repo_sub_dir: str
     target_dir: Path
-    _max_repo_file_chars: int = field(init=False)
-    _max_target_file_chars: int = field(init=False)
 
-    def __post_init__(self) -> None:
-        max_repo_chars, max_target_chars = max(
-            (len(str(repo_file)), len(str(target_file))) for repo_file, target_file in self.get_file_pairs()
-        )
-        super().__setattr__("_max_repo_file_chars", max_repo_chars)
-        super().__setattr__("_max_target_file_chars", max_target_chars)
-
-    def get_file_pairs(self) -> Generator[tuple[Path, Path], Any, None]:
+    def get_file_pairs(self) -> Iterator[tuple[Path, Path]]:
         """
         Generate pairs of (relative repo path, absolute target path) for each file.
 
@@ -48,30 +33,6 @@ class RepoFileMap:
         """
         for file in self.file_names:
             yield Path(self.repo_sub_dir) / file, self.target_dir / file
-
-    @property
-    def max_repo_file_name_chars(self) -> int:
-        """
-        Return the maximum number of characters in any repository file name.
-
-        Returns
-        -------
-        int
-            The maximum length of repository file names in characters.
-        """
-        return self._max_repo_file_chars
-
-    @property
-    def max_target_file_name_chars(self) -> int:
-        """
-        Return the maximum number of characters in any target file path.
-
-        Returns
-        -------
-        int
-            The maximum length of target file paths in characters.
-        """
-        return self._max_target_file_chars
 
 
 HOME = Path(os.environ.get("HOME", os.environ["USERPROFILE"]))
@@ -85,7 +46,7 @@ GIT_PROMPT_FILE = RepoFileMap(file_names={"git-prompt.sh"}, repo_sub_dir="bash",
 STARSHIP_CONFIG_FILE = RepoFileMap(file_names={"starship.toml"}, repo_sub_dir="themes", target_dir=CONFIG_DIR)
 
 
-def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, overwrite_existing_files: bool) -> None:
+def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, exist_ok: bool) -> None:
     """
     Create symbolic links from the configuration files in this repo to the user's home directory.
 
@@ -94,65 +55,60 @@ def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, overwrit
     Parameters
     ----------
     link_git_prompt
-        If True, link the git-prompt file. Mutually exclusive with `link_starship_config` - will be ignored if both are
-        True.
+        If True, link the git-prompt file. Mutually exclusive with `link_starship_config`.
     link_starship_config
         If True, link the starship configuration file. Mutually exclusive with `link_git_prompt`.
-    overwrite_existing_files
-        If True, overwrite existing files at the link location.
+    exist_ok
+        If True, overwrite existing files at the link location is acceptable, otherwise a warning will be displayed and
+        the file ignored.
 
     Raises
     ------
-    OSError
-        If an OS-related error occurs, such as insufficient permissions for creating symlinks on Windows.
+    ValueError
+        If both `link_git_prompt` and `link_starship_config` are True.
     """
-    files = [BASH_FILES, GIT_CONFIG_FILE]
+    if link_git_prompt and link_starship_config:
+        msg = "`link_git_prompt` and `link_starship_config` are mutually exclusive."
+        raise ValueError(msg)
 
+    files = [BASH_FILES, GIT_CONFIG_FILE]
     if link_starship_config:
         files.append(STARSHIP_CONFIG_FILE)
-        if link_git_prompt:
-            print("WARNING: Cannot link both git-prompt and starship config - ignoring git-prompt.", file=sys.stderr)
     elif link_git_prompt:
         files.append(GIT_PROMPT_FILE)
-
     clink_dir = Path(os.environ.get("LOCALAPPDATA", "")) / "clink"
     if clink_dir.is_dir():
-        file_names = {".inputrc"}
-        if link_starship_config:
-            file_names.add("starship.lua")
-        files.append(RepoFileMap(file_names=file_names, repo_sub_dir="cmd", target_dir=clink_dir))
+        files.append(
+            RepoFileMap(
+                file_names={".inputrc", *(["starship.lua"] if link_starship_config else [])},
+                repo_sub_dir="cmd",
+                target_dir=clink_dir,
+            )
+        )
+    file_pairs = [pair for file_map in files for pair in file_map.get_file_pairs()]
 
-    repo_file_name_width_in_chars = max(file_map.max_repo_file_name_chars for file_map in files)
-    target_file_name_width_in_chars = max(file_map.max_target_file_name_chars for file_map in files)
+    # Get column widths for pretty printing
+    repo_file_name_width_in_chars = max(len(repo_file.as_posix()) for repo_file, _ in file_pairs)
+    target_file_name_width_in_chars = max(len(target_file.as_posix()) for _, target_file in file_pairs)
 
     repo = Path(__file__).parent
     print(f"Creating links to files in '{repo}'")
-    try:
-        for file_map in files:
-            for repo_file, target_file in file_map.get_file_pairs():
-                link_target = repo / repo_file
-                link = target_file
-                print(
-                    f"   {target_file!s:{target_file_name_width_in_chars}} --> "
-                    f"{repo_file!s:{repo_file_name_width_in_chars}}   ",
-                    end="",
-                )
-                if link.exists() and not overwrite_existing_files:
-                    print("ERROR: File already exists! Remove it before calling this script.", file=sys.stderr)
-                else:
-                    link.parent.mkdir(parents=True, exist_ok=True)
-                    link.unlink(missing_ok=True)
-                    link.symlink_to(link_target)
-                    print("SUCCESS.")
-    except OSError as err:
-        if getattr(err, "winerror", None) == WIN_ERROR_INSUFFICIENT_PRIVILEGES:
-            print(
-                f"ERROR: WinError {WIN_ERROR_INSUFFICIENT_PRIVILEGES} occurred. Windows requires admin rights for "
-                "symlinks. Not kidding! So start the console as admin and execute this script again.",
-                file=sys.stderr,
-            )
-            sys.exit(WIN_ERROR_INSUFFICIENT_PRIVILEGES)
-        raise
+    for repo_file, target_file in file_pairs:
+        link_target = repo / repo_file
+        link = target_file
+        print(
+            f"   {target_file.as_posix():{target_file_name_width_in_chars}} --> "
+            f"{repo_file.as_posix():{repo_file_name_width_in_chars}}   ",
+            end="",
+        )
+        if link.exists() and not exist_ok:
+            print("ERROR: File already exists! Remove it before calling this script.", file=sys.stderr)
+            continue
+
+        link.parent.mkdir(parents=True, exist_ok=True)
+        link.unlink(missing_ok=True)
+        link.symlink_to(link_target)
+        print("SUCCESS.")
 
 
 if __name__ == "__main__":
@@ -170,8 +126,17 @@ if __name__ == "__main__":
     )
     parser.add_argument("-f", "--force", action="store_true", default=False, help="Force overwriting existing files.")
     args = parser.parse_args()
-    symlink_files(
-        link_git_prompt=args.link_git_prompt,
-        link_starship_config=args.link_starship_config,
-        overwrite_existing_files=args.force,
-    )
+
+    try:
+        symlink_files(
+            link_git_prompt=args.link_git_prompt, link_starship_config=args.link_starship_config, exist_ok=args.force
+        )
+    except OSError as err:
+        if getattr(err, "winerror", None) == WIN_ERROR_INSUFFICIENT_PRIVILEGES:
+            print(
+                f"ERROR: WinError {WIN_ERROR_INSUFFICIENT_PRIVILEGES} occurred. Windows requires admin "
+                "rights for symlinks. Not kidding! So start the console as admin and execute this script again.",
+                file=sys.stderr,
+            )
+            sys.exit(WIN_ERROR_INSUFFICIENT_PRIVILEGES)
+        raise
