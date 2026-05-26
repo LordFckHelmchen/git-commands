@@ -86,6 +86,11 @@ alias rmd='rm -rf'
 # Prek run all files
 if is_command prek; then
 	alias pra='prek run --all-files'
+	if is_command uv; then
+		alias prat='prek run --all-files && uvpt'
+	else
+		log_warn "'uv' not found - can't define alias 'prat'."
+	fi
 else
 	log_warn "'prek' not found - can't define alias 'pra'."
 fi
