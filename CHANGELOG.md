@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.2.0...v2.3.0) (2026-06-08)
+
+
+### Features
+
+* **bash:** Add 'prat' alias for running prek & pytest ([acce8b1](https://github.com/LordFckHelmchen/git-commands/commit/acce8b1ef5d2bfc0118c469f4a966f7170b43ac4))
+
 ## [2.2.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.1.0...v2.2.0) (2026-04-28)
 
 
