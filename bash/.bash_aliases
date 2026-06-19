@@ -219,6 +219,22 @@ elif source_if_exists "$XDG_CONFIG_HOME"/bash/git-prompt.sh true || source_if_ex
 	log_debug "Using git-prompt.sh for git branch highlighting."
 fi
 
+if is_command gh; then
+	# List repos where the current user has admin permission (i.e. can act on them).
+	# Output: one repo per line as `<full_name>\t<html_url>`, sorted & deduplicated.
+	function my_repos() {
+		gh api --method GET --paginate user/repos \
+			-f affiliation=owner,collaborator,organization_member -f per_page=100 \
+			--jq '.[] | select(.permissions.admin == true) | "\(.full_name)\t\(.html_url)"' |
+			sort -u
+	}
+
+	# Show admin repos as `<full_name> <html_url>`.
+	alias myrepos="my_repos | column -t -s \$'\t'"
+else
+	log_warn "'gh' command not found - can't define alias 'myrepos' and supporting function."
+fi
+
 ########################################################################################################################
 # Local bin paths
 ########################################################################################################################
