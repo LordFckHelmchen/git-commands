@@ -470,6 +470,7 @@ function updateRepos() {
 	if is_command gittyup; then
 		declare -A repo_dirs=(
 			["all repos under ~/Git"]="$HOME/Git"
+			["all repos under ~/Git/claude/repos"]="$HOME/Git/claude/repos"
 			["pyenv"]="$PYENV_DIR"
 			["adr-tools"]="$ADR_HOME"
 		)
