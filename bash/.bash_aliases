@@ -231,6 +231,89 @@ if is_command gh; then
 
 	# Show admin repos as `<full_name> <html_url>`.
 	alias myrepos="my_repos | column -t -s \$'\t'"
+
+	# Colorize the highest-severity word in the last column of an aligned table,
+	# read from stdin. ANSI escapes are zero-width, so applying them AFTER column
+	# alignment keeps the columns lined up. Anchored to end-of-line to avoid
+	# recoloring repo names/URLs that happen to contain "high"/"low"/etc.
+	#   yellow: low | orange: medium | red: high & critical
+	function __colorize_severity() {
+		local red=$'\033[31m' orange=$'\033[38;5;208m' yellow=$'\033[33m' reset=$'\033[0m'
+		sed -E \
+			-e "s/\b(critical|high)\b[[:space:]]*$/${red}\1${reset}/I" \
+			-e "s/\b(medium)\b[[:space:]]*$/${orange}\1${reset}/I" \
+			-e "s/\b(low)\b[[:space:]]*$/${yellow}\1${reset}/I"
+	}
+
+	# List admin repos, enriched with open PR count and open Dependabot alert stats.
+	# Output (tab-separated): full_name, html_url, open_prs, open_alerts, highest_severity
+	# Repos without Dependabot enabled (403/404) report 0 alerts and "-" severity.
+	# By default only repos with open PRs and/or alerts are shown; pass -a/--all to
+	# list every admin repo.
+	function github_alerts() {
+		local show_all=0
+		while (($#)); do
+			case $1 in
+			-a | --all) show_all=1 ;;
+			*)
+				log_error "github_alerts: unknown argument '$1' (usage: github_alerts [-a|--all])"
+				return 2
+				;;
+			esac
+			shift
+		done
+
+		local -a repos
+		mapfile -t repos < <(my_repos)
+
+		local total=${#repos[@]}
+		if ((total == 0)); then
+			log_warn "No admin repos found (is 'gh' authenticated? Try 'gh auth status')."
+			return 1
+		fi
+
+		local name url prs severities count highest i=0
+		while IFS=$'\t' read -r name url; do
+			((i++))
+			printf '\rScanning %d/%d: %-50s' "$i" "$total" "$name" >&2
+
+			# Open PRs: the Search API returns the total directly (one cheap call).
+			# No leading "/" on the endpoint to avoid Git Bash (MSYS) rewriting it as filepath.
+			prs=$(gh api --method GET search/issues \
+				-f q="repo:$name is:pr is:open" --jq '.total_count' 2>/dev/null) || prs=0
+			[[ -z $prs ]] && prs=0
+
+			# Open Dependabot alerts. Repos without Dependabot return a non-2xx
+			# status (e.g. 403/404), so treat a non-zero exit as "no alerts".
+			severities=$(gh api --paginate \
+				"/repos/$name/dependabot/alerts?state=open&per_page=100" \
+				--jq '.[].security_advisory.severity' 2>/dev/null) || severities=""
+			count=$(printf '%s' "$severities" | grep -c .)
+			if ((count > 0)); then
+				highest=$(printf '%s\n' "$severities" |
+					grep -m1 -o -E -i 'critical|high|medium|low' || echo "-")
+			else
+				count=0
+				highest="-"
+			fi
+
+			# Only emit repos that have open PRs and/or open Dependabot alerts,
+			# unless -a/--all was requested.
+			((show_all || prs > 0 || count > 0)) || continue
+
+			printf '%s\t%s\t%s\t%s\t%s\n' "$name" "$url" "$prs" "$count" "$highest"
+		done < <(printf '%s\n' "${repos[@]}")
+		printf '\r%-70s\r' '' >&2 # Clear the progress line.
+	}
+
+	# Show GitHub Alerts & open PRs as table with the highest severity color-coded.
+	# Forwards flags (e.g. -a/--all) to github_alerts.
+	function ghalerts() {
+		{
+			printf 'REPO\tURL\tPRS\tALERTS\tHIGHEST\n'
+			github_alerts "$@"
+		} | column -t -s $'\t' | __colorize_severity
+	}
 else
 	log_warn "'gh' command not found - can't define alias 'myrepos' and supporting function."
 fi
