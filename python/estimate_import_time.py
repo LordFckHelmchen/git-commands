@@ -36,7 +36,7 @@ class _ImportTimings:
         mean_stat_col = 4  # Excluding Type
 
         print(
-            f"| {'Type':{col_width}} | {'Min':{col_width}} | {'Q1':{col_width}} | {'Median':{col_width}} | {'Mean':{col_width}} | {'Q3':{col_width}} | {'Max':{col_width}} | {'StdErr':{col_width}} |"  # noqa: E501
+            f"| {'Type':{col_width}} | {'Min':{col_width}} | {'Q1':{col_width}} | {'Median':{col_width}} | {'Mean':{col_width}} | {'Q3':{col_width}} | {'Max':{col_width}} | {'StdErr':{col_width}} |"  # ruff: ignore[line-too-long]
         )
         print(f"| {'-' * col_width} " * n_cols, end="|\n")
         for import_type, times in {"initial": self.initial, "subsequent": self.subsequent}.items():
@@ -140,7 +140,7 @@ def count_imported_modules(module_name: str) -> tuple[int, int]:
     """
     _remove_module_and_submodules(module_name)
     modules_before = set(sys.modules.keys())
-    assert module_name not in sys.modules, f"Module {module_name} was already imported!"  # noqa: S101  Allow asserts here
+    assert module_name not in sys.modules, f"Module {module_name} was already imported!"  # ruff: ignore[assert]  Allow asserts here
     importlib.import_module(module_name)
     diff = set(sys.modules) - modules_before
     submodules = {m for m in diff if "." in m}
@@ -170,7 +170,7 @@ def estimate_import_time(module_name: str, number_of_runs: int) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
-        description=f"{estimate_import_time.__doc__} Usage example: `path/to/executable/with/module/python estimate_import_time.py pandas -n 20`"  # noqa: E501
+        description=f"{estimate_import_time.__doc__} Usage example: `path/to/executable/with/module/python estimate_import_time.py pandas -n 20`"  # ruff: ignore[line-too-long]
     )
     parser.add_argument("module", type=str, help="Module name to import (default: pandas)")
     parser.add_argument("-n", "--runs", type=int, default=100, help="Number of runs to compute over (default: 10)")

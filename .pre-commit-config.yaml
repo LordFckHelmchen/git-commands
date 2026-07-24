@@ -25,7 +25,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: 01a675ea018f2fb714478a5ffb83fcea8374bb06  # frozen: v0.15.21
+    rev: cb8c523fd4835aba42af70f4cad5568db4df0b6c  # frozen: v0.16.0
     hooks:
       - id: ruff-check # Run the linter & fix fixable issues
         args:
@@ -33,7 +33,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/rvben/rumdl-pre-commit
-    rev: 8f5dd7416d031646aa5607fc56092723650fd873  # frozen: v0.2.30
+    rev: 5597a2751e69d4ec767059adae3a1913298b1a0b  # frozen: v0.2.42
     hooks:
       - id: rumdl
       - id: rumdl-fmt
