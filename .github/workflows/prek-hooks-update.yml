@@ -1,6 +1,7 @@
 name: Prek-Hooks Update
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "42 12 * * 5" # Run weekly
 
@@ -15,7 +16,7 @@ jobs:
     name: Auto-update prek-hooks
     runs-on: ubuntu-latest
     permissions:
-      contents: write # To update the pre-commit config & commit the changes
+      contents: write      # To update the pre-commit config & commit the changes
       pull-requests: write # To create the PR
     env:
       COMMIT_MSG: "build(deps): Update prek-hooks"
