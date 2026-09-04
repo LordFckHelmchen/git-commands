@@ -80,7 +80,7 @@ def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, exist_ok
     if clink_dir.is_dir():
         files.append(
             RepoFileMap(
-                file_names={".inputrc", *(["starship.lua"] if link_starship_config else [])},
+                file_names={".inputrc", "update_all.cmd", *(["starship.lua"] if link_starship_config else [])},
                 repo_sub_dir="cmd",
                 target_dir=clink_dir,
             )

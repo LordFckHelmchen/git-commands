@@ -64,6 +64,7 @@ python symlink_files.py --force
 ## Repository Contents
 
 - `bash/`: bash startup files and prompt script
+- `cmd/`: Clink aliases & scripts (mirroring bash behavior in cmd)
 - `git/`: git helper scripts
 - `github/`: GitHub workflow YAML snippets
 - `python/`: utility scripts and example configs

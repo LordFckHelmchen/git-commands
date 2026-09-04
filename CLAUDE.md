@@ -60,8 +60,25 @@ Machine-specific values never go in this repo. They belong in untracked override
 `~/.bash_config_local.sh` (env vars, aliases; sourced by `.bashrc`) and `~/.gitconfig_local`
 (user name/email; `[include]`d by `git/.gitconfig`).
 
-`cmd/.inputrc` and `cmd/clink_aliases.cmd` intentionally mirror the bash keybindings and aliases for
-CMD via Clink — change them together with their bash counterparts.
+### Mirroring bash into Clink (CMD)
+
+`cmd/*` mirrors the bash key bindings, aliases, and update functions for CMD via Clink. It must be kept in sync with
+`bash/.bash_aliases`:
+
+- `cmd/.inputrc` mirrors the bash key bindings.
+- `cmd/clink_aliases.cmd` mirrors the single-line aliases as `doskey` macros. `cmd/starship.lua`
+  (linked only with `--link_starship_config`) loads them by scanning the file line-by-line and only
+  registers lines of the exact form `doskey <name>=<body>` — no line continuations, no multi-line
+  bodies.
+- `cmd/update_all.cmd` mirrors the multi-statement functions (`updateAll`/`updateTools`/`updateRepos`). `symlink_files.py`
+  links it into `%LOCALAPPDATA%/clink`, and `clink_aliases.cmd` invokes it via `doskey` macros.
+
+When you add or change something in `bash/.bash_aliases`, adapt the Clink config to match:
+
+- One-line alias → add/update the matching `doskey` line in `cmd/clink_aliases.cmd`.
+- Multi-statement function → add/update a subroutine in `cmd/update_all.cmd` (or a new batch script)
+  and expose it via a `doskey` macro in `cmd/clink_aliases.cmd`.
+- New key binding → update `cmd/.inputrc`.
 
 ## Contribution conventions
 

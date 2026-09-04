@@ -40,3 +40,14 @@ doskey lspath=for %P in ("%PATH:;=" "%") do @echo %~P
 REM now: ISO-like UTC timestamp via PowerShell
 REM Bash had nanoseconds; this keeps a close practical equivalent.
 doskey now=powershell -NoProfile -Command "(Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffffffK')"
+
+
+REM ############################################################################
+REM ### UPDATE ALIASES
+REM ############################################################################
+
+REM Mirror of bash updateAll/updateTools/updateRepos; logic lives in update_all.cmd.
+REM Completions are intentionally omitted: clink uses Lua argmatchers, not bash-completion scripts.
+doskey updateAll=call "%LOCALAPPDATA%\clink\update_all.cmd"
+doskey updateTools=call "%LOCALAPPDATA%\clink\update_all.cmd" tools
+doskey updateRepos=call "%LOCALAPPDATA%\clink\update_all.cmd" repos
