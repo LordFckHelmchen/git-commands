@@ -34,7 +34,7 @@ defaultBranch = main
 	s = status
 	sw = switch
 	tree = !git ls-tree --full-name --name-only -tr HEAD | sed --expression=\"s/[^-][^\\/]*\\// |/g\" --expression=\"s/|\\([^ ]\\)/|-- \\1/\"  # Show file tree, ignoring git files; taken from https://stackoverflow.com/a/61565622/5202331
-	up = !git fetch --all --prune && git pull  # Fetch, prune and pull
+	up = !git fetch --all --prune && git pull && git ldb  # Fetch, prune and pull
 [gpg]
 	format = ssh
 [user]
