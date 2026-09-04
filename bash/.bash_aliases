@@ -467,10 +467,10 @@ function updateTools() {
 }
 
 function updateRepos() {
-	if is_command gittyup; then
+	local cmd="gittyup"
+	if is_command $cmd; then
 		declare -A repo_dirs=(
 			["all repos under ~/Git"]="$HOME/Git"
-			["all repos under ~/Git/claude/repos"]="$HOME/Git/claude/repos"
 			["pyenv"]="$PYENV_DIR"
 			["adr-tools"]="$ADR_HOME"
 		)
@@ -479,13 +479,13 @@ function updateRepos() {
 		for repo_dir_name in "${!repo_dirs[@]}"; do
 			repo_dir="${repo_dirs[$repo_dir_name]}"
 			if [[ -d "$repo_dir" ]]; then
-				gittyup --ignore-all-changes --sync "$repo_dir"
+				$cmd --ignore-all-changes --sync "$repo_dir"
 			else
 				log_debug "Can't update repository for $repo_dir_name - $repo_dir does not exist."
 			fi
 		done
 	else
-		log_warn "'gittyup' command not found - can't update git repositories. Please install gittyup via 'uv tool install gittyup' or update your git repos manually."
+		log_warn "'$cmd' command not found - can't update git repositories. Please install it via 'uv tool install $cmd' or update your git repos manually."
 	fi
 }
 
