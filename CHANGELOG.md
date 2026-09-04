@@ -1,5 +1,26 @@
 # Changelog
 
+## [3.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.3.0...v3.0.0) (2026-09-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **github:** Remove example actions
+
+### Features
+
+* Add agent file for claude ([27d431c](https://github.com/LordFckHelmchen/git-commands/commit/27d431c99d07b719f178e3e30215a9ad9df75172))
+* **bash:** add 'myrepos' alias to list admin repos using GitHub CLI ([92aabd8](https://github.com/LordFckHelmchen/git-commands/commit/92aabd8c289c625457993ca01d74d129ea0c49d6))
+* **bash:** Add "gh alerts" to list repos with GitHub alerts or open PRs ([73f3d7c](https://github.com/LordFckHelmchen/git-commands/commit/73f3d7c2d0bf91e5c184da0f435b6e094166e8d1))
+* **cmd:** Add updateAll-related functions ([d841ba2](https://github.com/LordFckHelmchen/git-commands/commit/d841ba2fc4b4ab20424187732eab00284ff3c9ea))
+* **git:** Add commit signing config ([5d89348](https://github.com/LordFckHelmchen/git-commands/commit/5d89348e78935bccebf320afab0950277bf748a4))
+* **git:** Show deleted branches after calling `git up` ([e842598](https://github.com/LordFckHelmchen/git-commands/commit/e842598f942490236bfdd26dd455c581466ebc10))
+
+
+### Code Refactoring
+
+* **github:** Remove example actions ([70e6001](https://github.com/LordFckHelmchen/git-commands/commit/70e6001452d79f7f6d6c365cd57963edbc2ba6db))
+
 ## [2.3.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.2.0...v2.3.0) (2026-06-08)
 
 
