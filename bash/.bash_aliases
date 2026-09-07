@@ -272,7 +272,7 @@ if is_command gh; then
 			return 1
 		fi
 
-		local name url prs severities count highest i=0
+		local name url prs severities count highest rank i=0
 		while IFS=$'\t' read -r name url; do
 			((i++))
 			printf '\rScanning %d/%d: %-50s' "$i" "$total" "$name" >&2
@@ -289,12 +289,15 @@ if is_command gh; then
 				"/repos/$name/dependabot/alerts?state=open&per_page=100" \
 				--jq '.[].security_advisory.severity' 2>/dev/null) || severities=""
 			count=$(printf '%s' "$severities" | grep -c .)
+			highest="-"
 			if ((count > 0)); then
-				highest=$(printf '%s\n' "$severities" |
-					grep -m1 -o -E -i 'critical|high|medium|low' || echo "-")
-			else
-				count=0
-				highest="-"
+				# Pick the highest severity present (not the first one the API returns).
+				for rank in critical high medium low; do
+					if grep -qix -- "$rank" <<<"$severities"; then
+						highest=$rank
+						break
+					fi
+				done
 			fi
 
 			# Only emit repos that have open PRs and/or open Dependabot alerts,
