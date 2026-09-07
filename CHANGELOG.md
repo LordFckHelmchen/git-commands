@@ -1,5 +1,63 @@
 # Changelog
 
+## [3.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.3.0...v3.0.0) (2026-09-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **github:** Remove example actions
+
+### Features
+
+* Add agent file for claude ([27d431c](https://github.com/LordFckHelmchen/git-commands/commit/27d431c99d07b719f178e3e30215a9ad9df75172))
+* **bash:** add 'myrepos' alias to list admin repos using GitHub CLI ([92aabd8](https://github.com/LordFckHelmchen/git-commands/commit/92aabd8c289c625457993ca01d74d129ea0c49d6))
+* **bash:** Add "gh alerts" to list repos with GitHub alerts or open PRs ([73f3d7c](https://github.com/LordFckHelmchen/git-commands/commit/73f3d7c2d0bf91e5c184da0f435b6e094166e8d1))
+* **cmd:** Add cp alias for copy ([e03ffd0](https://github.com/LordFckHelmchen/git-commands/commit/e03ffd07f4a89ec6d1263e2996beb13d450b5a4a))
+* **cmd:** Add mirror alias to clink for ghalerts ([0abdde5](https://github.com/LordFckHelmchen/git-commands/commit/0abdde53f916d73bbb86fd034aae4978273aeb21))
+* **cmd:** Add updateAll-related functions ([d841ba2](https://github.com/LordFckHelmchen/git-commands/commit/d841ba2fc4b4ab20424187732eab00284ff3c9ea))
+* **git:** Add commit signing config ([5d89348](https://github.com/LordFckHelmchen/git-commands/commit/5d89348e78935bccebf320afab0950277bf748a4))
+* **git:** Show deleted branches after calling `git up` ([e842598](https://github.com/LordFckHelmchen/git-commands/commit/e842598f942490236bfdd26dd455c581466ebc10))
+
+
+### Bug Fixes
+
+* **bash:** Correctly identify the highest alert severity in ghalerts ([649b90f](https://github.com/LordFckHelmchen/git-commands/commit/649b90fad514b8451c2b9af703b98b1f7c798f84))
+* Fail with specific error on unset home variable ([d99a290](https://github.com/LordFckHelmchen/git-commands/commit/d99a29027a0696ff93e7f9fa1dd92dec7329d833))
+* Print in correct order on the CLI ([8883e2e](https://github.com/LordFckHelmchen/git-commands/commit/8883e2e735e0e29080791642bf880a0769207f95))
+
+
+### Code Refactoring
+
+* **bash:** Reduce redundant name usage in updateRepos ([79c4971](https://github.com/LordFckHelmchen/git-commands/commit/79c49713aa1e5e6767bfb0309c33255061010faa))
+* **github:** Remove example actions ([70e6001](https://github.com/LordFckHelmchen/git-commands/commit/70e6001452d79f7f6d6c365cd57963edbc2ba6db))
+
+
+### Build System
+
+* **deps:** Bump actions/checkout from 6.0.2 to 6.0.3 in the all-actions group ([#20](https://github.com/LordFckHelmchen/git-commands/issues/20)) ([2a4d770](https://github.com/LordFckHelmchen/git-commands/commit/2a4d770edfe694f96abd92d66db596fb5e22a048))
+* **deps:** Bump actions/checkout from 6.0.3 to 7.0.0 in the all-actions group ([#22](https://github.com/LordFckHelmchen/git-commands/issues/22)) ([d348441](https://github.com/LordFckHelmchen/git-commands/commit/d3484418dcba1ac61e1d75b11a04bdb7a2585118))
+* **deps:** Bump j178/prek-action from 2.0.4 to 2.0.5 in the all-actions group ([#25](https://github.com/LordFckHelmchen/git-commands/issues/25)) ([90dbed9](https://github.com/LordFckHelmchen/git-commands/commit/90dbed9b64540a2ffc2e4dd582f08e8ad2fcc5b2))
+* **deps:** Bump j178/prek-action from 2.0.6 to 3.0.0 in the all-actions group ([#32](https://github.com/LordFckHelmchen/git-commands/issues/32)) ([58b08d4](https://github.com/LordFckHelmchen/git-commands/commit/58b08d479f1417cd005bf58e4daf3ecd02040cc8))
+* **deps:** Bump the all-actions group across 1 directory with 2 updates ([#29](https://github.com/LordFckHelmchen/git-commands/issues/29)) ([be4a161](https://github.com/LordFckHelmchen/git-commands/commit/be4a1615890106eb51b50bafdda629efdb3b5f1e))
+* **deps:** Update prek-hooks ([#19](https://github.com/LordFckHelmchen/git-commands/issues/19)) ([fec5632](https://github.com/LordFckHelmchen/git-commands/commit/fec5632cfec31aec4a7821f8027f2efeb1a7e1f6))
+* **deps:** Update prek-hooks ([#21](https://github.com/LordFckHelmchen/git-commands/issues/21)) ([8b9c14f](https://github.com/LordFckHelmchen/git-commands/commit/8b9c14f899fa3ed0c4b3cdd13ae4b507ed0be986))
+* **deps:** Update prek-hooks ([#23](https://github.com/LordFckHelmchen/git-commands/issues/23)) ([cd04a44](https://github.com/LordFckHelmchen/git-commands/commit/cd04a44c69232fbfb3cac2e92ad6f57bd1c8a7c5))
+* **deps:** Update prek-hooks ([#24](https://github.com/LordFckHelmchen/git-commands/issues/24)) ([7c3281a](https://github.com/LordFckHelmchen/git-commands/commit/7c3281aea84fa5df411bbd413a88682001368ac0))
+* **deps:** Update prek-hooks ([#26](https://github.com/LordFckHelmchen/git-commands/issues/26)) ([598b358](https://github.com/LordFckHelmchen/git-commands/commit/598b35858f2fea82acdef026a060a875cd59b27b))
+* **deps:** Update prek-hooks ([#30](https://github.com/LordFckHelmchen/git-commands/issues/30)) ([e527f87](https://github.com/LordFckHelmchen/git-commands/commit/e527f8783fa034b2c311d49004d2861d819743ed))
+* **deps:** Update prek-hooks ([#31](https://github.com/LordFckHelmchen/git-commands/issues/31)) ([7512f89](https://github.com/LordFckHelmchen/git-commands/commit/7512f8984a67c575c3b189af3b7833f1c3fd0d78))
+* **deps:** Update prek-hooks ([#33](https://github.com/LordFckHelmchen/git-commands/issues/33)) ([994ad14](https://github.com/LordFckHelmchen/git-commands/commit/994ad140874b2fcae271c1133e79a800e38c7e81))
+* Fix cc scopes across build & ci ([b4e2083](https://github.com/LordFckHelmchen/git-commands/commit/b4e208349f723285c9e53671076fec5a13a4ba29))
+* Switch to human-readable ruff rule names ([666c838](https://github.com/LordFckHelmchen/git-commands/commit/666c8388ca9f1910658bf23e9a9fc7f51dd7c328))
+
+
+### Continuous Integration
+
+* Add all commit types to changelog ([f431785](https://github.com/LordFckHelmchen/git-commands/commit/f431785320762906bacdc0b13e4394f67ec239b0))
+* Allow empty scope in PR titles ([1a01365](https://github.com/LordFckHelmchen/git-commands/commit/1a01365832dc901fc8cf91dd88d225a019b0a341))
+* Enable manual trigger for prek-hooks update workflow & limit cc scopes ([5ac117f](https://github.com/LordFckHelmchen/git-commands/commit/5ac117f5f6b699e62aa483814bb4d2a735f5320e))
+* Omit "main"-scope in release-please PR ([e497655](https://github.com/LordFckHelmchen/git-commands/commit/e497655bfd516f4f3e1ca92e0da300ed95aa72a8))
+
 ## [2.3.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.2.0...v2.3.0) (2026-06-08)
 
 
