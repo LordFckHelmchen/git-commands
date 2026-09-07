@@ -42,5 +42,6 @@
       ],
       "release-type": "simple"
     }
-  }
+  },
+  "pull-request-title-pattern": "chore: Release${component} ${version}"
 }
