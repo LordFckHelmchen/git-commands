@@ -116,6 +116,7 @@ def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, exist_ok
             f"   {target_file.as_posix():{target_file_name_width_in_chars}} --> "
             f"{repo_file.as_posix():{repo_file_name_width_in_chars}}   ",
             end="",
+            flush=True,
         )
         if link.exists() and not exist_ok:
             print("WARNING: File already exists! Remove it before calling this script.", file=sys.stderr)
