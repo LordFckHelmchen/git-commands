@@ -1,0 +1,46 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "packages": {
+    ".": {
+      "changelog-sections": [
+        {
+          "section": "Features",
+          "type": "feat"
+        },
+        {
+          "section": "Bug Fixes",
+          "type": "fix"
+        },
+        {
+          "section": "Code Refactoring",
+          "type": "refactor"
+        },
+        {
+          "section": "Reverts",
+          "type": "revert"
+        },
+        {
+          "section": "Documentation",
+          "type": "docs"
+        },
+        {
+          "section": "Build System",
+          "type": "build"
+        },
+        {
+          "section": "Continuous Integration",
+          "type": "ci"
+        },
+        {
+          "section": "Tests",
+          "type": "test"
+        },
+        {
+          "section": "Miscellaneous Chores",
+          "type": "chore"
+        }
+      ],
+      "release-type": "simple"
+    }
+  }
+}
