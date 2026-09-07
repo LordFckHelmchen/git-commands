@@ -9,9 +9,17 @@ import sys
 from collections.abc import Iterable
 from collections.abc import Iterator
 from dataclasses import dataclass
+from enum import IntEnum
 from pathlib import Path
 
-WIN_ERROR_INSUFFICIENT_PRIVILEGES = 1314
+
+class ExitCode(IntEnum):
+    """Exit codes for the script."""
+
+    SUCCESS = 0
+    GENERIC_FAILURE = 1
+    NO_HOME_DIRECTORY_FOUND = 2
+    WIN_ERROR_INSUFFICIENT_PRIVILEGES = 1314
 
 
 @dataclass(frozen=True)
@@ -35,7 +43,15 @@ class RepoFileMap:
             yield Path(self.repo_sub_dir) / file, self.target_dir / file
 
 
-HOME = Path(os.environ.get("HOME", os.environ["USERPROFILE"]))
+if HOME_ENV_VAR := os.environ.get("HOME") or os.environ.get("USERPROFILE"):
+    HOME = Path(HOME_ENV_VAR)
+else:
+    print(
+        "Neither the $HOME nor the $USERPROFILE environment variable is set. Can't meaningfully symlink files!",
+        file=sys.stderr,
+    )
+    sys.exit(ExitCode.NO_HOME_DIRECTORY_FOUND)
+
 CONFIG_DIR = Path(os.environ.get("XDG_CONFIG_HOME", HOME / ".config"))
 
 BASH_FILES = RepoFileMap(
@@ -102,7 +118,7 @@ def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, exist_ok
             end="",
         )
         if link.exists() and not exist_ok:
-            print("ERROR: File already exists! Remove it before calling this script.", file=sys.stderr)
+            print("WARNING: File already exists! Remove it before calling this script.", file=sys.stderr)
             continue
 
         link.parent.mkdir(parents=True, exist_ok=True)
@@ -132,11 +148,13 @@ if __name__ == "__main__":
             link_git_prompt=args.link_git_prompt, link_starship_config=args.link_starship_config, exist_ok=args.force
         )
     except OSError as err:
-        if getattr(err, "winerror", None) == WIN_ERROR_INSUFFICIENT_PRIVILEGES:
+        if getattr(err, "winerror", None) == ExitCode.WIN_ERROR_INSUFFICIENT_PRIVILEGES:
             print(
-                f"ERROR: WinError {WIN_ERROR_INSUFFICIENT_PRIVILEGES} occurred. Windows requires admin "
+                f"ERROR: WinError {ExitCode.WIN_ERROR_INSUFFICIENT_PRIVILEGES} occurred. Windows requires admin "
                 "rights for symlinks. Not kidding! So start the console as admin and execute this script again.",
                 file=sys.stderr,
             )
-            sys.exit(WIN_ERROR_INSUFFICIENT_PRIVILEGES)
+            sys.exit(ExitCode.WIN_ERROR_INSUFFICIENT_PRIVILEGES)
         raise
+
+    sys.exit(ExitCode.SUCCESS)
