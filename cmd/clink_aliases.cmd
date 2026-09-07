@@ -51,3 +51,11 @@ REM Completions are intentionally omitted: clink uses Lua argmatchers, not bash-
 doskey updateAll=call "%LOCALAPPDATA%\clink\update_all.cmd"
 doskey updateTools=call "%LOCALAPPDATA%\clink\update_all.cmd" tools
 doskey updateRepos=call "%LOCALAPPDATA%\clink\update_all.cmd" repos
+
+
+REM ############################################################################
+REM ### GITHUB ALIASES
+REM ############################################################################
+
+REM Mirror of bash 'ghalerts'; logic lives in gh_alerts.ps1 (PowerShell-only).
+doskey ghalerts=powershell -NoProfile -ExecutionPolicy Bypass -File "%LOCALAPPDATA%\clink\gh_alerts.ps1" $* $*
