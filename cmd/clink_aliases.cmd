@@ -18,6 +18,8 @@ doskey touch=for %I in ($*) do @type nul >> "%~I"
 
 doskey which=where $*
 
+doskey cp=copy $*
+
 
 REM ############################################################################
 REM ### UTILITY ALIASES
