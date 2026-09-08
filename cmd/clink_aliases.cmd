@@ -20,6 +20,8 @@ doskey which=where $*
 
 doskey cp=copy $*
 
+doskey oneclaude=cd %OneDrive% & claude
+
 
 REM ############################################################################
 REM ### UTILITY ALIASES
