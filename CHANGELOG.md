@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/LordFckHelmchen/git-commands/compare/v3.0.0...v3.1.0) (2026-09-08)
+
+
+### Features
+
+* **cmd:** Add alias to start claude in onedrive folder ([b102644](https://github.com/LordFckHelmchen/git-commands/commit/b102644b25fb92a1278d58551a45d572bdbac0f5))
+
 ## [3.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.3.0...v3.0.0) (2026-09-07)
 
 
