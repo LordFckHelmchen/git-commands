@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.1.0](https://github.com/LordFckHelmchen/git-commands/compare/v3.0.0...v3.1.0) (2026-09-29)
+
+
+### Features
+
+* **cmd:** Add alias to start claude in onedrive folder ([b102644](https://github.com/LordFckHelmchen/git-commands/commit/b102644b25fb92a1278d58551a45d572bdbac0f5))
+
+
+### Build System
+
+* **deps:** Update prek-hooks ([#35](https://github.com/LordFckHelmchen/git-commands/issues/35)) ([d553a15](https://github.com/LordFckHelmchen/git-commands/commit/d553a15d4742ebabdbf3eea0ecf2366fd040012b))
+* **deps:** Update prek-hooks ([#36](https://github.com/LordFckHelmchen/git-commands/issues/36)) ([ac65555](https://github.com/LordFckHelmchen/git-commands/commit/ac65555efb4db2d226fdb406b222d4114e8cd9a9))
+* **deps:** Update prek-hooks ([#37](https://github.com/LordFckHelmchen/git-commands/issues/37)) ([f8b3abb](https://github.com/LordFckHelmchen/git-commands/commit/f8b3abbe874a511d7c3f8cbbec580b2edad6e1e3))
+
 ## [3.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.3.0...v3.0.0) (2026-09-07)
 
 
