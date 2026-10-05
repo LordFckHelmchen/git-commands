@@ -98,6 +98,7 @@ def symlink_files(*, link_git_prompt: bool, link_starship_config: bool, exist_ok
             RepoFileMap(
                 file_names={
                     ".inputrc",
+                    "clink_start.cmd",
                     "update_all.cmd",
                     "gh_alerts.ps1",
                     *(["starship.lua"] if link_starship_config else []),
