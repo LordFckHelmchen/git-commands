@@ -19,6 +19,7 @@ doskey touch=for %I in ($*) do @type nul >> "%~I"
 doskey which=where $*
 
 doskey cp=copy $*
+doskey mv=move $*
 
 doskey oneclaude=cd %OneDrive% & claude
 
