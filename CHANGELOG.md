@@ -1,5 +1,23 @@
 # Changelog
 
+## [3.1.0](https://github.com/LordFckHelmchen/git-commands/compare/v3.0.0...v3.1.0) (2026-10-09)
+
+
+### Features
+
+* **cmd:** Add alias for copying directories (cpd via xcopy) ([6e3837a](https://github.com/LordFckHelmchen/git-commands/commit/6e3837a532fba9b9e2edd9a6f39a52e56081009a))
+* **cmd:** Add alias mv for move ([4610743](https://github.com/LordFckHelmchen/git-commands/commit/4610743d18e900f5227759f1ec341bc84404b599))
+* **cmd:** Add alias to start claude in onedrive folder ([b102644](https://github.com/LordFckHelmchen/git-commands/commit/b102644b25fb92a1278d58551a45d572bdbac0f5))
+* **cmd:** Allow inclusion of local config for clink ([67863ec](https://github.com/LordFckHelmchen/git-commands/commit/67863ec1d1a95c28a2801d622032e9b0b3cef261))
+
+
+### Build System
+
+* **deps:** Update prek-hooks ([#35](https://github.com/LordFckHelmchen/git-commands/issues/35)) ([d553a15](https://github.com/LordFckHelmchen/git-commands/commit/d553a15d4742ebabdbf3eea0ecf2366fd040012b))
+* **deps:** Update prek-hooks ([#36](https://github.com/LordFckHelmchen/git-commands/issues/36)) ([ac65555](https://github.com/LordFckHelmchen/git-commands/commit/ac65555efb4db2d226fdb406b222d4114e8cd9a9))
+* **deps:** Update prek-hooks ([#37](https://github.com/LordFckHelmchen/git-commands/issues/37)) ([f8b3abb](https://github.com/LordFckHelmchen/git-commands/commit/f8b3abbe874a511d7c3f8cbbec580b2edad6e1e3))
+* **deps:** Update prek-hooks ([#38](https://github.com/LordFckHelmchen/git-commands/issues/38)) ([265e096](https://github.com/LordFckHelmchen/git-commands/commit/265e09665682a4a942027d3eeec591baf54904f7))
+
 ## [3.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.3.0...v3.0.0) (2026-09-07)
 
 
