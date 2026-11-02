@@ -74,9 +74,8 @@
       {
         "commandline": "%PROGRAMFILES%/Git/bin/bash.exe -li",
         "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
-        "icon": "%PROGRAMFILES%/Git/mingw64/share/git/git-for-windows.ico",
-        "name": "Git Bash",
-        "startingDirectory": "%USERPROFILE%"
+        "icon": "%LOCALAPPDATA%/Programs/Git/git-bash.exe",
+        "name": "Git Bash"
       },
       {
         "commandline": "%USERPROFILE%/.local/bin/ptpython.exe",
