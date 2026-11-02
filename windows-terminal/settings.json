@@ -50,6 +50,10 @@
     {
       "id": "User.splitPane.A6751878",
       "keys": "alt+shift+d"
+    },
+    {
+      "id": "Terminal.SplitPaneRight",
+      "keys": "ctrl+shift+t"
     }
   ],
   "newTabMenu": [
