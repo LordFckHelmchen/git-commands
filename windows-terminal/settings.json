@@ -29,7 +29,7 @@
   "alwaysShowTabs": true,
   "copyFormatting": "none",
   "copyOnSelect": true,
-  "defaultProfile": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
+  "defaultProfile": "{0caa0dad-35be-5f56-a8ff-afceeeaa6101}",
   "disabledProfileSources": [
     "Windows.Terminal.Azure",
     "Windows.Terminal.Wsl"
