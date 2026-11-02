@@ -76,7 +76,7 @@
     },
     "list": [
       {
-        "commandline": "%PROGRAMFILES%/Git/bin/bash.exe -li",
+        "commandline": "%LOCALAPPDATA%/Programs/Git/bin/bash.exe -li",
         "guid": "{2ece5bfe-50ed-5f3a-ab87-5cd4baafed2b}",
         "icon": "%LOCALAPPDATA%/Programs/Git/git-bash.exe",
         "name": "Git Bash"
