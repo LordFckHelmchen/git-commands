@@ -37,6 +37,7 @@ doskey dirtree=tree /a $*
 doskey dog=pygmentize -g $*
 doskey pingw=ping -t www.web.de $*
 doskey rmd=rmdir /s /q $*
+doskey rm=del /q $*
 doskey pra=prek run --all-files $*
 doskey uvpt=uv run pytest $*
 
