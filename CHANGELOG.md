@@ -1,5 +1,43 @@
 # Changelog
 
+## [4.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v3.0.0...v4.0.0) (2026-11-11)
+
+
+### ⚠ BREAKING CHANGES
+
+* **windows-terminal:** Update Git Bash command line path to use LOCALAPPDATA
+
+### Features
+
+* **cmd:** Add alias for copying directories (cpd via xcopy) ([6e3837a](https://github.com/LordFckHelmchen/git-commands/commit/6e3837a532fba9b9e2edd9a6f39a52e56081009a))
+* **cmd:** Add alias mv for move ([4610743](https://github.com/LordFckHelmchen/git-commands/commit/4610743d18e900f5227759f1ec341bc84404b599))
+* **cmd:** Add alias plain rm (only for files; no force) ([ad197a3](https://github.com/LordFckHelmchen/git-commands/commit/ad197a3f73054752fce16b773c70ab78fbe11a0e))
+* **cmd:** Add alias to start claude in onedrive folder ([b102644](https://github.com/LordFckHelmchen/git-commands/commit/b102644b25fb92a1278d58551a45d572bdbac0f5))
+* **cmd:** Allow inclusion of local config for clink ([67863ec](https://github.com/LordFckHelmchen/git-commands/commit/67863ec1d1a95c28a2801d622032e9b0b3cef261))
+* **windows-terminal:** Add keybinding for splitting pane to the right ([26115fb](https://github.com/LordFckHelmchen/git-commands/commit/26115fb0a532f8400c5a47a778c3ab48f19463b2))
+
+
+### Bug Fixes
+
+* **windows-terminal:** Update Git Bash command line path to use LOCALAPPDATA ([2f52cf4](https://github.com/LordFckHelmchen/git-commands/commit/2f52cf4d6814d64ac198a26c82634315a5dc1edd))
+* **windows-terminal:** Update Git Bash icon path and remove starting directory ([81c773d](https://github.com/LordFckHelmchen/git-commands/commit/81c773df4f8bc76a9d10a839d97de0e2694cded4))
+* **windows-terminal:** Use cmd as default profile ([7a397cc](https://github.com/LordFckHelmchen/git-commands/commit/7a397cc5058d248241debdf54f0b49e7ba8aaf67))
+
+
+### Build System
+
+* **deps:** Bump j178/prek-action from 3.0.0 to 3.0.1 in the all-actions group ([#41](https://github.com/LordFckHelmchen/git-commands/issues/41)) ([ae7de24](https://github.com/LordFckHelmchen/git-commands/commit/ae7de24cf855487377ac23185ba09b9683f469c2))
+* **deps:** Bump j178/prek-action from 3.0.1 to 3.1.0 in the all-actions group ([#44](https://github.com/LordFckHelmchen/git-commands/issues/44)) ([5cc402e](https://github.com/LordFckHelmchen/git-commands/commit/5cc402e6e190fc6f3bc294040b9f565e4ac718d7))
+* **deps:** Update prek-hooks ([#35](https://github.com/LordFckHelmchen/git-commands/issues/35)) ([d553a15](https://github.com/LordFckHelmchen/git-commands/commit/d553a15d4742ebabdbf3eea0ecf2366fd040012b))
+* **deps:** Update prek-hooks ([#36](https://github.com/LordFckHelmchen/git-commands/issues/36)) ([ac65555](https://github.com/LordFckHelmchen/git-commands/commit/ac65555efb4db2d226fdb406b222d4114e8cd9a9))
+* **deps:** Update prek-hooks ([#37](https://github.com/LordFckHelmchen/git-commands/issues/37)) ([f8b3abb](https://github.com/LordFckHelmchen/git-commands/commit/f8b3abbe874a511d7c3f8cbbec580b2edad6e1e3))
+* **deps:** Update prek-hooks ([#38](https://github.com/LordFckHelmchen/git-commands/issues/38)) ([265e096](https://github.com/LordFckHelmchen/git-commands/commit/265e09665682a4a942027d3eeec591baf54904f7))
+* **deps:** Update prek-hooks ([#39](https://github.com/LordFckHelmchen/git-commands/issues/39)) ([d617f09](https://github.com/LordFckHelmchen/git-commands/commit/d617f0935d4aaf425af0888f547a0483583e6e60))
+* **deps:** Update prek-hooks ([#40](https://github.com/LordFckHelmchen/git-commands/issues/40)) ([cfb9a5d](https://github.com/LordFckHelmchen/git-commands/commit/cfb9a5dcadec30164304c536612df72c40bbe840))
+* **deps:** Update prek-hooks ([#42](https://github.com/LordFckHelmchen/git-commands/issues/42)) ([29ed612](https://github.com/LordFckHelmchen/git-commands/commit/29ed612f01615fe0081fec40b2cde2275d80e0f8))
+* **deps:** Update prek-hooks ([#43](https://github.com/LordFckHelmchen/git-commands/issues/43)) ([ccd5a93](https://github.com/LordFckHelmchen/git-commands/commit/ccd5a93f7c569a8b28bdbbbb842b5463e6ef8b7d))
+* **deps:** Update prek-hooks ([#45](https://github.com/LordFckHelmchen/git-commands/issues/45)) ([8ae2490](https://github.com/LordFckHelmchen/git-commands/commit/8ae24900b07498e6e24fe66a14229197fecf45c0))
+
 ## [3.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v2.3.0...v3.0.0) (2026-09-07)
 
 
