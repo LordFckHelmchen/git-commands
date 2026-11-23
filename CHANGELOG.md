@@ -1,5 +1,15 @@
 # Changelog
 
+## [4.0.1](https://github.com/LordFckHelmchen/git-commands/compare/v4.0.0...v4.0.1) (2026-11-23)
+
+
+### Build System
+
+* **deps:** Bump peter-evans/create-pull-request from 8.1.1 to 8.1.2 in the all-actions group ([#47](https://github.com/LordFckHelmchen/git-commands/issues/47)) ([ac88a9c](https://github.com/LordFckHelmchen/git-commands/commit/ac88a9c40d25b3a994f516810c2f63aa85ee37c7))
+* **deps:** Bump peter-evans/create-pull-request from 8.1.2 to 8.1.3 in the all-actions group ([#50](https://github.com/LordFckHelmchen/git-commands/issues/50)) ([46c08fa](https://github.com/LordFckHelmchen/git-commands/commit/46c08fa4eb0419781757f709f16800f6f8b4d63a))
+* **deps:** Update prek-hooks ([#46](https://github.com/LordFckHelmchen/git-commands/issues/46)) ([6d3bdb0](https://github.com/LordFckHelmchen/git-commands/commit/6d3bdb0bff4776455629484388fbc92966d5cee5))
+* **deps:** Update prek-hooks ([#49](https://github.com/LordFckHelmchen/git-commands/issues/49)) ([d73da65](https://github.com/LordFckHelmchen/git-commands/commit/d73da65f0c18a69b73b23d8cebf952b9313aac7a))
+
 ## [4.0.0](https://github.com/LordFckHelmchen/git-commands/compare/v3.0.0...v4.0.0) (2026-11-11)
 
 
